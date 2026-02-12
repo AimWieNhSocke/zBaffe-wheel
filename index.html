@@ -1,0 +1,541 @@
+<html lang="de">
+<head><meta charset="utf-8"><title>zBaffe´s Glücksrad</title></head>
+</html>
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Glücksrad</title>
+  <style>
+    :root{
+      --bgSolid: rgba(8, 6, 18, .92);
+      --card: rgba(30, 10, 70, .32);
+      --border: rgba(120, 180, 255, .35);
+      --text: #ffffff;
+      --btnGlow: rgba(0,195,255,.55);
+      --btnBg1: #6a5cff;
+      --btnBg2: #00c3ff;
+      --inputBg: rgba(0,0,0,.30);
+    }
+
+    html, body { height: 100%; margin: 0; }
+    body{
+      display:grid;
+      place-items:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color: var(--text);
+      overflow-y:auto;
+      overflow-x:hidden;
+    }
+    body.transparent { background: transparent; }
+    body.solid{
+      background: var(--bgSolid);
+      /* Optional Hintergrundbild im SOLID Modus:
+      background-image: url("AHA.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      */
+    }
+
+    .wrap{
+      width: min(620px, 94vw);
+      display:grid;
+      gap: 12px;
+      justify-items:center;
+      user-select:none;
+      padding: 16px 0;
+    }
+
+    .header{
+      width:100%;
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .title{
+      font-weight: 900;
+      letter-spacing: .5px;
+      font-size: 18px;
+      padding: 8px 12px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 0 18px rgba(106,92,255,.18);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .toggles{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    select{
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(0,0,0,.28);
+      color: #fff;
+      outline: none;
+    }
+
+    .wheelBox{
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1/1;
+      filter: drop-shadow(0 16px 40px rgba(0,0,0,.35));
+    }
+
+    canvas{ width:100%; height:100%; border-radius: 50%; }
+
+    .pin{
+      position:absolute;
+      top:-6px; left:50%;
+      transform:translateX(-50%);
+      width:0; height:0;
+      border-left: 18px solid transparent;
+      border-right: 18px solid transparent;
+      border-bottom: 34px solid rgba(255,255,255,.95);
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
+    }
+
+    .centerCap{
+      position:absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%,-50%);
+      width: 18%;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      background: rgba(255,255,255,.95);
+      box-shadow: inset 0 0 0 10px rgba(0,0,0,.12), 0 0 26px rgba(0,195,255,.25);
+    }
+
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      align-items:center;
+    }
+
+    button{
+      appearance:none;
+      border:0;
+      padding: 12px 16px;
+      border-radius: 14px;
+      color: #ffffff;
+      font-weight: 900;
+      cursor:pointer;
+      transition: transform .06s ease, box-shadow .15s ease, opacity .15s ease;
+      background: linear-gradient(135deg, var(--btnBg1), var(--btnBg2));
+      box-shadow: 0 0 16px var(--btnGlow);
+    }
+    button:active{
+      transform: scale(.98);
+      box-shadow: 0 0 10px rgba(0,195,255,.75);
+    }
+    button:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+      box-shadow: none;
+    }
+
+    textarea{
+   width: 100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: var(--inputBg);
+      color:#fff;
+      outline:none;
+      resize: vertical;
+    }
+
+    .result{
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      text-align:center;
+      min-height: 22px;
+      box-shadow: 0 0 22px rgba(106,92,255,.12);
+    }
+
+    .hint{
+      width:100%;
+      opacity:.85;
+      font-size: 13px;
+      text-align:center;
+    }
+
+    /* Easter Egg Popup */
+    .secret-overlay{
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      z-index: 10000;
+      background: rgba(0,0,0,.55);
+    }
+
+    .secret-box{
+      width: min(520px, 92vw);
+      padding: 18px 16px;
+      border-radius: 18px;
+      background: rgba(20, 10, 35, .92);
+      border: 1px solid rgba(120,180,255,.35);
+      box-shadow: 0 0 30px rgba(0,195,255,.22);
+      text-align: center;
+    }
+
+    .secret-box h2{
+      margin: 0 0 10px 0;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .secret-box p{
+      margin: 0 0 12px 0;
+      opacity: .9;
+    }
+
+    .secret-img{
+      width: min(360px, 78vw);
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,.45));
+    }
+
+    .secret-close{
+      margin-top: 14px;
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 0;
+      font-weight: 900;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(135deg, var(--btnBg1), var(--btnBg2));
+      box-shadow: 0 0 16px var(--btnGlow);
+    }
+  </style>
+</head>
+
+<body class="transparent">
+
+  <div class="secret-overlay" id="secretOverlay">
+    <div class="secret-box">
+      <h2>Glückwunsch 🎉</h2>
+      <p>du hast das gefunden</p>
+      <img src="AHA.png" class="secret-img" alt="AHA Meme">
+      <button class="secret-close" id="secretClose">OK</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="header">
+      <div class="title" id="secretTitle">BAFFE WHEEL</div>
+      <div class="toggles">
+        <select id="bgMode">
+          <option value="transparent" selected>Transparent (OBS)</option>
+          <option value="solid">Solid Background</option>
+        </select>
+
+        <select id="mode">
+          <option value="remove">Modus: Nudeln entfernen</option>
+          <option value="keep">Modus: Nudel behalten</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="wheelBox">
+      <div class="pin"></div>
+      <canvas id="wheel" width="1000" height="1000"></canvas>
+      <div class="centerCap"></div>
+    </div>
+
+    <div class="controls">
+      <button id="spin">Nudel Umrühren</button>
+      <button id="removeWinner" disabled>Nudel entfernen</button>
+      <button id="shuffle">Shuffle</button>
+      <button id="reset">Reset</button>
+    </div>
+
+    <textarea id="items" rows="7" placeholder="Jeder Eintrag in eine neue Zeile">Hydrate
+5 Liegestütze
+Chat entscheidet
+Song anmachen
+Stretch
+1 Runde Ranked</textarea>
+ <div class="result" id="result"></div>
+
+  </div>
+
+  <script>
+    const canvas = document.getElementById("wheel");
+    const ctx = canvas.getContext("2d");
+
+    const btnSpin = document.getElementById("spin");
+    const btnRemoveWinner = document.getElementById("removeWinner");
+    const btnShuffle = document.getElementById("shuffle");
+    const btnReset = document.getElementById("reset");
+
+    const input = document.getElementById("items");
+    const result = document.getElementById("result");
+
+    const bgMode = document.getElementById("bgMode");
+    const mode = document.getElementById("mode");
+
+    // Easter Egg
+    const secretTitle = document.getElementById("secretTitle");
+    const secretOverlay = document.getElementById("secretOverlay");
+    const secretClose = document.getElementById("secretClose");
+    let secretClicks = 0;
+
+    secretTitle.addEventListener("click", () => {
+      secretClicks++;
+      if (secretClicks >= 15) {
+        secretClicks = 0;
+        secretOverlay.style.display = "grid";
+      }
+    });
+
+    secretClose.addEventListener("click", () => {
+      secretOverlay.style.display = "none";
+    });
+
+    secretOverlay.addEventListener("click", (e) => {
+      if (e.target === secretOverlay) secretOverlay.style.display = "none";
+    });
+
+    let items = parseItems(input.value);
+    let angle = 0;
+    let spinning = false;
+    let lastWinner = null;
+
+    function parseItems(text) {
+      return text
+        .split(/\r?\n/)
+        .map(s => s.trim())
+        .filter(Boolean);
+    }
+
+    function syncInput() {
+      input.value = items.join("\n");
+    }
+
+    function applyBgMode(val){
+      document.body.classList.remove("transparent", "solid");
+      document.body.classList.add(val);
+    }
+
+    function niceColor(i) {
+      const colors = ["#00c3ff","#6a5cff","#ff2bd6","#4d9fff","#8a5cff"];
+      return colors[i % colors.length];
+    }
+
+    function draw() {
+      const w = canvas.width, h = canvas.height;
+      const cx = w/2, cy = h/2;
+      const r = Math.min(w, h) * 0.48;
+
+      ctx.clearRect(0,0,w,h);
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, r*1.04, 0, Math.PI*2);
+      ctx.fillStyle = "rgba(255,255,255,.12)";
+      ctx.fill();
+
+      const n = items.length || 1;
+      const slice = (Math.PI*2) / n;
+
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+
+      for (let i = 0; i < n; i++) {
+        const start = i * slice;
+        const end = start + slice;
+
+        ctx.beginPath();
+        ctx.moveTo(0,0);
+        ctx.arc(0,0,r, start, end);
+        ctx.closePath();
+        ctx.fillStyle = niceColor(i);
+        ctx.fill();
+
+        ctx.strokeStyle = "rgba(0,0,0,.18)";
+        ctx.lineWidth = 6;
+        ctx.stroke();
+
+        const label = items[i] || "—";
+        ctx.save();
+        ctx.rotate(start + slice/2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "rgba(0,0,0,.78)";
+        ctx.font = "900 44px system-ui";
+        ctx.shadowColor = "rgba(255,255,255,.55)";
+        ctx.shadowBlur = 6;
+        ctx.fillText(label, r - 24, 14);
+        ctx.restore();
+      }
+
+      ctx.restore();
+
+      const grad = ctx.createRadialGradient(cx,cy,r*0.2,cx,cy,r*1.08);
+      grad.addColorStop(0, "rgba(255,255,255,.10)");
+      grad.addColorStop(1, "rgba(0,0,0,.38)");
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI*2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+    }
+
+    function currentWinner() {
+      const n = items.length || 1;
+      const slice = (Math.PI*2) / n;
+      const pointerAngle = -Math.PI/2;
+      const a = ((pointerAngle - angle) % (Math.PI*2) + Math.PI*2) % (Math.PI*2);
+      const idx = Math.floor(a / slice) % n;
+      return { idx, label: items[idx] ?? "—" };
+    }
+
+    function spin() {
+      if (spinning) return;
+
+      items = parseItems(input.value);
+      if (items.length < 2) {
+        result.textContent = "Pack mindestens 2 Einträge rein 🙂";
+        lastWinner = null;
+        btnRemoveWinner.disabled = true;
+        draw();
+        return;
+      }
+
+      spinning = true;
+      btnSpin.disabled = true;
+      btnRemoveWinner.disabled = true;
+      result.textContent = "Spinning…";
+
+      // immer gleiches Gefühl
+      const extraSpins = 8;
+      const duration = 3800;
+
+      const n = items.length;
+      const slice = (Math.PI*2) / n;
+
+      const targetIndex = Math.floor(Math.random() * n);
+      const inside = (Math.random()*0.6 + 0.2) * slice;
+
+      const pointerAngle = -Math.PI/2;
+      const targetAngle = pointerAngle - (targetIndex*slice + inside);
+
+      const startAngle = angle;
+      const endAngle = targetAngle - extraSpins*(Math.PI*2);
+
+      const start = performance.now();
+
+      function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+
+      function frame(now) {
+        const t = Math.min(1, (now - start) / duration);
+        const e = easeOutCubic(t);
+        angle = startAngle + (endAngle - startAngle) * e;
+        draw();
+
+        if (t < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          spinning = false;
+          btnSpin.disabled = false;
+
+          // angle klein halten
+          const TAU = Math.PI * 2;
+          angle = ((angle % TAU) + TAU) % TAU;
+
+          const win = currentWinner();
+          lastWinner = win;
+          result.textContent = `Ergebnis: ${win.label}`;
+
+          const canRemove = (mode.value === "remove") && items.length > 1;
+          btnRemoveWinner.disabled = !canRemove;
+        }
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    function removeWinner() {
+      if (!lastWinner) return;
+
+      if (mode.value !== "remove") {
+        result.textContent = "Modus steht auf Nudel behalten.";
+        btnRemoveWinner.disabled = true;
+        return;
+      }
+
+      const label = lastWinner.label;
+      const idx = items.findIndex(x => x === label);
+      if (idx === -1) return;
+
+      items.splice(idx, 1);
+      syncInput();
+
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+
+      result.textContent = "Nudel entfernt.";
+      draw();
+    }
+
+    function shuffle() {
+      items = parseItems(input.value);
+      for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+      }
+      syncInput();
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+      result.textContent = "Gemischt.";
+      draw();
+    }
+
+    function reset() {
+      angle = 0;
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+      result.textContent = "Bereit.";
+      draw();
+    }
+
+    btnSpin.addEventListener("click", spin);
+    btnRemoveWinner.addEventListener("click", removeWinner);
+    btnShuffle.addEventListener("click", shuffle);
+    btnReset.addEventListener("click", reset);
+
+    input.addEventListener("input", () => {
+      items = parseItems(input.value);
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+      draw();
+    });
+
+    bgMode.addEventListener("change", () => applyBgMode(bgMode.value));
+
+    applyBgMode(bgMode.value);
+    draw();
+  </script>
+</body>
+</html>
