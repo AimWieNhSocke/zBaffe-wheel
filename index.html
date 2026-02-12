@@ -30,12 +30,12 @@
     body.solid{ background: var(--bgSolid); }
 
     .wrap{
-      width: min(620px, 94vw);
+      width: min(680px, 94vw);
       display:grid;
       gap: 12px;
       justify-items:center;
       user-select:none;
-      padding: 16px 0;
+      padding: 16px 0 22px 0;
     }
 
     .header{
@@ -68,14 +68,17 @@
       justify-content: flex-end;
     }
 
-    select{
+    select, .miniBtn{
       padding: 10px 12px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.22);
       background: rgba(0,0,0,.28);
       color: #fff;
       outline: none;
+      font-weight: 800;
+      cursor: pointer;
     }
+    .miniBtn{ user-select:none; }
 
     .wheelBox{
       position: relative;
@@ -95,6 +98,7 @@
       border-right: 18px solid transparent;
       border-bottom: 34px solid rgba(255,255,255,.95);
       filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
+      cursor: pointer;
     }
 
     .centerCap{
@@ -106,6 +110,7 @@
       border-radius: 50%;
       background: rgba(255,255,255,.95);
       box-shadow: inset 0 0 0 10px rgba(0,0,0,.12), 0 0 26px rgba(0,195,255,.25);
+      cursor: pointer;
     }
 
     .controls{
@@ -144,7 +149,7 @@
 
     .result{ display:none; }
 
-    .secret-overlay{
+    .overlay{
       position: fixed;
       inset: 0;
       display: none;
@@ -152,8 +157,9 @@
       z-index: 10000;
       background: rgba(0,0,0,.55);
     }
-    .secret-box{
-      width: min(520px, 92vw);
+
+    .box{
+      width: min(560px, 92vw);
       padding: 18px 16px;
       border-radius: 18px;
       background: rgba(20, 10, 35, .92);
@@ -161,48 +167,76 @@
       box-shadow: 0 0 30px rgba(0,195,255,.22);
       text-align: center;
     }
-    .secret-box h2{ margin: 0 0 10px 0; font-size: 20px; font-weight: 900; }
-    .secret-box p{ margin: 0 0 12px 0; opacity: .9; }
-    .secret-img{
+
+    .box h2{
+      margin: 0 0 10px 0;
+      font-size: 20px;
+      font-weight: 1000;
+    }
+
+    .box p{
+      margin: 0 0 12px 0;
+      opacity: .9;
+      font-weight: 700;
+    }
+
+    .img{
       width: min(360px, 78vw);
       height: auto;
       display: block;
       margin: 0 auto;
       filter: drop-shadow(0 10px 20px rgba(0,0,0,.45));
     }
-    .secret-close{
-      margin-top: 14px;
-      width: 100%;
+
+    .boxActions{
+      display:grid;
+      gap:10px;
+      margin-top: 12px;
+    }
+
+    .btnSecondary{
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: none;
+    }
+
+    .winnerName{
+      font-size: 26px;
+      font-weight: 1100;
+      letter-spacing: .2px;
+      margin: 2px 0 10px 0;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .field{
+      width: min(420px, 92vw);
       padding: 12px 14px;
       border-radius: 14px;
-      border: 0;
-      font-weight: 900;
-      cursor: pointer;
-      color: #fff;
-      background: linear-gradient(135deg, var(--btnBg1), var(--btnBg2));
-      box-shadow: 0 0 16px var(--btnGlow);
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(0,0,0,.28);
+      color:#fff;
+      outline:none;
+      font-weight: 800;
     }
 
-    .wm-btn{
-      position: fixed;
-      right: 14px;
-      bottom: 12px;
-      width: 16px;
-      height: 16px;
-      border-radius: 999px;
-      z-index: 9999;
-      opacity: .08;
-      cursor: pointer;
-      background: rgba(255,255,255,.95);
-      border: 1px solid rgba(255,255,255,.25);
+    .smallNote{
+      font-size: 12px;
+      opacity: .8;
+      margin-top: 8px;
     }
-    .wm-btn:hover{ opacity: .22; }
 
-    .wm-toast{
+    .toast{
       position: fixed;
       right: 14px;
       bottom: 40px;
-      z-index: 10000;
+      z-index: 11000;
       opacity: 0;
       transform: translateY(6px);
       pointer-events: none;
@@ -212,28 +246,97 @@
       border: 1px solid rgba(255,255,255,.16);
       backdrop-filter: blur(6px);
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 900;
       letter-spacing: .2px;
       transition: opacity .18s ease, transform .18s ease;
     }
-    .wm-toast.show{ opacity: .9; transform: translateY(0); }
+    .toast.show{ opacity: .92; transform: translateY(0); }
+
+    .wm-btn{
+      position: fixed;
+      right: 14px;
+      bottom: 12px;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      z-index: 10999;
+      opacity: .08;
+      cursor: pointer;
+      background: rgba(255,255,255,.95);
+      border: 1px solid rgba(255,255,255,.25);
+    }
+    .wm-btn:hover{ opacity: .22; }
+
+    .ahaFlash{
+      animation: ahaFlash .35s ease 0s 1;
+    }
+    @keyframes ahaFlash{
+      0%{ filter: none; }
+      50%{ filter: saturate(1.8) contrast(1.2) brightness(1.2); }
+      100%{ filter: none; }
+    }
   </style>
 </head>
 
 <body class="solid">
 
-  <div class="secret-overlay" id="secretOverlay">
-    <div class="secret-box">
+  <div class="overlay" id="ahaOverlay">
+    <div class="box">
       <h2>Glückwunsch 🎉</h2>
       <p>du hast das gefunden</p>
-      <img src="AHA.png" class="secret-img" alt="AHA Meme">
-      <button class="secret-close" id="secretClose">OK</button>
+      <img src="AHA.png" class="img" alt="AHA Meme">
+      <div class="boxActions">
+        <button id="ahaClose">OK</button>
+      </div>
     </div>
   </div>
 
+  <div class="overlay" id="winnerOverlay">
+    <div class="box">
+      <h2>Ausgewählt</h2>
+      <div class="winnerName" id="winnerName">---</div>
+      <p id="winnerSubtitle">Was willst du machen?</p>
+      <div class="boxActions">
+        <button class="btnSecondary" id="btnKeep">Nudel behalten</button>
+        <button id="btnRemove">Nudel entfernen</button>
+        <button class="btnSecondary" id="btnCloseWinner">Schließen</button>
+      </div>
+      <div class="smallNote" id="miniInfo" style="display:none;"></div>
+    </div>
+  </div>
+
+  <div class="overlay" id="luckOverlay">
+    <div class="box">
+      <h2>Streamer Luck</h2>
+      <p>Wähle einen Namen aus der Liste. Der wird 2x eingetragen (doppelte Chance).</p>
+      <div class="row">
+        <select id="luckSelect" class="field"></select>
+      </div>
+      <div class="boxActions">
+        <button id="luckConfirm">Bestätigen</button>
+        <button class="btnSecondary" id="luckCancel">Abbrechen</button>
+      </div>
+      <div class="smallNote">Tipp: Du kannst es jederzeit nochmal machen.</div>
+    </div>
+  </div>
+
+  <div class="overlay" id="miniOverlay">
+    <div class="box">
+      <h2 id="miniTitle">Mini Game</h2>
+      <p id="miniText">---</p>
+      <div class="boxActions" id="miniActions"></div>
+      <div class="smallNote" id="miniFoot">---</div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">---</div>
+  <div class="wm-btn" id="wmBtn" title=""></div>
+
   <div class="wrap">
+
     <div class="header">
       <div class="title" id="secretTitle">BAFFE WHEEL</div>
+
       <div class="toggles">
         <select id="bgMode">
           <option value="transparent">Transparent (OBS)</option>
@@ -244,13 +347,15 @@
           <option value="remove" selected>Modus: Nudel entfernen</option>
           <option value="keep">Modus: Nudel behalten</option>
         </select>
+
+        <button class="miniBtn" id="luckBtn">Streamer Luck</button>
       </div>
     </div>
 
     <div class="wheelBox">
-      <div class="pin"></div>
+      <div class="pin" id="pin"></div>
       <canvas id="wheel" width="1000" height="1000"></canvas>
-      <div class="centerCap"></div>
+      <div class="centerCap" id="centerCap"></div>
     </div>
 
     <div class="controls">
@@ -260,78 +365,140 @@
       <button id="reset">Reset</button>
     </div>
 
-    <textarea id="items" rows="7" placeholder="Jeder Eintrag in eine neue Zeile">nico
-test
-best
-noch einer</textarea>
+    <textarea id="items" rows="7" placeholder="Jeder Eintrag in eine neue Zeile">Hydrate
+5 Liegestütze
+Chat entscheidet
+Song anmachen
+Stretch
+1 Runde Ranked</textarea>
 
     <div class="result" id="result"></div>
   </div>
 
-  <div class="wm-btn" id="wmBtn" title=""></div>
-  <div class="wm-toast" id="wmToast">Made by NicoRU / AimWieNhSocke</div>
-
   <script>
-    const canvas = document.getElementById("wheel");
+    const $ = (id) => document.getElementById(id);
+
+    const canvas = $("wheel");
     const ctx = canvas.getContext("2d");
 
-    const btnSpin = document.getElementById("spin");
-    const btnRemoveWinner = document.getElementById("removeWinner");
-    const btnShuffle = document.getElementById("shuffle");
-    const btnReset = document.getElementById("reset");
+    const btnSpin = $("spin");
+    const btnRemoveWinner = $("removeWinner");
+    const btnShuffle = $("shuffle");
+    const btnReset = $("reset");
 
-    const input = document.getElementById("items");
-    const result = document.getElementById("result");
+    const input = $("items");
+    const bgMode = $("bgMode");
+    const mode = $("mode");
 
-    const bgMode = document.getElementById("bgMode");
-    const mode = document.getElementById("mode");
+    const pin = $("pin");
+    const centerCap = $("centerCap");
 
-    const secretTitle = document.getElementById("secretTitle");
-    const secretOverlay = document.getElementById("secretOverlay");
-    const secretClose = document.getElementById("secretClose");
-    let secretClicks = 0;
+    const secretTitle = $("secretTitle");
+    const ahaOverlay = $("ahaOverlay");
+    const ahaClose = $("ahaClose");
 
-    secretTitle.addEventListener("click", () => {
-      secretClicks++;
-      if (secretClicks >= 15) {
-        secretClicks = 0;
-        secretOverlay.style.display = "grid";
-      }
-    });
+    const winnerOverlay = $("winnerOverlay");
+    const winnerNameEl = $("winnerName");
+    const winnerSubtitle = $("winnerSubtitle");
+    const btnKeep = $("btnKeep");
+    const btnRemove = $("btnRemove");
+    const btnCloseWinner = $("btnCloseWinner");
+    const miniInfo = $("miniInfo");
 
-    secretClose.addEventListener("click", () => secretOverlay.style.display = "none");
-    secretOverlay.addEventListener("click", (e) => { if (e.target === secretOverlay) secretOverlay.style.display = "none"; });
+    const luckBtn = $("luckBtn");
+    const luckOverlay = $("luckOverlay");
+    const luckSelect = $("luckSelect");
+    const luckConfirm = $("luckConfirm");
+    const luckCancel = $("luckCancel");
 
-    const wmBtn = document.getElementById("wmBtn");
-    const wmToast = document.getElementById("wmToast");
-    let wmTimer = null;
+    const miniOverlay = $("miniOverlay");
+    const miniTitle = $("miniTitle");
+    const miniText = $("miniText");
+    const miniActions = $("miniActions");
+    const miniFoot = $("miniFoot");
 
-    wmBtn.addEventListener("click", () => {
-      wmToast.classList.add("show");
-      if (wmTimer) clearTimeout(wmTimer);
-      wmTimer = setTimeout(() => wmToast.classList.remove("show"), 2500);
-    });
+    const toast = $("toast");
+    const wmBtn = $("wmBtn");
 
-    function parseItems(text) {
-      return text.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
-    }
+    const STORAGE_KEY = "baffeWheel_v3";
+    const now = () => Date.now();
 
-    function niceColor(i) {
-      const colors = ["#00c3ff","#6a5cff","#ff2bd6","#4d9fff","#8a5cff"];
-      return colors[i % colors.length];
-    }
-
-    let items = parseItems(input.value);
+    let items = [];
     let angle = 0;
     let spinning = false;
     let lastWinner = null;
+
+    let secretClicks = 0;
+
+    let ahaMode = false;
+    let glowMode = false;
+
+    let ultraReadyAt = 0;
+    let pinClicks = 0;
+    let pinClickTimer = null;
+
+    const konami = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+    let konamiPos = 0;
+
+    function showToast(text){
+      toast.textContent = text;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2200);
+    }
 
     function applyBgMode(val){
       document.body.classList.remove("transparent","solid");
       document.body.classList.add(val);
     }
 
-    function draw() {
+    function parseItems(text){
+      const raw = text.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+
+      const out = [];
+      let seenAha = false;
+      for (const r of raw){
+        if (r.toLowerCase() === "aha") seenAha = true;
+        out.push(r);
+      }
+      if (seenAha && !out.some(x => x === "AHA")){
+        out.push("AHA");
+      }
+      return out;
+    }
+
+    function persist(){
+      const payload = {
+        itemsText: input.value,
+        bg: bgMode.value,
+        mode: mode.value,
+        ahaMode,
+        glowMode
+      };
+      try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(payload)); }catch(e){}
+    }
+
+    function restore(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return;
+        const p = JSON.parse(raw);
+        if(typeof p.itemsText === "string") input.value = p.itemsText;
+        if(p.bg === "transparent" || p.bg === "solid") bgMode.value = p.bg;
+        if(p.mode === "remove" || p.mode === "keep") mode.value = p.mode;
+        ahaMode = !!p.ahaMode;
+        glowMode = !!p.glowMode;
+      }catch(e){}
+    }
+
+    function palette(i){
+      const normal = ["#00c3ff","#6a5cff","#ff2bd6","#4d9fff","#8a5cff"];
+      const aha = ["#ffd400","#ff7a00","#ff2bd6","#00ffb3","#6a5cff"];
+      const g = glowMode ? ["#9cff00","#00c3ff","#ff2bd6","#ffd400","#6a5cff"] : null;
+      const arr = g || (ahaMode ? aha : normal);
+      return arr[i % arr.length];
+    }
+
+    function draw(){
       const w = canvas.width, h = canvas.height;
       const cx = w/2, cy = h/2;
       const r = Math.min(w, h) * 0.48;
@@ -345,7 +512,7 @@ noch einer</textarea>
       ctx.translate(cx, cy);
       ctx.rotate(angle);
 
-      for (let i = 0; i < n; i++) {
+      for(let i=0;i<n;i++){
         const start = i * slice;
         const end = start + slice;
 
@@ -353,7 +520,7 @@ noch einer</textarea>
         ctx.moveTo(0,0);
         ctx.arc(0,0,r, start, end);
         ctx.closePath();
-        ctx.fillStyle = niceColor(i);
+        ctx.fillStyle = palette(i);
         ctx.fill();
 
         ctx.strokeStyle = "rgba(0,0,0,.18)";
@@ -375,7 +542,7 @@ noch einer</textarea>
       ctx.restore();
     }
 
-    function currentWinner() {
+    function currentWinner(){
       const n = items.length;
       const slice = (Math.PI*2) / n;
       const pointerAngle = -Math.PI/2;
@@ -384,18 +551,226 @@ noch einer</textarea>
       return { idx, label: items[idx] ?? "—" };
     }
 
-    function spin() {
-      if (spinning) return;
+    function showWinnerPopup(name){
+      winnerNameEl.textContent = name;
+      winnerSubtitle.textContent = "Was willst du machen?";
+      miniInfo.style.display = "none";
+      winnerOverlay.style.display = "grid";
+    }
+    function hideWinnerPopup(){
+      winnerOverlay.style.display = "none";
+    }
+
+    function showAhaPopup(){
+      ahaOverlay.style.display = "grid";
+      document.body.classList.add("ahaFlash");
+      setTimeout(() => document.body.classList.remove("ahaFlash"), 400);
+    }
+    function hideAhaPopup(){
+      ahaOverlay.style.display = "none";
+    }
+
+    function openLuck(){
+      const cur = parseItems(input.value);
+      const uniq = Array.from(new Set(cur));
+      luckSelect.innerHTML = "";
+      for(const n of uniq){
+        const opt = document.createElement("option");
+        opt.value = n;
+        opt.textContent = n;
+        luckSelect.appendChild(opt);
+      }
+      if(!uniq.length){
+        showToast("Erst Namen eintragen 🙂");
+        return;
+      }
+      luckOverlay.style.display = "grid";
+    }
+    function closeLuck(){ luckOverlay.style.display = "none"; }
+
+    function addLuckName(name){
+      let cur = parseItems(input.value);
+      cur.push(name);
+      input.value = cur.join("\n");
+      items = parseItems(input.value);
+      persist();
+      draw();
+      showToast(name + " hat jetzt 2x Chance");
+    }
+
+    function shuffle(){
+      items = parseItems(input.value);
+      for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+      }
+      input.value = items.join("\n");
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+      persist();
+      draw();
+      showToast("Gemischt");
+    }
+
+    function reset(){
+      angle = 0;
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+      draw();
+      showToast("Reset");
+    }
+
+    function removeLastWinner(){
+      if(!lastWinner) return;
+      const label = lastWinner.label;
+      const idx = items.findIndex(x => x === label);
+      if(idx !== -1){
+        items.splice(idx,1);
+        input.value = items.join("\n");
+        persist();
+      }
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+      draw();
+    }
+
+    function updateRemoveButton(){
+      const canRemove = (mode.value === "remove") && items.length > 1;
+      btnRemoveWinner.disabled = !canRemove;
+    }
+
+    function overheatJoke(){
+      openMini({
+        title: "Rad überhitzt 🥵",
+        text: "Bitte 1 Sekunde abkühlen lassen…",
+        actions: [
+          { label: "OK", kind: "secondary", onClick: () => closeMini() }
+        ],
+        foot: "Nur Spaß."
+      });
+    }
+
+    function openMini({title, text, actions, foot}){
+      miniTitle.textContent = title;
+      miniText.textContent = text;
+      miniActions.innerHTML = "";
+      for(const a of actions){
+        const b = document.createElement("button");
+        b.textContent = a.label;
+        if(a.kind === "secondary") b.classList.add("btnSecondary");
+        b.addEventListener("click", a.onClick);
+        miniActions.appendChild(b);
+      }
+      miniFoot.textContent = foot || "";
+      miniOverlay.style.display = "grid";
+    }
+    function closeMini(){ miniOverlay.style.display = "none"; }
+
+    // Sound (leicht, ohne externe Dateien). Läuft nur während Spin, und am Ende ein "pop".
+    let audioCtx = null;
+    let spinOsc = null;
+    let spinGain = null;
+    let spinNoise = null;
+    let soundEnabled = true;
+
+    function ensureAudio(){
+      if(audioCtx) return;
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    function startSpinSound(){
+      if(!soundEnabled) return;
+      ensureAudio();
+      if(audioCtx.state === "suspended") audioCtx.resume();
+
+      spinGain = audioCtx.createGain();
+      spinGain.gain.value = 0.0;
+      spinGain.connect(audioCtx.destination);
+
+      spinOsc = audioCtx.createOscillator();
+      spinOsc.type = "sawtooth";
+      spinOsc.frequency.value = 120;
+      spinOsc.connect(spinGain);
+      spinOsc.start();
+
+      // weiches "Rauschen" über sehr schnellen Zufallsoszillator
+      spinNoise = audioCtx.createOscillator();
+      spinNoise.type = "triangle";
+      spinNoise.frequency.value = 40;
+      spinNoise.connect(spinGain);
+      spinNoise.start();
+
+      // langsam einblenden
+      const t = audioCtx.currentTime;
+      spinGain.gain.setValueAtTime(0.0, t);
+      spinGain.gain.linearRampToValueAtTime(0.06, t + 0.15);
+    }
+
+    function updateSpinSound(speed01){
+      if(!soundEnabled || !spinGain || !audioCtx) return;
+      const t = audioCtx.currentTime;
+      const vol = 0.03 + 0.08 * speed01;
+      spinGain.gain.setTargetAtTime(vol, t, 0.03);
+      if(spinOsc) spinOsc.frequency.setTargetAtTime(110 + 260 * speed01, t, 0.03);
+      if(spinNoise) spinNoise.frequency.setTargetAtTime(25 + 85 * speed01, t, 0.03);
+    }
+
+    function stopSpinSoundPop(){
+      if(!soundEnabled || !audioCtx) return;
+
+      // kurzer "pop" mit Sinus
+      const pop = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      pop.type = "sine";
+      pop.frequency.value = 480;
+      g.gain.value = 0.0001;
+
+      pop.connect(g);
+      g.connect(audioCtx.destination);
+
+      const t = audioCtx.currentTime;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(0.12, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.12);
+
+      pop.start(t);
+      pop.stop(t + 0.13);
+
+      // spin-sound ausfaden & stoppen
+      if(spinGain){
+        spinGain.gain.setTargetAtTime(0.0, t, 0.02);
+      }
+      setTimeout(() => {
+        try{ if(spinOsc) spinOsc.stop(); }catch(e){}
+        try{ if(spinNoise) spinNoise.stop(); }catch(e){}
+        spinOsc = null; spinNoise = null; spinGain = null;
+      }, 200);
+    }
+
+    function spin({ultra=false} = {}){
+      if(spinning) return;
 
       items = parseItems(input.value);
-      if (items.length < 2) return;
+      if(items.length < 2){
+        showToast("Mindestens 2 Einträge 🙂");
+        draw();
+        return;
+      }
+
+      // Mini joke sehr selten (aber nicht nervig)
+      if(Math.random() < 0.015 && !ultra){
+        overheatJoke();
+        return;
+      }
 
       spinning = true;
       btnSpin.disabled = true;
       btnRemoveWinner.disabled = true;
 
-      const extraSpins = 8;
-      const duration = 3800;
+      startSpinSound();
+
+      const extraSpins = ultra ? 14 : 8;
+      const duration = ultra ? 2400 : 3800;
 
       const n = items.length;
       const slice = (Math.PI*2) / n;
@@ -412,13 +787,20 @@ noch einer</textarea>
       const start = performance.now();
       const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
 
-      function frame(now) {
-        const t = Math.min(1, (now - start) / duration);
-        angle = startAngle + (endAngle - startAngle) * easeOutCubic(t);
+      function frame(nowT){
+        const t = Math.min(1, (nowT - start) / duration);
+        const e = easeOutCubic(t);
+        angle = startAngle + (endAngle - startAngle) * e;
+
+        // speed grob aus t ableiten (nur für sound)
+        const speed01 = ultra ? (1 - t) * 1.1 : (1 - t);
+        updateSpinSound(Math.max(0, Math.min(1, speed01)));
+
         draw();
 
-        if (t < 1) requestAnimationFrame(frame);
-        else {
+        if(t < 1){
+          requestAnimationFrame(frame);
+        }else{
           spinning = false;
           btnSpin.disabled = false;
 
@@ -426,63 +808,188 @@ noch einer</textarea>
           angle = ((angle % TAU) + TAU) % TAU;
 
           lastWinner = currentWinner();
-          btnRemoveWinner.disabled = !(mode.value === "remove" && items.length > 1);
+          updateRemoveButton();
+
+          stopSpinSoundPop();
+
+          // Winner Popup
+          showWinnerPopup(lastWinner.label);
+
+          // Mini game Chance (klein)
+          if(Math.random() < 0.12){
+            miniInfo.style.display = "block";
+            miniInfo.textContent = "Geheim: Tippe 'G' für Glow Mode. Oder Konami-Code 😉";
+          }
+
+          // AHA Winner Sonderfall
+          if(lastWinner.label === "AHA"){
+            showAhaPopup();
+          }
         }
       }
+
       requestAnimationFrame(frame);
     }
 
-    function removeWinner() {
-      if (!lastWinner) return;
-      if (mode.value !== "remove") return;
-
-      const label = lastWinner.label;
-      const idx = items.findIndex(x => x === label);
-      if (idx === -1) return;
-
-      items.splice(idx, 1);
-      input.value = items.join("\n");
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      draw();
-    }
-
-    function shuffle() {
-      items = parseItems(input.value);
-      for (let i = items.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [items[i], items[j]] = [items[j], items[i]];
+    // Easter Eggs
+    secretTitle.addEventListener("click", () => {
+      secretClicks++;
+      if(secretClicks >= 15){
+        secretClicks = 0;
+        showAhaPopup();
       }
-      input.value = items.join("\n");
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      draw();
-    }
+    });
 
-    function reset() {
-      angle = 0;
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      draw();
-    }
+    ahaClose.addEventListener("click", hideAhaPopup);
+    ahaOverlay.addEventListener("click", (e) => { if(e.target === ahaOverlay) hideAhaPopup(); });
 
-    btnSpin.addEventListener("click", spin);
-    btnRemoveWinner.addEventListener("click", removeWinner);
+    // Winner Popup Buttons
+    btnCloseWinner.addEventListener("click", hideWinnerPopup);
+
+    btnKeep.addEventListener("click", () => {
+      hideWinnerPopup();
+      showToast("Nudel behalten");
+    });
+
+    btnRemove.addEventListener("click", () => {
+      removeLastWinner();
+      hideWinnerPopup();
+      showToast("Nudel entfernt");
+    });
+
+    winnerOverlay.addEventListener("click", (e) => { if(e.target === winnerOverlay) hideWinnerPopup(); });
+
+    // Streamer Luck UI
+    luckBtn.addEventListener("click", openLuck);
+    luckCancel.addEventListener("click", closeLuck);
+    luckOverlay.addEventListener("click", (e) => { if(e.target === luckOverlay) closeLuck(); });
+
+    luckConfirm.addEventListener("click", () => {
+      const name = luckSelect.value;
+      if(!name) return;
+      addLuckName(name);
+      closeLuck();
+    });
+
+    // Pin Triple Click = Ultra Spin, 60s cooldown
+    pin.addEventListener("click", () => {
+      if(pinClickTimer) clearTimeout(pinClickTimer);
+      pinClicks++;
+      pinClickTimer = setTimeout(() => { pinClicks = 0; }, 600);
+
+      if(pinClicks >= 3){
+        pinClicks = 0;
+        if(now() < ultraReadyAt){
+          const sec = Math.ceil((ultraReadyAt - now())/1000);
+          showToast("Ultra Spin cooldown: " + sec + "s");
+          return;
+        }
+        ultraReadyAt = now() + 60000;
+        showToast("Ultra Spin!");
+        spin({ultra:true});
+      }
+    });
+
+    // CenterCap 10x = AHA Mode Toggle
+    let capClicks = 0;
+    let capTimer = null;
+    centerCap.addEventListener("click", () => {
+      if(capTimer) clearTimeout(capTimer);
+      capClicks++;
+      capTimer = setTimeout(() => { capClicks = 0; }, 800);
+
+      if(capClicks >= 10){
+        capClicks = 0;
+        ahaMode = !ahaMode;
+        persist();
+        draw();
+        showToast(ahaMode ? "AHA Mode ON" : "AHA Mode OFF");
+      }
+    });
+
+    // Watermark Klick
+    wmBtn.addEventListener("click", () => showToast("NicoRU / AimWieNhSocke"));
+
+    // Keyboard Easter Eggs
+    document.addEventListener("keydown", (e) => {
+      // nur wenn nicht im textarea tippt
+      const tag = (document.activeElement && document.activeElement.tagName) ? document.activeElement.tagName.toLowerCase() : "";
+      const typing = (tag === "textarea" || tag === "input" || tag === "select");
+
+      // Konami Code
+      const key = e.key;
+      const k = (key.length === 1) ? key.toLowerCase() : key;
+      const expected = konami[konamiPos];
+      const normalizedExpected = (expected.length === 1) ? expected.toLowerCase() : expected;
+      if(k === normalizedExpected){
+        konamiPos++;
+        if(konamiPos === konami.length){
+          konamiPos = 0;
+          glowMode = !glowMode;
+          persist();
+          draw();
+          showToast(glowMode ? "Glow Mode ON" : "Glow Mode OFF");
+          showAhaPopup();
+        }
+      }else{
+        konamiPos = 0;
+      }
+
+      if(typing) return;
+
+      // G = Glow Mode
+      if(e.key.toLowerCase() === "g"){
+        glowMode = !glowMode;
+        persist();
+        draw();
+        showToast(glowMode ? "Glow Mode ON" : "Glow Mode OFF");
+      }
+
+      // Space = Spin (wenn nicht tippen)
+      if(e.code === "Space"){
+        e.preventDefault();
+        spin();
+      }
+    });
+
+    // Standard Buttons
+    btnSpin.addEventListener("click", () => spin());
+    btnRemoveWinner.addEventListener("click", () => {
+      removeLastWinner();
+      showToast("Nudel entfernt");
+    });
     btnShuffle.addEventListener("click", shuffle);
     btnReset.addEventListener("click", reset);
 
+    // Input live
     input.addEventListener("input", () => {
       items = parseItems(input.value);
       lastWinner = null;
       btnRemoveWinner.disabled = true;
+      persist();
       draw();
     });
 
-    bgMode.addEventListener("change", () => applyBgMode(bgMode.value));
+    bgMode.addEventListener("change", () => {
+      applyBgMode(bgMode.value);
+      persist();
+    });
 
+    mode.addEventListener("change", () => {
+      updateRemoveButton();
+      persist();
+    });
+
+    // Mini overlay close by outside
+    miniOverlay.addEventListener("click", (e) => { if(e.target === miniOverlay) closeMini(); });
+
+    // Init
+    restore();
     applyBgMode(bgMode.value);
+    items = parseItems(input.value);
+    updateRemoveButton();
     draw();
+    persist();
   </script>
-
 </body>
 </html>
