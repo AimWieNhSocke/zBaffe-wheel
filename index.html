@@ -1,12 +1,10 @@
-<html lang="de">
-<head><meta charset="utf-8"><title>zBaffe´s Glücksrad</title></head>
-</html>
 <!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Glücksrad</title>
+  <title>BAFFE WHEEL</title>
+
   <style>
     :root{
       --bgSolid: rgba(8, 6, 18, .92);
@@ -28,16 +26,8 @@
       overflow-y:auto;
       overflow-x:hidden;
     }
-    body.transparent { background: transparent; }
-    body.solid{
-      background: var(--bgSolid);
-      /* Optional Hintergrundbild im SOLID Modus:
-      background-image: url("AHA.png");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      */
-    }
+    body.transparent{ background: transparent; }
+    body.solid{ background: var(--bgSolid); }
 
     .wrap{
       width: min(620px, 94vw);
@@ -138,18 +128,11 @@
       background: linear-gradient(135deg, var(--btnBg1), var(--btnBg2));
       box-shadow: 0 0 16px var(--btnGlow);
     }
-    button:active{
-      transform: scale(.98);
-      box-shadow: 0 0 10px rgba(0,195,255,.75);
-    }
-    button:disabled{
-      opacity:.55;
-      cursor:not-allowed;
-      box-shadow: none;
-    }
+    button:active{ transform: scale(.98); box-shadow: 0 0 10px rgba(0,195,255,.75); }
+    button:disabled{ opacity:.55; cursor:not-allowed; box-shadow: none; }
 
     textarea{
-   width: 100%;
+      width: 100%;
       padding: 12px 14px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.22);
@@ -159,25 +142,8 @@
       resize: vertical;
     }
 
-    .result{
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 14px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      text-align:center;
-      min-height: 22px;
-      box-shadow: 0 0 22px rgba(106,92,255,.12);
-    }
+    .result{ display:none; }
 
-    .hint{
-      width:100%;
-      opacity:.85;
-      font-size: 13px;
-      text-align:center;
-    }
-
-    /* Easter Egg Popup */
     .secret-overlay{
       position: fixed;
       inset: 0;
@@ -186,7 +152,6 @@
       z-index: 10000;
       background: rgba(0,0,0,.55);
     }
-
     .secret-box{
       width: min(520px, 92vw);
       padding: 18px 16px;
@@ -196,18 +161,8 @@
       box-shadow: 0 0 30px rgba(0,195,255,.22);
       text-align: center;
     }
-
-    .secret-box h2{
-      margin: 0 0 10px 0;
-      font-size: 20px;
-      font-weight: 900;
-    }
-
-    .secret-box p{
-      margin: 0 0 12px 0;
-      opacity: .9;
-    }
-
+    .secret-box h2{ margin: 0 0 10px 0; font-size: 20px; font-weight: 900; }
+    .secret-box p{ margin: 0 0 12px 0; opacity: .9; }
     .secret-img{
       width: min(360px, 78vw);
       height: auto;
@@ -215,7 +170,6 @@
       margin: 0 auto;
       filter: drop-shadow(0 10px 20px rgba(0,0,0,.45));
     }
-
     .secret-close{
       margin-top: 14px;
       width: 100%;
@@ -228,10 +182,45 @@
       background: linear-gradient(135deg, var(--btnBg1), var(--btnBg2));
       box-shadow: 0 0 16px var(--btnGlow);
     }
+
+    .wm-btn{
+      position: fixed;
+      right: 14px;
+      bottom: 12px;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      z-index: 9999;
+      opacity: .08;
+      cursor: pointer;
+      background: rgba(255,255,255,.95);
+      border: 1px solid rgba(255,255,255,.25);
+    }
+    .wm-btn:hover{ opacity: .22; }
+
+    .wm-toast{
+      position: fixed;
+      right: 14px;
+      bottom: 40px;
+      z-index: 10000;
+      opacity: 0;
+      transform: translateY(6px);
+      pointer-events: none;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.16);
+      backdrop-filter: blur(6px);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .2px;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .wm-toast.show{ opacity: .9; transform: translateY(0); }
   </style>
 </head>
 
-<body class="transparent">
+<body class="solid">
 
   <div class="secret-overlay" id="secretOverlay">
     <div class="secret-box">
@@ -243,17 +232,16 @@
   </div>
 
   <div class="wrap">
-
     <div class="header">
       <div class="title" id="secretTitle">BAFFE WHEEL</div>
       <div class="toggles">
         <select id="bgMode">
-          <option value="transparent" selected>Transparent (OBS)</option>
-          <option value="solid">Solid Background</option>
+          <option value="transparent">Transparent (OBS)</option>
+          <option value="solid" selected>Solid Background</option>
         </select>
 
         <select id="mode">
-          <option value="remove">Modus: Nudeln entfernen</option>
+          <option value="remove" selected>Modus: Nudel entfernen</option>
           <option value="keep">Modus: Nudel behalten</option>
         </select>
       </div>
@@ -266,21 +254,22 @@
     </div>
 
     <div class="controls">
-      <button id="spin">Nudel Umrühren</button>
+      <button id="spin">Nudel umrühren</button>
       <button id="removeWinner" disabled>Nudel entfernen</button>
       <button id="shuffle">Shuffle</button>
       <button id="reset">Reset</button>
     </div>
 
-    <textarea id="items" rows="7" placeholder="Jeder Eintrag in eine neue Zeile">Hydrate
-5 Liegestütze
-Chat entscheidet
-Song anmachen
-Stretch
-1 Runde Ranked</textarea>
- <div class="result" id="result"></div>
+    <textarea id="items" rows="7" placeholder="Jeder Eintrag in eine neue Zeile">nico
+test
+best
+noch einer</textarea>
 
+    <div class="result" id="result"></div>
   </div>
+
+  <div class="wm-btn" id="wmBtn" title=""></div>
+  <div class="wm-toast" id="wmToast">NicoRU / AimWieNhSocke</div>
 
   <script>
     const canvas = document.getElementById("wheel");
@@ -297,7 +286,6 @@ Stretch
     const bgMode = document.getElementById("bgMode");
     const mode = document.getElementById("mode");
 
-    // Easter Egg
     const secretTitle = document.getElementById("secretTitle");
     const secretOverlay = document.getElementById("secretOverlay");
     const secretClose = document.getElementById("secretClose");
@@ -311,38 +299,36 @@ Stretch
       }
     });
 
-    secretClose.addEventListener("click", () => {
-      secretOverlay.style.display = "none";
+    secretClose.addEventListener("click", () => secretOverlay.style.display = "none");
+    secretOverlay.addEventListener("click", (e) => { if (e.target === secretOverlay) secretOverlay.style.display = "none"; });
+
+    const wmBtn = document.getElementById("wmBtn");
+    const wmToast = document.getElementById("wmToast");
+    let wmTimer = null;
+
+    wmBtn.addEventListener("click", () => {
+      wmToast.classList.add("show");
+      if (wmTimer) clearTimeout(wmTimer);
+      wmTimer = setTimeout(() => wmToast.classList.remove("show"), 2500);
     });
 
-    secretOverlay.addEventListener("click", (e) => {
-      if (e.target === secretOverlay) secretOverlay.style.display = "none";
-    });
+    function parseItems(text) {
+      return text.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+    }
+
+    function niceColor(i) {
+      const colors = ["#00c3ff","#6a5cff","#ff2bd6","#4d9fff","#8a5cff"];
+      return colors[i % colors.length];
+    }
 
     let items = parseItems(input.value);
     let angle = 0;
     let spinning = false;
     let lastWinner = null;
 
-    function parseItems(text) {
-      return text
-        .split(/\r?\n/)
-        .map(s => s.trim())
-        .filter(Boolean);
-    }
-
-    function syncInput() {
-      input.value = items.join("\n");
-    }
-
     function applyBgMode(val){
-      document.body.classList.remove("transparent", "solid");
+      document.body.classList.remove("transparent","solid");
       document.body.classList.add(val);
-    }
-
-    function niceColor(i) {
-      const colors = ["#00c3ff","#6a5cff","#ff2bd6","#4d9fff","#8a5cff"];
-      return colors[i % colors.length];
     }
 
     function draw() {
@@ -352,12 +338,7 @@ Stretch
 
       ctx.clearRect(0,0,w,h);
 
-      ctx.beginPath();
-      ctx.arc(cx, cy, r*1.04, 0, Math.PI*2);
-      ctx.fillStyle = "rgba(255,255,255,.12)";
-      ctx.fill();
-
-      const n = items.length || 1;
+      const n = Math.max(2, items.length || 2);
       const slice = (Math.PI*2) / n;
 
       ctx.save();
@@ -392,18 +373,10 @@ Stretch
       }
 
       ctx.restore();
-
-      const grad = ctx.createRadialGradient(cx,cy,r*0.2,cx,cy,r*1.08);
-      grad.addColorStop(0, "rgba(255,255,255,.10)");
-      grad.addColorStop(1, "rgba(0,0,0,.38)");
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, Math.PI*2);
-      ctx.fillStyle = grad;
-      ctx.fill();
     }
 
     function currentWinner() {
-      const n = items.length || 1;
+      const n = items.length;
       const slice = (Math.PI*2) / n;
       const pointerAngle = -Math.PI/2;
       const a = ((pointerAngle - angle) % (Math.PI*2) + Math.PI*2) % (Math.PI*2);
@@ -415,20 +388,12 @@ Stretch
       if (spinning) return;
 
       items = parseItems(input.value);
-      if (items.length < 2) {
-        result.textContent = "Pack mindestens 2 Einträge rein 🙂";
-        lastWinner = null;
-        btnRemoveWinner.disabled = true;
-        draw();
-        return;
-      }
+      if (items.length < 2) return;
 
       spinning = true;
       btnSpin.disabled = true;
       btnRemoveWinner.disabled = true;
-      result.textContent = "Spinning…";
 
-      // immer gleiches Gefühl
       const extraSpins = 8;
       const duration = 3800;
 
@@ -445,57 +410,40 @@ Stretch
       const endAngle = targetAngle - extraSpins*(Math.PI*2);
 
       const start = performance.now();
-
-      function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+      const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
 
       function frame(now) {
         const t = Math.min(1, (now - start) / duration);
-        const e = easeOutCubic(t);
-        angle = startAngle + (endAngle - startAngle) * e;
+        angle = startAngle + (endAngle - startAngle) * easeOutCubic(t);
         draw();
 
-        if (t < 1) {
-          requestAnimationFrame(frame);
-        } else {
+        if (t < 1) requestAnimationFrame(frame);
+        else {
           spinning = false;
           btnSpin.disabled = false;
 
-          // angle klein halten
           const TAU = Math.PI * 2;
           angle = ((angle % TAU) + TAU) % TAU;
 
-          const win = currentWinner();
-          lastWinner = win;
-          result.textContent = `Ergebnis: ${win.label}`;
-
-          const canRemove = (mode.value === "remove") && items.length > 1;
-          btnRemoveWinner.disabled = !canRemove;
+          lastWinner = currentWinner();
+          btnRemoveWinner.disabled = !(mode.value === "remove" && items.length > 1);
         }
       }
-
       requestAnimationFrame(frame);
     }
 
     function removeWinner() {
       if (!lastWinner) return;
-
-      if (mode.value !== "remove") {
-        result.textContent = "Modus steht auf Nudel behalten.";
-        btnRemoveWinner.disabled = true;
-        return;
-      }
+      if (mode.value !== "remove") return;
 
       const label = lastWinner.label;
       const idx = items.findIndex(x => x === label);
       if (idx === -1) return;
 
       items.splice(idx, 1);
-      syncInput();
-
+      input.value = items.join("\n");
       lastWinner = null;
       btnRemoveWinner.disabled = true;
-
-      result.textContent = "Nudel entfernt.";
       draw();
     }
 
@@ -505,10 +453,9 @@ Stretch
         const j = Math.floor(Math.random() * (i + 1));
         [items[i], items[j]] = [items[j], items[i]];
       }
-      syncInput();
+      input.value = items.join("\n");
       lastWinner = null;
       btnRemoveWinner.disabled = true;
-      result.textContent = "Gemischt.";
       draw();
     }
 
@@ -516,7 +463,6 @@ Stretch
       angle = 0;
       lastWinner = null;
       btnRemoveWinner.disabled = true;
-      result.textContent = "Bereit.";
       draw();
     }
 
@@ -537,5 +483,6 @@ Stretch
     applyBgMode(bgMode.value);
     draw();
   </script>
+
 </body>
 </html>
