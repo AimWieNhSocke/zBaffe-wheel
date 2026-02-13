@@ -8,13 +8,13 @@
   <style>
     :root{
       --bgSolid: rgba(8, 6, 18, .92);
-      --card: rgba(30, 10, 70, .32);
-      --border: rgba(120, 180, 255, .35);
       --text: #ffffff;
       --btnGlow: rgba(0,195,255,.55);
       --btnBg1: #6a5cff;
       --btnBg2: #00c3ff;
       --inputBg: rgba(0,0,0,.30);
+      --card: rgba(20, 10, 35, .92);
+      --border: rgba(120,180,255,.35);
     }
 
     html, body { height: 100%; margin: 0; }
@@ -30,7 +30,7 @@
     body.solid{ background: var(--bgSolid); }
 
     .wrap{
-      width: min(680px, 94vw);
+      width: min(720px, 94vw);
       display:grid;
       gap: 12px;
       justify-items:center;
@@ -48,8 +48,8 @@
     }
 
     .title{
-      font-weight: 900;
-      letter-spacing: .5px;
+      font-weight: 1000;
+      letter-spacing: .6px;
       font-size: 18px;
       padding: 8px 12px;
       border-radius: 14px;
@@ -57,7 +57,6 @@
       border: 1px solid rgba(255,255,255,.12);
       box-shadow: 0 0 18px rgba(106,92,255,.18);
       cursor: pointer;
-      user-select: none;
     }
 
     .toggles{
@@ -75,10 +74,9 @@
       background: rgba(0,0,0,.28);
       color: #fff;
       outline: none;
-      font-weight: 800;
+      font-weight: 900;
       cursor: pointer;
     }
-    .miniBtn{ user-select:none; }
 
     .wheelBox{
       position: relative;
@@ -127,7 +125,7 @@
       padding: 12px 16px;
       border-radius: 14px;
       color: #ffffff;
-      font-weight: 900;
+      font-weight: 1000;
       cursor:pointer;
       transition: transform .06s ease, box-shadow .15s ease, opacity .15s ease;
       background: linear-gradient(135deg, var(--btnBg1), var(--btnBg2));
@@ -145,9 +143,9 @@
       color:#fff;
       outline:none;
       resize: vertical;
+      font-weight: 800;
+      line-height: 1.2;
     }
-
-    .result{ display:none; }
 
     .overlay{
       position: fixed;
@@ -162,8 +160,8 @@
       width: min(560px, 92vw);
       padding: 18px 16px;
       border-radius: 18px;
-      background: rgba(20, 10, 35, .92);
-      border: 1px solid rgba(120,180,255,.35);
+      background: var(--card);
+      border: 1px solid var(--border);
       box-shadow: 0 0 30px rgba(0,195,255,.22);
       text-align: center;
     }
@@ -171,13 +169,13 @@
     .box h2{
       margin: 0 0 10px 0;
       font-size: 20px;
-      font-weight: 1000;
+      font-weight: 1100;
     }
 
     .box p{
       margin: 0 0 12px 0;
-      opacity: .9;
-      font-weight: 700;
+      opacity: .92;
+      font-weight: 800;
     }
 
     .img{
@@ -201,10 +199,11 @@
     }
 
     .winnerName{
-      font-size: 26px;
-      font-weight: 1100;
+      font-size: 28px;
+      font-weight: 1200;
       letter-spacing: .2px;
       margin: 2px 0 10px 0;
+      word-break: break-word;
     }
 
     .row{
@@ -223,13 +222,14 @@
       background: rgba(0,0,0,.28);
       color:#fff;
       outline:none;
-      font-weight: 800;
+      font-weight: 900;
     }
 
     .smallNote{
       font-size: 12px;
-      opacity: .8;
+      opacity: .85;
       margin-top: 8px;
+      font-weight: 800;
     }
 
     .toast{
@@ -246,11 +246,11 @@
       border: 1px solid rgba(255,255,255,.16);
       backdrop-filter: blur(6px);
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 1000;
       letter-spacing: .2px;
       transition: opacity .18s ease, transform .18s ease;
     }
-    .toast.show{ opacity: .92; transform: translateY(0); }
+    .toast.show{ opacity: .94; transform: translateY(0); }
 
     .wm-btn{
       position: fixed;
@@ -267,9 +267,7 @@
     }
     .wm-btn:hover{ opacity: .22; }
 
-    .ahaFlash{
-      animation: ahaFlash .35s ease 0s 1;
-    }
+    .ahaFlash{ animation: ahaFlash .35s ease 0s 1; }
     @keyframes ahaFlash{
       0%{ filter: none; }
       50%{ filter: saturate(1.8) contrast(1.2) brightness(1.2); }
@@ -280,6 +278,7 @@
 
 <body class="solid">
 
+  <!-- AHA Easter Egg -->
   <div class="overlay" id="ahaOverlay">
     <div class="box">
       <h2>Glückwunsch 🎉</h2>
@@ -291,6 +290,7 @@
     </div>
   </div>
 
+  <!-- Winner Popup -->
   <div class="overlay" id="winnerOverlay">
     <div class="box">
       <h2>Ausgewählt</h2>
@@ -299,12 +299,14 @@
       <div class="boxActions">
         <button class="btnSecondary" id="btnKeep">Nudel behalten</button>
         <button id="btnRemove">Nudel entfernen</button>
+        <button class="btnSecondary" id="btnCoinflip">Coinflip entscheidet</button>
         <button class="btnSecondary" id="btnCloseWinner">Schließen</button>
       </div>
       <div class="smallNote" id="miniInfo" style="display:none;"></div>
     </div>
   </div>
 
+  <!-- Streamer Luck -->
   <div class="overlay" id="luckOverlay">
     <div class="box">
       <h2>Streamer Luck</h2>
@@ -320,6 +322,7 @@
     </div>
   </div>
 
+  <!-- Mini Overlay -->
   <div class="overlay" id="miniOverlay">
     <div class="box">
       <h2 id="miniTitle">Mini Game</h2>
@@ -333,7 +336,6 @@
   <div class="wm-btn" id="wmBtn" title=""></div>
 
   <div class="wrap">
-
     <div class="header">
       <div class="title" id="secretTitle">BAFFE WHEEL</div>
 
@@ -371,12 +373,11 @@ Chat entscheidet
 Song anmachen
 Stretch
 1 Runde Ranked</textarea>
-
-    <div class="result" id="result"></div>
   </div>
 
   <script>
     const $ = (id) => document.getElementById(id);
+    const TAU = Math.PI * 2;
 
     const canvas = $("wheel");
     const ctx = canvas.getContext("2d");
@@ -402,6 +403,7 @@ Stretch
     const winnerSubtitle = $("winnerSubtitle");
     const btnKeep = $("btnKeep");
     const btnRemove = $("btnRemove");
+    const btnCoinflip = $("btnCoinflip");
     const btnCloseWinner = $("btnCloseWinner");
     const miniInfo = $("miniInfo");
 
@@ -420,7 +422,7 @@ Stretch
     const toast = $("toast");
     const wmBtn = $("wmBtn");
 
-    const STORAGE_KEY = "baffeWheel_v3";
+    const STORAGE_KEY = "baffeWheel_v4";
     const now = () => Date.now();
 
     let items = [];
@@ -428,15 +430,20 @@ Stretch
     let spinning = false;
     let lastWinner = null;
 
+    // Easter stuff
     let secretClicks = 0;
-
     let ahaMode = false;
     let glowMode = false;
 
+    // Ultra spin
     let ultraReadyAt = 0;
     let pinClicks = 0;
     let pinClickTimer = null;
 
+    // Reverse spin (2%)
+    const REVERSE_CHANCE = 0.02;
+
+    // Konami code
     const konami = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
     let konamiPos = 0;
 
@@ -460,9 +467,7 @@ Stretch
         if (r.toLowerCase() === "aha") seenAha = true;
         out.push(r);
       }
-      if (seenAha && !out.some(x => x === "AHA")){
-        out.push("AHA");
-      }
+      if (seenAha && !out.some(x => x === "AHA")) out.push("AHA");
       return out;
     }
 
@@ -493,8 +498,8 @@ Stretch
     function palette(i){
       const normal = ["#00c3ff","#6a5cff","#ff2bd6","#4d9fff","#8a5cff"];
       const aha = ["#ffd400","#ff7a00","#ff2bd6","#00ffb3","#6a5cff"];
-      const g = glowMode ? ["#9cff00","#00c3ff","#ff2bd6","#ffd400","#6a5cff"] : null;
-      const arr = g || (ahaMode ? aha : normal);
+      const g = ["#9cff00","#00c3ff","#ff2bd6","#ffd400","#6a5cff"];
+      const arr = glowMode ? g : (ahaMode ? aha : normal);
       return arr[i % arr.length];
     }
 
@@ -506,7 +511,7 @@ Stretch
       ctx.clearRect(0,0,w,h);
 
       const n = Math.max(2, items.length || 2);
-      const slice = (Math.PI*2) / n;
+      const slice = TAU / n;
 
       ctx.save();
       ctx.translate(cx, cy);
@@ -544,9 +549,9 @@ Stretch
 
     function currentWinner(){
       const n = items.length;
-      const slice = (Math.PI*2) / n;
+      const slice = TAU / n;
       const pointerAngle = -Math.PI/2;
-      const a = ((pointerAngle - angle) % (Math.PI*2) + Math.PI*2) % (Math.PI*2);
+      const a = ((pointerAngle - angle) % TAU + TAU) % TAU;
       const idx = Math.floor(a / slice) % n;
       return { idx, label: items[idx] ?? "—" };
     }
@@ -557,18 +562,14 @@ Stretch
       miniInfo.style.display = "none";
       winnerOverlay.style.display = "grid";
     }
-    function hideWinnerPopup(){
-      winnerOverlay.style.display = "none";
-    }
+    function hideWinnerPopup(){ winnerOverlay.style.display = "none"; }
 
     function showAhaPopup(){
       ahaOverlay.style.display = "grid";
       document.body.classList.add("ahaFlash");
       setTimeout(() => document.body.classList.remove("ahaFlash"), 400);
     }
-    function hideAhaPopup(){
-      ahaOverlay.style.display = "none";
-    }
+    function hideAhaPopup(){ ahaOverlay.style.display = "none"; }
 
     function openLuck(){
       const cur = parseItems(input.value);
@@ -580,10 +581,7 @@ Stretch
         opt.textContent = n;
         luckSelect.appendChild(opt);
       }
-      if(!uniq.length){
-        showToast("Erst Namen eintragen 🙂");
-        return;
-      }
+      if(!uniq.length){ showToast("Erst Namen eintragen 🙂"); return; }
       luckOverlay.style.display = "grid";
     }
     function closeLuck(){ luckOverlay.style.display = "none"; }
@@ -596,6 +594,25 @@ Stretch
       persist();
       draw();
       showToast(name + " hat jetzt 2x Chance");
+    }
+
+    function updateRemoveButton(){
+      const canRemove = (mode.value === "remove") && items.length > 1;
+      btnRemoveWinner.disabled = !canRemove;
+    }
+
+    function removeLastWinner(){
+      if(!lastWinner) return;
+      const label = lastWinner.label;
+      const idx = items.findIndex(x => x === label);
+      if(idx !== -1){
+        items.splice(idx,1);
+        input.value = items.join("\n");
+        persist();
+      }
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+      draw();
     }
 
     function shuffle(){
@@ -620,36 +637,6 @@ Stretch
       showToast("Reset");
     }
 
-    function removeLastWinner(){
-      if(!lastWinner) return;
-      const label = lastWinner.label;
-      const idx = items.findIndex(x => x === label);
-      if(idx !== -1){
-        items.splice(idx,1);
-        input.value = items.join("\n");
-        persist();
-      }
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      draw();
-    }
-
-    function updateRemoveButton(){
-      const canRemove = (mode.value === "remove") && items.length > 1;
-      btnRemoveWinner.disabled = !canRemove;
-    }
-
-    function overheatJoke(){
-      openMini({
-        title: "Rad überhitzt 🥵",
-        text: "Bitte 1 Sekunde abkühlen lassen…",
-        actions: [
-          { label: "OK", kind: "secondary", onClick: () => closeMini() }
-        ],
-        foot: "Nur Spaß."
-      });
-    }
-
     function openMini({title, text, actions, foot}){
       miniTitle.textContent = title;
       miniText.textContent = text;
@@ -666,12 +653,12 @@ Stretch
     }
     function closeMini(){ miniOverlay.style.display = "none"; }
 
-    // Sound (leicht, ohne externe Dateien). Läuft nur während Spin, und am Ende ein "pop".
+    // SOUND (spin + pop + sad)
     let audioCtx = null;
     let spinOsc = null;
-    let spinGain = null;
     let spinNoise = null;
-    let soundEnabled = true;
+    let spinGain = null;
+    let soundEnabled = true; // kannst du später easy auf false setzen
 
     function ensureAudio(){
       if(audioCtx) return;
@@ -693,14 +680,12 @@ Stretch
       spinOsc.connect(spinGain);
       spinOsc.start();
 
-      // weiches "Rauschen" über sehr schnellen Zufallsoszillator
       spinNoise = audioCtx.createOscillator();
       spinNoise.type = "triangle";
       spinNoise.frequency.value = 40;
       spinNoise.connect(spinGain);
       spinNoise.start();
 
-      // langsam einblenden
       const t = audioCtx.currentTime;
       spinGain.gain.setValueAtTime(0.0, t);
       spinGain.gain.linearRampToValueAtTime(0.06, t + 0.15);
@@ -718,13 +703,12 @@ Stretch
     function stopSpinSoundPop(){
       if(!soundEnabled || !audioCtx) return;
 
-      // kurzer "pop" mit Sinus
+      // pop
       const pop = audioCtx.createOscillator();
       const g = audioCtx.createGain();
       pop.type = "sine";
       pop.frequency.value = 480;
       g.gain.value = 0.0001;
-
       pop.connect(g);
       g.connect(audioCtx.destination);
 
@@ -736,15 +720,49 @@ Stretch
       pop.start(t);
       pop.stop(t + 0.13);
 
-      // spin-sound ausfaden & stoppen
-      if(spinGain){
-        spinGain.gain.setTargetAtTime(0.0, t, 0.02);
-      }
+      // fade spin out
+      if(spinGain) spinGain.gain.setTargetAtTime(0.0, t, 0.02);
       setTimeout(() => {
         try{ if(spinOsc) spinOsc.stop(); }catch(e){}
         try{ if(spinNoise) spinNoise.stop(); }catch(e){}
         spinOsc = null; spinNoise = null; spinGain = null;
       }, 200);
+    }
+
+    function playSadSound(){
+      if(!soundEnabled) return;
+      ensureAudio();
+      if(audioCtx.state === "suspended") audioCtx.resume();
+
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+
+      o.type = "triangle";
+      o.frequency.value = 260;
+
+      o.connect(g);
+      g.connect(audioCtx.destination);
+
+      const t = audioCtx.currentTime;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(0.14, t + 0.02);
+
+      o.frequency.setValueAtTime(260, t);
+      o.frequency.exponentialRampToValueAtTime(150, t + 0.22);
+      o.frequency.exponentialRampToValueAtTime(110, t + 0.45);
+
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
+
+      o.start(t);
+      o.stop(t + 0.56);
+    }
+
+    function coinflip(){
+      // bisschen show
+      const r = Math.random() < 0.5 ? "Kopf" : "Zahl";
+      // Kopf = behalten, Zahl = entfernen (kannst du tauschen wenn du willst)
+      const remove = (r === "Zahl");
+      return { result: r, remove };
     }
 
     function spin({ultra=false} = {}){
@@ -757,11 +775,8 @@ Stretch
         return;
       }
 
-      // Mini joke sehr selten (aber nicht nervig)
-      if(Math.random() < 0.015 && !ultra){
-        overheatJoke();
-        return;
-      }
+      // 2% Reverse Spin
+      const reverse = Math.random() < REVERSE_CHANCE;
 
       spinning = true;
       btnSpin.disabled = true;
@@ -773,16 +788,22 @@ Stretch
       const duration = ultra ? 2400 : 3800;
 
       const n = items.length;
-      const slice = (Math.PI*2) / n;
+      const slice = TAU / n;
 
       const targetIndex = Math.floor(Math.random() * n);
       const inside = (Math.random()*0.6 + 0.2) * slice;
 
       const pointerAngle = -Math.PI/2;
+
+      // Zielwinkel so, dass targetIndex am Zeiger landet
       const targetAngle = pointerAngle - (targetIndex*slice + inside);
 
       const startAngle = angle;
-      const endAngle = targetAngle - extraSpins*(Math.PI*2);
+
+      // normal: runter drehen (negativ), reverse: hoch drehen (positiv)
+      const endAngle = reverse
+        ? (targetAngle + extraSpins * TAU)
+        : (targetAngle - extraSpins * TAU);
 
       const start = performance.now();
       const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
@@ -792,7 +813,6 @@ Stretch
         const e = easeOutCubic(t);
         angle = startAngle + (endAngle - startAngle) * e;
 
-        // speed grob aus t ableiten (nur für sound)
         const speed01 = ultra ? (1 - t) * 1.1 : (1 - t);
         updateSpinSound(Math.max(0, Math.min(1, speed01)));
 
@@ -804,7 +824,6 @@ Stretch
           spinning = false;
           btnSpin.disabled = false;
 
-          const TAU = Math.PI * 2;
           angle = ((angle % TAU) + TAU) % TAU;
 
           lastWinner = currentWinner();
@@ -812,26 +831,27 @@ Stretch
 
           stopSpinSoundPop();
 
-          // Winner Popup
+          // winner popup
           showWinnerPopup(lastWinner.label);
 
-          // Mini game Chance (klein)
+          // mini hint selten
           if(Math.random() < 0.12){
             miniInfo.style.display = "block";
-            miniInfo.textContent = "Geheim: Tippe 'G' für Glow Mode. Oder Konami-Code 😉";
+            miniInfo.textContent = "Geheim: 3x Pin = Ultra Spin. 10x Center = AHA Mode. Konami-Code 😉";
           }
 
-          // AHA Winner Sonderfall
-          if(lastWinner.label === "AHA"){
-            showAhaPopup();
-          }
+          if(reverse) showToast("Reverse Spin 😈");
+
+          if(lastWinner.label === "AHA") showAhaPopup();
         }
       }
 
       requestAnimationFrame(frame);
     }
 
-    // Easter Eggs
+    // --- EVENTS ---
+
+    // AHA secret (15 clicks on title)
     secretTitle.addEventListener("click", () => {
       secretClicks++;
       if(secretClicks >= 15){
@@ -843,8 +863,9 @@ Stretch
     ahaClose.addEventListener("click", hideAhaPopup);
     ahaOverlay.addEventListener("click", (e) => { if(e.target === ahaOverlay) hideAhaPopup(); });
 
-    // Winner Popup Buttons
+    // Winner popup buttons
     btnCloseWinner.addEventListener("click", hideWinnerPopup);
+    winnerOverlay.addEventListener("click", (e) => { if(e.target === winnerOverlay) hideWinnerPopup(); });
 
     btnKeep.addEventListener("click", () => {
       hideWinnerPopup();
@@ -852,26 +873,62 @@ Stretch
     });
 
     btnRemove.addEventListener("click", () => {
+      playSadSound();
       removeLastWinner();
       hideWinnerPopup();
       showToast("Nudel entfernt");
     });
 
-    winnerOverlay.addEventListener("click", (e) => { if(e.target === winnerOverlay) hideWinnerPopup(); });
+    btnCoinflip.addEventListener("click", () => {
+      if(!lastWinner){ hideWinnerPopup(); return; }
+      const f = coinflip();
+      openMini({
+        title: "Coinflip 🪙",
+        text: "Ergebnis: " + f.result,
+        actions: [
+          { label: "OK", kind: "secondary", onClick: () => {
+              closeMini();
+              if(f.remove){
+                playSadSound();
+                removeLastWinner();
+                showToast("Coinflip: entfernt");
+              }else{
+                showToast("Coinflip: behalten");
+              }
+              hideWinnerPopup();
+            }
+          }
+        ],
+        foot: "Kopf = behalten, Zahl = entfernen"
+      });
+    });
 
-    // Streamer Luck UI
-    luckBtn.addEventListener("click", openLuck);
-    luckCancel.addEventListener("click", closeLuck);
-    luckOverlay.addEventListener("click", (e) => { if(e.target === luckOverlay) closeLuck(); });
+    // Streamer Luck
+    luckBtn.addEventListener("click", () => {
+      const cur = parseItems(input.value);
+      const uniq = Array.from(new Set(cur));
+      luckSelect.innerHTML = "";
+      for(const n of uniq){
+        const opt = document.createElement("option");
+        opt.value = n;
+        opt.textContent = n;
+        luckSelect.appendChild(opt);
+      }
+      if(!uniq.length){ showToast("Erst Namen eintragen 🙂"); return; }
+      luckOverlay.style.display = "grid";
+    });
+
+    luckCancel.addEventListener("click", () => luckOverlay.style.display = "none");
+    luckOverlay.addEventListener("click", (e) => { if(e.target === luckOverlay) luckOverlay.style.display = "none"; });
 
     luckConfirm.addEventListener("click", () => {
       const name = luckSelect.value;
       if(!name) return;
       addLuckName(name);
-      closeLuck();
+      luckOverlay.style.display = "none";
     });
 
-    // Pin Triple Click = Ultra Spin, 60s cooldown
+    // Ultra spin via pin triple-click (cooldown 60s)
     pin.addEventListener("click", () => {
       if(pinClickTimer) clearTimeout(pinClickTimer);
       pinClicks++;
@@ -890,7 +947,7 @@ Stretch
       }
     });
 
-    // CenterCap 10x = AHA Mode Toggle
+    // AHA Mode via center 10 clicks
     let capClicks = 0;
     let capTimer = null;
     centerCap.addEventListener("click", () => {
@@ -907,20 +964,19 @@ Stretch
       }
     });
 
-    // Watermark Klick
+    // watermark click
     wmBtn.addEventListener("click", () => showToast("NicoRU / AimWieNhSocke"));
 
-    // Keyboard Easter Eggs
+    // keyboard: Konami toggles glow + shows AHA
     document.addEventListener("keydown", (e) => {
-      // nur wenn nicht im textarea tippt
       const tag = (document.activeElement && document.activeElement.tagName) ? document.activeElement.tagName.toLowerCase() : "";
       const typing = (tag === "textarea" || tag === "input" || tag === "select");
 
-      // Konami Code
       const key = e.key;
       const k = (key.length === 1) ? key.toLowerCase() : key;
       const expected = konami[konamiPos];
       const normalizedExpected = (expected.length === 1) ? expected.toLowerCase() : expected;
+
       if(k === normalizedExpected){
         konamiPos++;
         if(konamiPos === konami.length){
@@ -937,7 +993,7 @@ Stretch
 
       if(typing) return;
 
-      // G = Glow Mode
+      // G toggle glow
       if(e.key.toLowerCase() === "g"){
         glowMode = !glowMode;
         persist();
@@ -945,23 +1001,34 @@ Stretch
         showToast(glowMode ? "Glow Mode ON" : "Glow Mode OFF");
       }
 
-      // Space = Spin (wenn nicht tippen)
+      // Space spin
       if(e.code === "Space"){
         e.preventDefault();
         spin();
       }
+
+      // Esc close popups
+      if(e.key === "Escape"){
+        hideWinnerPopup();
+        hideAhaPopup();
+        closeLuck();
+        closeMini();
+      }
     });
 
-    // Standard Buttons
+    // buttons
     btnSpin.addEventListener("click", () => spin());
+
     btnRemoveWinner.addEventListener("click", () => {
+      playSadSound();
       removeLastWinner();
       showToast("Nudel entfernt");
     });
+
     btnShuffle.addEventListener("click", shuffle);
     btnReset.addEventListener("click", reset);
 
-    // Input live
+    // input live
     input.addEventListener("input", () => {
       items = parseItems(input.value);
       lastWinner = null;
@@ -970,20 +1037,12 @@ Stretch
       draw();
     });
 
-    bgMode.addEventListener("change", () => {
-      applyBgMode(bgMode.value);
-      persist();
-    });
+    bgMode.addEventListener("change", () => { applyBgMode(bgMode.value); persist(); });
+    mode.addEventListener("change", () => { updateRemoveButton(); persist(); });
 
-    mode.addEventListener("change", () => {
-      updateRemoveButton();
-      persist();
-    });
-
-    // Mini overlay close by outside
     miniOverlay.addEventListener("click", (e) => { if(e.target === miniOverlay) closeMini(); });
 
-    // Init
+    // init
     restore();
     applyBgMode(bgMode.value);
     items = parseItems(input.value);
