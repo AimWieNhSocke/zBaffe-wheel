@@ -3,102 +3,180 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>BAFFE WHEEL</title>
+  <title>zBaffe Glücksrad</title>
 
   <style>
     :root{
-      --bgSolid: rgba(8, 6, 18, .92);
+      --bg: rgba(8, 6, 18, .94);
       --text: #ffffff;
-      --btnGlow: rgba(0,195,255,.55);
-      --btnBg1: #6a5cff;
-      --btnBg2: #00c3ff;
-      --inputBg: rgba(0,0,0,.30);
-      --card: rgba(20, 10, 35, .92);
-      --border: rgba(120,180,255,.35);
+
+      --blue: #00c3ff;
+      --violet: #6a5cff;
+      --pink: #ff2bd6;
+
+      --chip: rgba(0,0,0,.28);
+      --chipBorder: rgba(255,255,255,.20);
+
+      --glowSoft: 0 0 18px rgba(0,195,255,.18), 0 0 28px rgba(106,92,255,.14);
+      --glowStrong: 0 0 18px rgba(0,195,255,.35), 0 0 28px rgba(106,92,255,.28);
+
+      --card: rgba(0,0,0,.20);
+      --cardBorder: rgba(255,255,255,.12);
+
+      --nameBox: rgba(110, 80, 255, .30);
+      --nameBoxBorder: rgba(110, 80, 255, .55);
+
+      --textareaBg: rgba(255,255,255,.06);
+      --textareaBorder: rgba(255,255,255,.18);
     }
 
     html, body { height: 100%; margin: 0; }
     body{
-      display:grid;
-      place-items:center;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: radial-gradient(1200px 700px at 50% 20%, rgba(106,92,255,.18), transparent 55%),
+                  radial-gradient(900px 600px at 20% 70%, rgba(0,195,255,.14), transparent 55%),
+                  var(--bg);
       color: var(--text);
-      overflow-y:auto;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
       overflow-x:hidden;
     }
-    body.transparent{ background: transparent; }
-    body.solid{ background: var(--bgSolid); }
 
-    .wrap{
-      width: min(720px, 94vw);
+    .page{
+      width: min(1280px, 96vw);
+      margin: 18px auto 22px auto;
       display:grid;
-      gap: 12px;
-      justify-items:center;
+      grid-template-columns: 320px 1fr 280px;
+      grid-template-rows: auto 1fr auto auto;
+      gap: 18px;
+      min-height: calc(100vh - 40px);
+      align-items:start;
+    }
+
+    .titleBlock{
+      grid-column: 1 / 2;
+      grid-row: 1 / 2;
+      padding: 18px 18px;
+      border-radius: 18px;
+      background: rgba(120, 255, 220, .12);
+      border: 1px solid rgba(120, 255, 220, .30);
+      box-shadow: var(--glowSoft);
+      font-weight: 1200;
+      font-size: 24px;
+      letter-spacing: .4px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       user-select:none;
-      padding: 16px 0 22px 0;
+      cursor:pointer;
     }
 
-    .header{
-      width:100%;
+    .controlsTop{
+      grid-column: 2 / 3;
+      grid-row: 1 / 2;
       display:flex;
-      justify-content: space-between;
+      justify-content:center;
       align-items:center;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 14px;
+      flex-wrap:wrap;
+      padding-top: 10px;
     }
 
-    .title{
-      font-weight: 1100;
-      letter-spacing: .6px;
-      font-size: 18px;
-      padding: 8px 12px;
-      border-radius: 14px;
-      background: rgba(0,0,0,.25);
-      border: 1px solid rgba(255,255,255,.12);
-      box-shadow: 0 0 18px rgba(106,92,255,.18);
-      cursor: pointer;
-    }
-
-    .toggles{
+    .trophyBlock{
+      grid-column: 3 / 4;
+      grid-row: 1 / 2;
+      padding: 18px 18px;
+      border-radius: 18px;
+      background: rgba(0, 140, 255, .18);
+      border: 1px solid rgba(0, 140, 255, .40);
+      box-shadow: var(--glowSoft);
+      font-weight: 1200;
       display:flex;
-      gap:10px;
       align-items:center;
-      flex-wrap: wrap;
-      justify-content: flex-end;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
     }
 
-    select, .miniBtn{
-      padding: 10px 12px;
+    select, .chipBtn{
+      padding: 10px 14px;
       border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.22);
-      background: rgba(0,0,0,.28);
+      border: 1px solid var(--chipBorder);
+      background: var(--chip);
       color: #fff;
       outline: none;
-      font-weight: 900;
+      font-weight: 1100;
       cursor: pointer;
+      box-shadow: var(--glowSoft);
+    }
+    .chipBtn{
+      border-color: rgba(0,195,255,.28);
+      background: rgba(0,0,0,.22);
+    }
+    select:hover, .chipBtn:hover{ background: rgba(0,0,0,.34); }
+
+    .leftCol{
+      grid-column: 1 / 2;
+      grid-row: 2 / 3;
+      display:grid;
+      gap: 12px;
+      align-content:start;
+      padding-top: 14px;
     }
 
-    .wheelBox{
+    .miniHeader{
+      padding: 22px 16px;
+      border-radius: 18px;
+      background: rgba(255,45,214,.24);
+      border: 1px solid rgba(255,45,214,.50);
+      box-shadow: 0 0 20px rgba(255,45,214,.18), 0 0 34px rgba(0,195,255,.10);
+      font-weight: 1300;
+      font-size: 22px;
+      text-align:center;
+      user-select:none;
+      letter-spacing: .3px;
+    }
+
+    .miniBtn{
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255,45,214,.22);
+      border: 1px solid rgba(255,45,214,.40);
+      color:#fff;
+      font-weight: 1100;
+      cursor:pointer;
+      user-select:none;
+      text-align:center;
+      box-shadow: 0 0 16px rgba(255,45,214,.12);
+    }
+    .miniBtn:hover{ background: rgba(255,45,214,.32); }
+    .miniBtn.hidden{ display:none; }
+
+    .wheelArea{
+      grid-column: 2 / 3;
+      grid-row: 2 / 3;
+      display:grid;
+      place-items:center;
       position: relative;
-      width: 100%;
-      aspect-ratio: 1/1;
-      filter: drop-shadow(0 16px 40px rgba(0,0,0,.35));
+      padding-top: 10px;
     }
-
-    canvas{ width:100%; height:100%; border-radius: 50%; }
+    .wheelBox{
+      width: min(720px, 78vw);
+      aspect-ratio: 1/1;
+      position: relative;
+      filter: drop-shadow(0 18px 40px rgba(0,0,0,.38));
+    }
+    canvas#wheel{ width:100%; height:100%; border-radius: 50%; }
 
     .pin{
       position:absolute;
-      top:-6px; left:50%;
+      top:-8px; left:50%;
       transform:translateX(-50%);
       width:0; height:0;
       border-left: 18px solid transparent;
       border-right: 18px solid transparent;
       border-bottom: 34px solid rgba(255,255,255,.95);
       filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
-      cursor: pointer;
+      cursor:pointer;
     }
-
     .centerCap{
       position:absolute;
       inset: 50% auto auto 50%;
@@ -107,322 +185,697 @@
       aspect-ratio: 1/1;
       border-radius: 50%;
       background: rgba(255,255,255,.95);
-      box-shadow: inset 0 0 0 10px rgba(0,0,0,.12), 0 0 26px rgba(0,195,255,.25);
-      cursor: pointer;
+      box-shadow: inset 0 0 0 10px rgba(0,0,0,.12), 0 0 26px rgba(0,195,255,.18);
+      cursor:pointer;
+      user-select:none;
     }
 
-    .controls{
+    .superGlow{ animation: superGlow 700ms ease-in-out 0s 2; }
+    @keyframes superGlow{
+      0%{ filter: drop-shadow(0 18px 40px rgba(0,0,0,.38)); }
+      50%{ filter: drop-shadow(0 18px 60px rgba(0,195,255,.28)) drop-shadow(0 0 26px rgba(106,92,255,.22)); }
+      100%{ filter: drop-shadow(0 18px 40px rgba(0,0,0,.38)); }
+    }
+
+    .rightCol{
+      grid-column: 3 / 4;
+      grid-row: 2 / 3;
+      display:grid;
+      gap: 12px;
+      align-content:end;
+      padding-bottom: 18px;
+    }
+
+    .historyCard{
+      border-radius: 14px;
+      background: var(--card);
+      border: 1px solid var(--cardBorder);
+      padding: 10px 12px;
+      box-shadow: var(--glowSoft);
+    }
+    .historyTitle{
+      font-weight: 1200;
+      opacity:.95;
+      margin-bottom: 8px;
+      text-align:center;
+    }
+    .historyList{
+      display:grid;
+      gap: 6px;
+      font-weight: 900;
+      font-size: 13px;
+      opacity: .92;
+      max-height: 240px;
+      overflow:auto;
+    }
+    .histItem{
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      word-break: break-word;
+    }
+
+    .btnRow{
+      grid-column: 2 / 3;
+      grid-row: 3 / 4;
       display:flex;
-      gap:10px;
-      flex-wrap:wrap;
       justify-content:center;
-      align-items:center;
+      gap: 14px;
+      flex-wrap:wrap;
+      padding-top: 4px;
     }
 
-    button{
+    button.action{
       appearance:none;
       border:0;
       padding: 12px 16px;
       border-radius: 14px;
-      color: #ffffff;
-      font-weight: 1100;
+      color:#fff;
+      font-weight: 1200;
       cursor:pointer;
-      transition: transform .06s ease, box-shadow .15s ease, opacity .15s ease;
-      background: linear-gradient(135deg, var(--btnBg1), var(--btnBg2));
-      box-shadow: 0 0 16px var(--btnGlow);
+      background: linear-gradient(135deg, var(--violet), var(--blue));
+      box-shadow: var(--glowStrong);
+      transition: transform .06s ease, opacity .15s ease;
     }
-    button:active{ transform: scale(.98); box-shadow: 0 0 10px rgba(0,195,255,.75); }
-    button:disabled{ opacity:.55; cursor:not-allowed; box-shadow: none; }
+    button.action:active{ transform: scale(.98); }
+    button.action:disabled{ opacity:.55; cursor:not-allowed; box-shadow:none; }
+
+    button.secondary{
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+      box-shadow: var(--glowSoft);
+    }
+
+    .namesBlock{
+      grid-column: 2 / 3;
+      grid-row: 4 / 5;
+      border-radius: 18px;
+      background: var(--nameBox);
+      border: 1px solid var(--nameBoxBorder);
+      padding: 16px;
+      box-shadow: var(--glowStrong);
+    }
+    .namesHead{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 10px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+      font-weight: 1200;
+    }
+    .namesHint{ font-size: 12px; opacity:.9; font-weight: 1000; }
 
     textarea{
       width: 100%;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.22);
-      background: var(--inputBg);
-      color:#fff;
-      outline:none;
+      min-height: 170px;
       resize: vertical;
-      font-weight: 800;
-      line-height: 1.2;
-    }
-
-    .overlay{
-      position: fixed;
-      inset: 0;
-      display: none;
-      place-items: center;
-      z-index: 10000;
-      background: rgba(0,0,0,.55);
-    }
-
-    .box{
-      width: min(560px, 92vw);
-      padding: 18px 16px;
-      border-radius: 18px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      box-shadow: 0 0 30px rgba(0,195,255,.22);
-      text-align: center;
-    }
-
-    .box h2{
-      margin: 0 0 10px 0;
-      font-size: 20px;
-      font-weight: 1200;
-    }
-
-    .box p{
-      margin: 0 0 12px 0;
-      opacity: .92;
-      font-weight: 800;
-    }
-
-    .img{
-      width: min(360px, 78vw);
-      height: auto;
-      display: block;
-      margin: 0 auto;
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,.45));
-    }
-
-    .boxActions{
-      display:grid;
-      gap:10px;
-      margin-top: 12px;
-    }
-
-    .btnSecondary{
-      background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.18);
-      box-shadow: none;
-    }
-
-    .winnerName{
-      font-size: 28px;
-      font-weight: 1200;
-      letter-spacing: .2px;
-      margin: 2px 0 10px 0;
-      word-break: break-word;
-    }
-
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:center;
-      align-items:center;
-    }
-
-    .field{
-      width: min(420px, 92vw);
-      padding: 12px 14px;
       border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.22);
-      background: rgba(0,0,0,.28);
+      border: 1px solid var(--textareaBorder);
+      background: var(--textareaBg);
       color:#fff;
+      padding: 14px 14px;
       outline:none;
       font-weight: 900;
+      line-height: 1.2;
+      box-sizing: border-box;
     }
 
-    .smallNote{
-      font-size: 12px;
-      opacity: .85;
-      margin-top: 8px;
-      font-weight: 800;
+    .creditsDot{
+      position: fixed;
+      right: 10px;
+      bottom: 10px;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(0,195,255,.06);
+      border: 1px solid rgba(0,195,255,.16);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      user-select:none;
+      opacity: .12;
+      z-index: 2000;
+      font-size: 10px;
+      line-height: 1;
     }
+    .creditsDot:hover{ opacity: .55; }
 
     .toast{
       position: fixed;
-      right: 14px;
-      bottom: 40px;
-      z-index: 11000;
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      bottom: 18px;
+      z-index: 9999;
       opacity: 0;
-      transform: translateY(6px);
       pointer-events: none;
-      padding: 8px 10px;
+      padding: 10px 12px;
       border-radius: 12px;
       background: rgba(0,0,0,.35);
       border: 1px solid rgba(255,255,255,.16);
       backdrop-filter: blur(6px);
       font-size: 12px;
       font-weight: 1100;
-      letter-spacing: .2px;
       transition: opacity .18s ease, transform .18s ease;
+      box-shadow: var(--glowSoft);
+      max-width: min(720px, 92vw);
+      text-align:center;
     }
-    .toast.show{ opacity: .94; transform: translateY(0); }
+    .toast.show{ opacity: .96; transform: translateX(-50%) translateY(0); }
 
-    .wm-btn{
+    .overlay{
       position: fixed;
-      right: 14px;
-      bottom: 12px;
-      width: 16px;
-      height: 16px;
+      inset: 0;
+      display:none;
+      place-items:center;
+      z-index: 10000;
+      background: rgba(0,0,0,.58);
+    }
+    .box{
+      width: min(820px, 92vw);
+      padding: 18px 16px;
+      border-radius: 18px;
+      background: rgba(20, 10, 35, .94);
+      border: 1px solid rgba(120,180,255,.35);
+      box-shadow: var(--glowStrong);
+      text-align:center;
+      position: relative;
+    }
+    .box h2{ margin: 0 0 10px 0; font-size: 20px; font-weight: 1200; }
+    .closeX{
+      position:absolute;
+      top: 10px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
       border-radius: 999px;
-      z-index: 10999;
-      opacity: .08;
-      cursor: pointer;
-      background: rgba(255,255,255,.95);
-      border: 1px solid rgba(255,255,255,.25);
-    }
-    .wm-btn:hover{ opacity: .22; }
-
-    .ahaFlash{ animation: ahaFlash .35s ease 0s 1; }
-    @keyframes ahaFlash{
-      0%{ filter: none; }
-      50%{ filter: saturate(1.8) contrast(1.2) brightness(1.2); }
-      100%{ filter: none; }
-    }
-
-    /* Coinflip animation */
-    @keyframes coinFlip {
-      0%   { transform: rotateY(0deg) rotateX(0deg) scale(1); }
-      50%  { transform: rotateY(720deg) rotateX(18deg) scale(1.06); }
-      100% { transform: rotateY(1440deg) rotateX(0deg) scale(1); }
-    }
-
-    .coin{
-      width: 140px;
-      height: 140px;
-      margin: 10px auto 6px auto;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
       font-weight: 1200;
-      letter-spacing: .5px;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.45), rgba(255,255,255,.08) 45%, rgba(0,0,0,.15) 70%);
-      border: 2px solid rgba(255,255,255,.28);
-      box-shadow: 0 16px 40px rgba(0,0,0,.35), 0 0 18px rgba(0,195,255,.10);
-      transform-style: preserve-3d;
+      cursor: pointer;
+      color:#fff;
     }
-    .coin.flip{ animation: coinFlip 1.2s ease-in-out 0s 1; }
+    .boxActions{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
+
+    .trophyList{
+      text-align:left;
+      display:grid;
+      gap:10px;
+      margin-top: 10px;
+      max-height: min(60vh, 520px);
+      overflow:auto;
+      padding-right: 4px;
+    }
+    .trophyItem{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.20);
+      opacity: .55;
+      filter: grayscale(1);
+    }
+    .trophyItem.unlocked{
+      opacity: 1;
+      filter:none;
+      border-color: rgba(0,195,255,.18);
+      background: rgba(0,195,255,.06);
+      box-shadow: 0 0 14px rgba(0,195,255,.08);
+    }
+    .trophyIcon{
+      width: 34px; height: 34px; border-radius: 10px;
+      display:grid; place-items:center;
+      font-weight: 1200;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.08);
+      flex: 0 0 auto;
+    }
+    .trophyName{ font-weight: 1200; }
+    .trophyDesc{ font-size: 12px; opacity:.85; font-weight: 850; }
+
+    .rangeRow{ display:grid; gap:6px; text-align:left; width:min(520px, 92vw); margin: 0 auto; }
+    input[type="range"]{ width:100%; }
+
+    .coinWrap{ display:grid; place-items:center; gap: 12px; margin-top: 8px; }
+    .coinStage{ perspective: 1000px; width: 240px; height: 240px; }
+    .coin{
+      width: 240px; height: 240px;
+      position: relative;
+      transform-style: preserve-3d;
+      border-radius: 999px;
+    }
     .coinFace{
-      font-size: 34px;
-      text-shadow: 0 2px 10px rgba(0,0,0,.35);
+      position:absolute; inset:0;
+      border-radius: 999px;
+      display:grid; place-items:center;
+      padding: 18px;
+      box-sizing: border-box;
+      border: 1px solid rgba(255,255,255,.18);
+      background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.22), rgba(255,255,255,.06));
+      box-shadow: 0 0 18px rgba(0,195,255,.14), 0 0 24px rgba(106,92,255,.12);
+      backface-visibility: hidden;
+      overflow:hidden;
+      text-align:center;
+    }
+    .coinFace strong{ font-size: 14px; letter-spacing: .3px; opacity:.9; }
+    .coinFace .name{ font-size: 18px; font-weight: 1200; margin-top: 6px; word-break: break-word; }
+    .coinFace.tails{ transform: rotateY(180deg); }
+
+    @keyframes flipCrazy{
+      0%{ transform: rotateY(0deg); }
+      100%{ transform: rotateY(var(--flipdeg)); }
+    }
+    .coin.flipping{
+      animation-name: flipCrazy;
+      animation-timing-function: cubic-bezier(.2,.9,.2,1);
+      animation-fill-mode: both;
+    }
+    .coinResult{ font-weight: 1200; font-size: 18px; opacity:.95; min-height: 22px; }
+
+    .ttt{
+      width: min(360px, 92vw);
+      margin: 0 auto;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .ttt button{
+      height: 105px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      font-size: 42px;
+      font-weight: 1200;
+      cursor:pointer;
+      box-shadow: 0 0 16px rgba(0,195,255,.08);
+    }
+    .ttt button:disabled{ opacity:.55; cursor:not-allowed; }
+
+    .snakeWrap{ display:grid; gap: 10px; place-items:center; }
+    #snakeCanvas{
+      width: min(420px, 92vw);
+      height: auto;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.25);
+      box-shadow: 0 0 18px rgba(255,45,214,.10);
+    }
+
+    /* Zahl raten Grid */
+    .guessGrid{
+      width: min(520px, 92vw);
+      margin: 10px auto 0 auto;
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    .guessGrid button{
+      height: 58px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      font-weight: 1200;
+      font-size: 18px;
+      cursor:pointer;
+      box-shadow: 0 0 14px rgba(0,195,255,.08);
+    }
+    .guessGrid button:hover{ background: rgba(255,255,255,.10); }
+    .guessGrid button:disabled{ opacity:.55; cursor:not-allowed; }
+
+    @media (max-width: 980px){
+      .page{ grid-template-columns: 1fr; grid-template-rows: auto auto auto auto auto; }
+      .titleBlock{ grid-column: 1; grid-row: 1; }
+      .controlsTop{ grid-column: 1; grid-row: 2; }
+      .trophyBlock{ grid-column: 1; grid-row: 3; }
+      .leftCol{ grid-column: 1; grid-row: 4; }
+      .wheelArea{ grid-column: 1; grid-row: 5; }
+      .rightCol{ grid-column: 1; grid-row: 6; }
+      .btnRow{ grid-column: 1; }
+      .namesBlock{ grid-column: 1; }
     }
   </style>
 </head>
 
-<body class="solid">
+<body>
+  <div class="toast" id="toast">---</div>
 
-  <!-- AHA Easter Egg -->
   <div class="overlay" id="ahaOverlay">
     <div class="box">
-      <h2>Glückwunsch 🎉</h2>
-      <p>du hast das gefunden</p>
-      <img src="AHA.png" class="img" alt="AHA Meme">
+      <button class="closeX" id="ahaX">×</button>
+      <h2>Glückwunsch</h2>
+      <div style="opacity:.9;font-weight:900;margin-bottom:10px;">du hast das gefunden</div>
+      <img src="AHA.png" alt="AHA" style="width:min(360px,78vw);height:auto;display:block;margin:0 auto;filter:drop-shadow(0 10px 20px rgba(0,0,0,.45));">
       <div class="boxActions">
-        <button id="ahaClose">OK</button>
+        <button class="action" id="ahaOk">OK</button>
       </div>
     </div>
   </div>
 
-  <!-- Winner Popup -->
-  <div class="overlay" id="winnerOverlay">
+  <div class="overlay" id="linksOverlay">
     <div class="box">
-      <h2>Ausgewählt</h2>
-      <div class="winnerName" id="winnerName">---</div>
-      <p id="winnerSubtitle">Was willst du machen?</p>
+      <button class="closeX" id="linksX">×</button>
+      <h2>Links</h2>
       <div class="boxActions">
-        <button class="btnSecondary" id="btnKeep">Nudel behalten</button>
-        <button id="btnRemove">Nudel entfernen</button>
-        <button class="btnSecondary" id="btnCoinflip">Coinflip entscheidet</button>
-        <button class="btnSecondary" id="btnCloseWinner">Schließen</button>
+        <button class="action" id="openTikTok">TikTok</button>
+        <button class="action secondary" id="openInsta">Instagram</button>
+        <button class="action secondary" id="openTwitch">Twitch</button>
       </div>
-      <div class="smallNote" id="miniInfo" style="display:none;"></div>
+      <div class="boxActions">
+        <button class="action secondary" id="linksClose">Schließen</button>
+      </div>
     </div>
   </div>
 
-  <!-- Coinflip Overlay -->
+  <div class="overlay" id="soundOverlay">
+    <div class="box">
+      <button class="closeX" id="soundX">×</button>
+      <h2>Sound</h2>
+
+      <div style="display:grid;gap:14px;margin-top:8px;">
+        <div class="rangeRow">
+          <div style="font-weight:1100;opacity:.92;">Rad drehen</div>
+          <input id="spinVol" type="range" min="0" max="100" value="8">
+        </div>
+
+        <div class="rangeRow">
+          <div style="font-weight:1100;opacity:.92;">Nudel entfernen</div>
+          <input id="sadVol" type="range" min="0" max="100" value="40">
+        </div>
+
+        <label style="display:flex;gap:10px;align-items:center;justify-content:center;font-weight:1100;opacity:.92;">
+          <input id="muteAll" type="checkbox">
+          Alles stumm
+        </label>
+      </div>
+
+      <div class="boxActions">
+        <button class="action secondary" id="soundClose">Schließen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="trophyOverlay">
+    <div class="box">
+      <button class="closeX" id="trophyX">×</button>
+      <h2>Trophy Room</h2>
+      <div class="trophyList" id="trophyList"></div>
+      <div class="boxActions">
+        <button class="action secondary" id="trophyClose">Schließen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="chanceOverlay">
+    <div class="box">
+      <button class="closeX" id="chanceX">×</button>
+      <h2>Doppelte Chance</h2>
+
+      <div style="display:grid;gap:10px;max-width:520px;margin:0 auto;">
+        <select id="chanceSelect"></select>
+        <button class="action" id="chanceConfirm">Bestätigen</button>
+      </div>
+
+      <div class="boxActions">
+        <button class="action secondary" id="chanceClose">Schließen</button>
+      </div>
+    </div>
+  </div>
+
   <div class="overlay" id="coinOverlay">
     <div class="box">
-      <h2>Coinflip 🪙</h2>
-      <div class="coin" id="coin">
-        <div class="coinFace" id="coinFace">?</div>
+      <button class="closeX" id="coinX">×</button>
+      <h2>Coinflip</h2>
+
+      <div class="coinWrap">
+        <div class="coinStage">
+          <div class="coin" id="coin">
+            <div class="coinFace heads">
+              <div>
+                <strong>Kopf</strong>
+                <div class="name" id="coinNameA">A</div>
+              </div>
+            </div>
+            <div class="coinFace tails">
+              <div>
+                <strong>Zahl</strong>
+                <div class="name" id="coinNameB">B</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="coinResult" id="coinResult"></div>
+
+        <div class="boxActions">
+          <button class="action" id="coinStart">Flip</button>
+          <button class="action secondary" id="coinClose">Schließen</button>
+        </div>
       </div>
-      <p id="coinResultText">Flippt…</p>
-      <div class="boxActions">
-        <button class="btnSecondary" id="coinOk" disabled>OK</button>
-      </div>
-      <div class="smallNote">Kopf = behalten, Zahl = entfernen</div>
     </div>
   </div>
 
-  <!-- Streamer Luck -->
-  <div class="overlay" id="luckOverlay">
+  <div class="overlay" id="tttOverlay">
     <div class="box">
-      <h2>Streamer Luck</h2>
-      <p>Wähle einen Namen aus der Liste. Der wird 2x eingetragen (doppelte Chance).</p>
-      <div class="row">
-        <select id="luckSelect" class="field"></select>
-      </div>
+      <button class="closeX" id="tttX">×</button>
+      <h2>TicTacToe</h2>
+      <div class="ttt" id="tttGrid"></div>
+      <div class="coinResult" id="tttStatus"></div>
       <div class="boxActions">
-        <button id="luckConfirm">Bestätigen</button>
-        <button class="btnSecondary" id="luckCancel">Abbrechen</button>
+        <button class="action secondary" id="tttReset">Neu</button>
       </div>
-      <div class="smallNote">Tipp: Du kannst es jederzeit nochmal machen.</div>
     </div>
   </div>
 
-  <!-- Mini Overlay -->
-  <div class="overlay" id="miniOverlay">
+  <div class="overlay" id="snakeOverlay">
     <div class="box">
-      <h2 id="miniTitle">Mini Game</h2>
-      <p id="miniText">---</p>
-      <div class="boxActions" id="miniActions"></div>
-      <div class="smallNote" id="miniFoot">---</div>
+      <button class="closeX" id="snakeX">×</button>
+      <h2>Snake</h2>
+      <div class="snakeWrap">
+        <canvas id="snakeCanvas" width="420" height="420"></canvas>
+        <div class="coinResult" id="snakeStatus"></div>
+        <div class="boxActions">
+          <button class="action" id="snakeStart">Start</button>
+          <button class="action secondary" id="snakeRestart">Restart</button>
+          <button class="action secondary" id="snakeStop">Stop</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="toast" id="toast">---</div>
-  <div class="wm-btn" id="wmBtn" title=""></div>
+  <!-- Zahl raten Overlay -->
+  <div class="overlay" id="guessOverlay">
+    <div class="box">
+      <button class="closeX" id="guessX">×</button>
+      <h2>Zahl raten</h2>
+      <div class="coinResult" id="guessStatus"></div>
+      <div class="guessGrid" id="guessGrid"></div>
+      <div class="boxActions">
+        <button class="action secondary" id="guessNew">Neu</button>
+      </div>
+    </div>
+  </div>
 
-  <div class="wrap">
-    <div class="header">
-      <div class="title" id="secretTitle">BAFFE WHEEL</div>
+  <div class="page">
+    <div class="titleBlock" id="brandTitle">zBaffe Glücksrad</div>
 
-      <div class="toggles">
-        <select id="bgMode">
-          <option value="transparent">Transparent (OBS)</option>
-          <option value="solid" selected>Solid Background</option>
-        </select>
+    <div class="controlsTop">
+      <select id="mode">
+        <option value="keep">Nudel lassen</option>
+        <option value="remove" selected>Nudel entfernen</option>
+      </select>
 
-        <select id="mode">
-          <option value="remove" selected>Modus: Nudel entfernen</option>
-          <option value="keep">Modus: Nudel behalten</option>
-        </select>
+      <button class="chipBtn" id="chanceBtn">Doppelte Chance</button>
+      <button class="chipBtn" id="linksBtn">Links</button>
+      <button class="chipBtn" id="soundBtn">Sound</button>
+    </div>
 
-        <button class="miniBtn" id="luckBtn">Streamer Luck</button>
+    <div class="trophyBlock" id="trophyBtn">Trophys</div>
+
+    <div class="leftCol">
+      <div class="miniHeader">Mini Games</div>
+      <div class="miniBtn" id="miniGuess">Zahl raten</div>
+      <div class="miniBtn" id="miniTtt">TicTacToe</div>
+      <div class="miniBtn" id="miniSnake">Snake</div>
+      <div class="miniBtn hidden" id="miniCoin">Coinflip</div>
+    </div>
+
+    <div class="wheelArea">
+      <div class="wheelBox" id="wheelBox">
+        <div class="pin" id="pin"></div>
+        <canvas id="wheel" width="1000" height="1000"></canvas>
+        <div class="centerCap" id="centerCap"></div>
       </div>
     </div>
 
-    <div class="wheelBox">
-      <div class="pin" id="pin"></div>
-      <canvas id="wheel" width="1000" height="1000"></canvas>
-      <div class="centerCap" id="centerCap"></div>
+    <div class="rightCol">
+      <div class="historyCard">
+        <div class="historyTitle">Rad Verlauf</div>
+        <div class="historyList" id="historyList"></div>
+      </div>
     </div>
 
-    <div class="controls">
-      <button id="spin">Nudel umrühren</button>
-      <button id="removeWinner" disabled>Nudel entfernen</button>
-      <button id="shuffle">Shuffle</button>
-      <button id="reset">Reset</button>
+    <div class="btnRow">
+      <button class="action" id="spin">Nudel umrühren</button>
+      <button class="action" id="removeWinner" disabled>Nudel entfernen</button>
+      <button class="action secondary" id="shuffle">Mischen</button>
+      <button class="action secondary" id="reset">Rad zurück setzen</button>
     </div>
 
-    <textarea id="items" rows="7" placeholder="Jeder Eintrag in eine neue Zeile">Hydrate
-5 Liegestütze
-Chat entscheidet
-Song anmachen
-Stretch
-1 Runde Ranked</textarea>
+    <div class="namesBlock">
+      <div class="namesHead">
+        <div>Liste mit den Namen</div>
+        <div class="namesHint">1 Zeile = 1 Eintrag</div>
+      </div>
+      <textarea id="items">NicoRU/AimWieNhSOcke
+Test1
+Test2
+test3</textarea>
+    </div>
   </div>
+
+  <div class="creditsDot" id="creditsDot">©</div>
 
   <script>
     const $ = (id) => document.getElementById(id);
     const TAU = Math.PI * 2;
 
+    function rand01(){
+      const a = new Uint32Array(1);
+      crypto.getRandomValues(a);
+      return a[0] / 4294967296;
+    }
+    function randInt(min, maxInc){
+      return min + Math.floor(rand01() * (maxInc - min + 1));
+    }
+
+    const toast = $("toast");
+    function showToast(text){
+      toast.textContent = text;
+      toast.classList.add("show");
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => toast.classList.remove("show"), 2300);
+    }
+
+    function openOverlay(el){ el.style.display = "grid"; }
+    function closeOverlay(el){ el.style.display = "none"; }
+
+    // SOUND
+    const SOUND_FILES = { spin: "spin.mp3", sad: "sad.mp3" };
+    let spinSfx = null, sadSfx = null;
+
+    let soundState = { spinVol: 0.08, sadVol: 0.40, muted: false };
+    try{
+      const saved = JSON.parse(localStorage.getItem("wheelSoundState") || "null");
+      if(saved && typeof saved === "object"){
+        soundState.spinVol = typeof saved.spinVol === "number" ? saved.spinVol : soundState.spinVol;
+        soundState.sadVol  = typeof saved.sadVol  === "number" ? saved.sadVol  : soundState.sadVol;
+        soundState.muted   = !!saved.muted;
+      }
+    }catch(e){}
+
+    function saveSound(){ try{ localStorage.setItem("wheelSoundState", JSON.stringify(soundState)); }catch(e){} }
+    function initSounds(){
+      if(!spinSfx) spinSfx = new Audio(SOUND_FILES.spin);
+      if(!sadSfx)  sadSfx  = new Audio(SOUND_FILES.sad);
+      spinSfx.preload = "auto";
+      sadSfx.preload  = "auto";
+      applyVolumes();
+    }
+    function applyVolumes(){
+      if(spinSfx) spinSfx.volume = soundState.muted ? 0 : soundState.spinVol;
+      if(sadSfx)  sadSfx.volume  = soundState.muted ? 0 : soundState.sadVol;
+    }
+    function playSpinLoop(){
+      try{
+        initSounds();
+        applyVolumes();
+        spinSfx.pause();
+        spinSfx.currentTime = 0;
+        spinSfx.loop = true;
+        spinSfx.play();
+      }catch(e){}
+    }
+    function stopSpinLoop(){
+      try{
+        if(!spinSfx) return;
+        spinSfx.pause();
+        spinSfx.currentTime = 0;
+      }catch(e){}
+    }
+    function playSad(){
+      try{
+        initSounds();
+        applyVolumes();
+        sadSfx.pause();
+        sadSfx.currentTime = 0;
+        sadSfx.play();
+      }catch(e){}
+    }
+    document.addEventListener("pointerdown", () => { try{ initSounds(); }catch(e){} }, { once:true });
+
+    // TROPHIES
+    const TROPHIES = [
+      { id:"aha15", icon:"🗿", name:"AHA Mode", desc:"Irgendwas ist plötzlich passiert." },
+      { id:"madefor", icon:"🎁", name:"Made for zBaffe", desc:"Du hast was gefunden." },
+      { id:"firstspin", icon:"🍜", name:"Erster Spin", desc:"Einmal umrühren reicht." },
+      { id:"reverse2", icon:"🌀", name:"Reverse Luck", desc:"Manchmal läuft’s andersrum." },
+      { id:"coin2", icon:"🪙", name:"Final Coinflip", desc:"Wenn nur noch 2 übrig sind." },
+      { id:"remove", icon:"💔", name:"Nudel entfernt", desc:"Jemand musste gehen." },
+      { id:"superspin", icon:"⚡", name:"Super Spin", desc:"Du hast was freigeschaltet." },
+      { id:"speedboost", icon:"🚀", name:"Speed Boost", desc:"Mit Timing extra Schub." },
+      { id:"perfect", icon:"🎯", name:"Perfect Timing", desc:"Du hast den Moment erwischt." },
+      { id:"plot", icon:"🎭", name:"Plot Twist", desc:"Das war unfair… oder doch nicht?" },
+      { id:"nice69", icon:"😏", name:"Nice.", desc:"Manche Zahlen sind magisch." },
+      { id:"double", icon:"🎲", name:"Doppelte Chance", desc:"Jemand hat mehr Glück verdient." },
+      { id:"tttwin", icon:"❌", name:"TTT Win", desc:"Du hast gewonnen." },
+      { id:"snake10", icon:"🐍", name:"Snake 10+", desc:"Score 10 erreicht." },
+      { id:"guesswin", icon:"🔢", name:"Lucky Guess", desc:"Du hast richtig geraten." }
+    ];
+
+    let unlocked = {};
+    try{ unlocked = JSON.parse(localStorage.getItem("wheelTrophies") || "{}") || {}; }catch(e){ unlocked = {}; }
+    function saveTrophies(){ try{ localStorage.setItem("wheelTrophies", JSON.stringify(unlocked)); }catch(e){} }
+    function unlock(id){
+      if(unlocked[id]) return;
+      unlocked[id] = true;
+      saveTrophies();
+      showToast("Trophy freigeschaltet");
+    }
+    function renderTrophies(){
+      const list = $("trophyList");
+      list.innerHTML = "";
+      for(const t of TROPHIES){
+        const row = document.createElement("div");
+        row.className = "trophyItem" + (unlocked[t.id] ? " unlocked" : "");
+        row.innerHTML = `
+          <div class="trophyIcon">${t.icon}</div>
+          <div>
+            <div class="trophyName">${t.name}</div>
+            <div class="trophyDesc">${t.desc}</div>
+          </div>
+        `;
+        list.appendChild(row);
+      }
+    }
+
+    // Elements
     const canvas = $("wheel");
     const ctx = canvas.getContext("2d");
+
+    const wheelBox = $("wheelBox");
+    const pin = $("pin");
+    const centerCap = $("centerCap");
 
     const btnSpin = $("spin");
     const btnRemoveWinner = $("removeWinner");
@@ -430,119 +883,69 @@ Stretch
     const btnReset = $("reset");
 
     const input = $("items");
-    const bgMode = $("bgMode");
     const mode = $("mode");
+    const historyList = $("historyList");
 
-    const pin = $("pin");
-    const centerCap = $("centerCap");
-
-    const secretTitle = $("secretTitle");
     const ahaOverlay = $("ahaOverlay");
-    const ahaClose = $("ahaClose");
-
-    const winnerOverlay = $("winnerOverlay");
-    const winnerNameEl = $("winnerName");
-    const btnKeep = $("btnKeep");
-    const btnRemove = $("btnRemove");
-    const btnCoinflip = $("btnCoinflip");
-    const btnCloseWinner = $("btnCloseWinner");
-    const miniInfo = $("miniInfo");
-
+    const linksOverlay = $("linksOverlay");
+    const soundOverlay = $("soundOverlay");
+    const trophyOverlay = $("trophyOverlay");
+    const chanceOverlay = $("chanceOverlay");
     const coinOverlay = $("coinOverlay");
-    const coinEl = $("coin");
-    const coinFace = $("coinFace");
-    const coinResultText = $("coinResultText");
-    const coinOk = $("coinOk");
+    const tttOverlay = $("tttOverlay");
+    const snakeOverlay = $("snakeOverlay");
+    const guessOverlay = $("guessOverlay");
 
-    const luckBtn = $("luckBtn");
-    const luckOverlay = $("luckOverlay");
-    const luckSelect = $("luckSelect");
-    const luckConfirm = $("luckConfirm");
-    const luckCancel = $("luckCancel");
+    // Links
+    const TIKTOK_URL = "https://www.tiktok.com/@zbaffe";
+    const INSTAGRAM_URL = "https://www.instagram.com/zbaffe/";
+    const TWITCH_URL = "https://www.twitch.tv/zbaffe";
+    $("openTikTok").addEventListener("click", () => window.open(TIKTOK_URL, "_blank"));
+    $("openInsta").addEventListener("click", () => window.open(INSTAGRAM_URL, "_blank"));
+    $("openTwitch").addEventListener("click", () => window.open(TWITCH_URL, "_blank"));
 
-    const miniOverlay = $("miniOverlay");
-    const miniTitle = $("miniTitle");
-    const miniText = $("miniText");
-    const miniActions = $("miniActions");
-    const miniFoot = $("miniFoot");
-
-    const toast = $("toast");
-    const wmBtn = $("wmBtn");
-
-    const STORAGE_KEY = "baffeWheel_v5";
-    const now = () => Date.now();
-
+    // Wheel state
     let items = [];
     let angle = 0;
     let spinning = false;
     let lastWinner = null;
 
-    let secretClicks = 0;
-    let ahaMode = false;
-    let glowMode = false;
-
-    let ultraReadyAt = 0;
-    let pinClicks = 0;
-    let pinClickTimer = null;
-
-    const REVERSE_CHANCE = 0.02;
-
-    const konami = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
-    let konamiPos = 0;
-
-    function showToast(text){
-      toast.textContent = text;
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 2200);
-    }
-
-    function applyBgMode(val){
-      document.body.classList.remove("transparent","solid");
-      document.body.classList.add(val);
-    }
+    let superSpinArmed = false;
+    let spinStartAt = 0;
+    let speedBoostUsed = false;
+    let boostRequested = false;
 
     function parseItems(text){
-      const raw = text.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      return text.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+    }
+    function pushHistory(text){
+      const div = document.createElement("div");
+      div.className = "histItem";
+      div.textContent = text;
+      historyList.prepend(div);
+      while(historyList.children.length > 10) historyList.removeChild(historyList.lastChild);
+    }
+    function updateRemoveButton(){
+      const canRemove = (mode.value === "remove") && items.length > 1;
+      btnRemoveWinner.disabled = !canRemove;
+    }
+    function uniqueNames(arr){
       const out = [];
-      let seenAha = false;
-      for (const r of raw){
-        if (r.toLowerCase() === "aha") seenAha = true;
-        out.push(r);
+      const seen = new Set();
+      for(const x of arr){
+        if(!seen.has(x)){ seen.add(x); out.push(x); }
       }
-      if (seenAha && !out.some(x => x === "AHA")) out.push("AHA");
       return out;
     }
-
-    function persist(){
-      const payload = {
-        itemsText: input.value,
-        bg: bgMode.value,
-        mode: mode.value,
-        ahaMode,
-        glowMode
-      };
-      try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(payload)); }catch(e){}
+    function updateCoinVisibility(){
+      const now = parseItems(input.value);
+      const miniCoin = $("miniCoin");
+      if(now.length === 2) miniCoin.classList.remove("hidden");
+      else miniCoin.classList.add("hidden");
     }
-
-    function restore(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if(!raw) return;
-        const p = JSON.parse(raw);
-        if(typeof p.itemsText === "string") input.value = p.itemsText;
-        if(p.bg === "transparent" || p.bg === "solid") bgMode.value = p.bg;
-        if(p.mode === "remove" || p.mode === "keep") mode.value = p.mode;
-        ahaMode = !!p.ahaMode;
-        glowMode = !!p.glowMode;
-      }catch(e){}
-    }
-
-    function palette(i){
-      const normal = ["#00c3ff","#6a5cff","#ff2bd6","#4d9fff","#8a5cff"];
-      const aha = ["#ffd400","#ff7a00","#ff2bd6","#00ffb3","#6a5cff"];
-      const glow = ["#9cff00","#00c3ff","#ff2bd6","#ffd400","#6a5cff"];
-      const arr = glowMode ? glow : (ahaMode ? aha : normal);
-      return arr[i % arr.length];
+    function niceColor(i){
+      const colors = ["#00c3ff","#6a5cff","#ff2bd6","#4d9fff","#8a5cff"];
+      return colors[i % colors.length];
     }
 
     function draw(){
@@ -552,8 +955,25 @@ Stretch
 
       ctx.clearRect(0,0,w,h);
 
-      const n = Math.max(2, items.length || 2);
+      if(items.length < 2){
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, TAU);
+        ctx.fillStyle = "rgba(255,255,255,.08)";
+        ctx.fill();
+        ctx.fillStyle = "rgba(255,255,255,.65)";
+        ctx.font = "900 46px system-ui";
+        ctx.textAlign = "center";
+        ctx.fillText("Mindestens 2 Einträge", cx, cy);
+        return;
+      }
+
+      const n = items.length;
       const slice = TAU / n;
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, r*1.04, 0, TAU);
+      ctx.fillStyle = "rgba(255,255,255,.10)";
+      ctx.fill();
 
       ctx.save();
       ctx.translate(cx, cy);
@@ -567,7 +987,7 @@ Stretch
         ctx.moveTo(0,0);
         ctx.arc(0,0,r, start, end);
         ctx.closePath();
-        ctx.fillStyle = palette(i);
+        ctx.fillStyle = niceColor(i);
         ctx.fill();
 
         ctx.strokeStyle = "rgba(0,0,0,.18)";
@@ -575,18 +995,30 @@ Stretch
         ctx.stroke();
 
         const label = items[i] || "—";
+        let size = 44;
+        if(label.length > 16) size = 34;
+        if(label.length > 24) size = 28;
+
         ctx.save();
         ctx.rotate(start + slice/2);
         ctx.textAlign = "right";
         ctx.fillStyle = "rgba(0,0,0,.78)";
-        ctx.font = "900 44px system-ui";
-        ctx.shadowColor = "rgba(255,255,255,.55)";
-        ctx.shadowBlur = 6;
+        ctx.font = `900 ${size}px system-ui`;
+        ctx.shadowColor = "rgba(255,255,255,.45)";
+        ctx.shadowBlur = 5;
         ctx.fillText(label, r - 24, 14);
         ctx.restore();
       }
 
       ctx.restore();
+
+      const grad = ctx.createRadialGradient(cx,cy,r*0.2,cx,cy,r*1.08);
+      grad.addColorStop(0, "rgba(255,255,255,.08)");
+      grad.addColorStop(1, "rgba(0,0,0,.36)");
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, TAU);
+      ctx.fillStyle = grad;
+      ctx.fill();
     }
 
     function currentWinner(){
@@ -598,273 +1030,511 @@ Stretch
       return { idx, label: items[idx] ?? "—" };
     }
 
-    function showWinnerPopup(name){
-      winnerNameEl.textContent = name;
-      miniInfo.style.display = "none";
-      winnerOverlay.style.display = "grid";
-    }
-    function hideWinnerPopup(){ winnerOverlay.style.display = "none"; }
-
-    function showAhaPopup(){
-      ahaOverlay.style.display = "grid";
-      document.body.classList.add("ahaFlash");
-      setTimeout(() => document.body.classList.remove("ahaFlash"), 400);
-    }
-    function hideAhaPopup(){ ahaOverlay.style.display = "none"; }
-
-    function updateRemoveButton(){
-      const canRemove = (mode.value === "remove") && items.length > 1;
-      btnRemoveWinner.disabled = !canRemove;
-    }
-
-    function removeLastWinner(){
-      if(!lastWinner) return;
-      const label = lastWinner.label;
-      const idx = items.findIndex(x => x === label);
-      if(idx !== -1){
-        items.splice(idx,1);
-        input.value = items.join("\n");
-        persist();
+    // Easter eggs
+    let titleClicks = 0;
+    $("brandTitle").addEventListener("click", () => {
+      titleClicks++;
+      if(titleClicks >= 15){
+        titleClicks = 0;
+        unlock("aha15");
+        openOverlay(ahaOverlay);
       }
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      draw();
-    }
+    });
 
-    function shuffle(){
-      items = parseItems(input.value);
-      for (let i = items.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [items[i], items[j]] = [items[j], items[i]];
+    let creditTimes = [];
+    $("creditsDot").addEventListener("click", () => {
+      const now = Date.now();
+      creditTimes = creditTimes.filter(t => now - t < 5000);
+      creditTimes.push(now);
+      showToast("Made by NicoRU/AimWieNhSocke");
+      if(creditTimes.length >= 5){
+        creditTimes = [];
+        unlock("madefor");
+        showToast("made for zBaffe");
       }
-      input.value = items.join("\n");
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      persist();
-      draw();
-      showToast("Gemischt");
-    }
+    });
 
-    function reset(){
-      angle = 0;
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      draw();
-      showToast("Reset");
-    }
-
-    function openMini({title, text, actions, foot}){
-      miniTitle.textContent = title;
-      miniText.textContent = text;
-      miniActions.innerHTML = "";
-      for(const a of actions){
-        const b = document.createElement("button");
-        b.textContent = a.label;
-        if(a.kind === "secondary") b.classList.add("btnSecondary");
-        b.addEventListener("click", a.onClick);
-        miniActions.appendChild(b);
+    let capClicks = [];
+    centerCap.addEventListener("click", () => {
+      const now = Date.now();
+      capClicks = capClicks.filter(t => now - t < 4500);
+      capClicks.push(now);
+      if(capClicks.length >= 7){
+        capClicks = [];
+        superSpinArmed = true;
+        unlock("superspin");
+        showToast("Super Spin bereit");
+        wheelBox.classList.add("superGlow");
+        setTimeout(() => wheelBox.classList.remove("superGlow"), 1500);
       }
-      miniFoot.textContent = foot || "";
-      miniOverlay.style.display = "grid";
+    });
+
+    pin.addEventListener("click", () => {
+      if(!spinning) return;
+      const t = performance.now() - spinStartAt;
+      if(t > 600 && t < 900){
+        unlock("perfect");
+        showToast("Perfect Timing");
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if(e.code !== "Space") return;
+      if(!spinning) return;
+      const t = performance.now() - spinStartAt;
+      if(t <= 1000 && !speedBoostUsed){
+        speedBoostUsed = true;
+        unlock("speedboost");
+        showToast("Speed Boost");
+        boostRequested = true;
+      }
+    });
+
+    // AHA overlay close
+    $("ahaX").addEventListener("click", () => closeOverlay(ahaOverlay));
+    $("ahaOk").addEventListener("click", () => closeOverlay(ahaOverlay));
+    ahaOverlay.addEventListener("click", (e) => { if(e.target === ahaOverlay) closeOverlay(ahaOverlay); });
+
+    // Links overlay
+    $("linksBtn").addEventListener("click", () => openOverlay(linksOverlay));
+    $("linksX").addEventListener("click", () => closeOverlay(linksOverlay));
+    $("linksClose").addEventListener("click", () => closeOverlay(linksOverlay));
+    linksOverlay.addEventListener("click", (e) => { if(e.target === linksOverlay) closeOverlay(linksOverlay); });
+
+    // Sound overlay
+    const spinVol = $("spinVol"), sadVol = $("sadVol"), muteAll = $("muteAll");
+    function syncSoundUi(){
+      spinVol.value = String(Math.round(soundState.spinVol * 100));
+      sadVol.value  = String(Math.round(soundState.sadVol * 100));
+      muteAll.checked = soundState.muted;
     }
-    function closeMini(){ miniOverlay.style.display = "none"; }
-
-    // SOUND (spin + pop + sad)
-    let audioCtx = null;
-    let spinOsc = null;
-    let spinNoise = null;
-    let spinGain = null;
-    let soundEnabled = true;
-
-    function ensureAudio(){
-      if(audioCtx) return;
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function checkNice(){
+      if(Math.round(soundState.spinVol * 100) === 69 && Math.round(soundState.sadVol * 100) === 69){
+        unlock("nice69");
+        showToast("Nice.");
+      }
     }
+    $("soundBtn").addEventListener("click", () => { syncSoundUi(); openOverlay(soundOverlay); });
+    $("soundX").addEventListener("click", () => closeOverlay(soundOverlay));
+    $("soundClose").addEventListener("click", () => closeOverlay(soundOverlay));
+    soundOverlay.addEventListener("click", (e) => { if(e.target === soundOverlay) closeOverlay(soundOverlay); });
 
-    function startSpinSound(){
-      if(!soundEnabled) return;
-      ensureAudio();
-      if(audioCtx.state === "suspended") audioCtx.resume();
+    spinVol.addEventListener("input", () => {
+      soundState.spinVol = Number(spinVol.value) / 100;
+      soundState.muted = false;
+      muteAll.checked = false;
+      applyVolumes(); saveSound(); checkNice();
+    });
+    sadVol.addEventListener("input", () => {
+      soundState.sadVol = Number(sadVol.value) / 100;
+      soundState.muted = false;
+      muteAll.checked = false;
+      applyVolumes(); saveSound(); checkNice();
+    });
+    muteAll.addEventListener("change", () => {
+      soundState.muted = muteAll.checked;
+      applyVolumes(); saveSound();
+    });
 
-      spinGain = audioCtx.createGain();
-      spinGain.gain.value = 0.0;
-      spinGain.connect(audioCtx.destination);
+    // Trophy overlay
+    $("trophyBtn").addEventListener("click", () => { renderTrophies(); openOverlay(trophyOverlay); });
+    $("trophyX").addEventListener("click", () => closeOverlay(trophyOverlay));
+    $("trophyClose").addEventListener("click", () => closeOverlay(trophyOverlay));
+    trophyOverlay.addEventListener("click", (e) => { if(e.target === trophyOverlay) closeOverlay(trophyOverlay); });
 
-      spinOsc = audioCtx.createOscillator();
-      spinOsc.type = "sawtooth";
-      spinOsc.frequency.value = 120;
-      spinOsc.connect(spinGain);
-      spinOsc.start();
-
-      spinNoise = audioCtx.createOscillator();
-      spinNoise.type = "triangle";
-      spinNoise.frequency.value = 40;
-      spinNoise.connect(spinGain);
-      spinNoise.start();
-
-      const t = audioCtx.currentTime;
-      spinGain.gain.setValueAtTime(0.0, t);
-      spinGain.gain.linearRampToValueAtTime(0.06, t + 0.15);
-    }
-
-    function updateSpinSound(speed01){
-      if(!soundEnabled || !spinGain || !audioCtx) return;
-      const t = audioCtx.currentTime;
-      const vol = 0.03 + 0.08 * speed01;
-      spinGain.gain.setTargetAtTime(vol, t, 0.03);
-      if(spinOsc) spinOsc.frequency.setTargetAtTime(110 + 260 * speed01, t, 0.03);
-      if(spinNoise) spinNoise.frequency.setTargetAtTime(25 + 85 * speed01, t, 0.03);
-    }
-
-    function stopSpinSoundPop(){
-      if(!soundEnabled || !audioCtx) return;
-
-      const pop = audioCtx.createOscillator();
-      const g = audioCtx.createGain();
-      pop.type = "sine";
-      pop.frequency.value = 480;
-      g.gain.value = 0.0001;
-      pop.connect(g);
-      g.connect(audioCtx.destination);
-
-      const t = audioCtx.currentTime;
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.linearRampToValueAtTime(0.12, t + 0.01);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.12);
-
-      pop.start(t);
-      pop.stop(t + 0.13);
-
-      if(spinGain) spinGain.gain.setTargetAtTime(0.0, t, 0.02);
-      setTimeout(() => {
-        try{ if(spinOsc) spinOsc.stop(); }catch(e){}
-        try{ if(spinNoise) spinNoise.stop(); }catch(e){}
-        spinOsc = null; spinNoise = null; spinGain = null;
-      }, 200);
-    }
-
-    function playSadSound(){
-      if(!soundEnabled) return;
-      ensureAudio();
-      if(audioCtx.state === "suspended") audioCtx.resume();
-
-      const o = audioCtx.createOscillator();
-      const g = audioCtx.createGain();
-
-      o.type = "triangle";
-      o.frequency.value = 260;
-
-      o.connect(g);
-      g.connect(audioCtx.destination);
-
-      const t = audioCtx.currentTime;
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.linearRampToValueAtTime(0.14, t + 0.02);
-
-      o.frequency.setValueAtTime(260, t);
-      o.frequency.exponentialRampToValueAtTime(150, t + 0.22);
-      o.frequency.exponentialRampToValueAtTime(110, t + 0.45);
-
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
-
-      o.start(t);
-      o.stop(t + 0.56);
-    }
-
-    function openCoinOverlay(){
-      coinOk.disabled = true;
-      coinFace.textContent = "?";
-      coinResultText.textContent = "Flippt…";
-      coinOverlay.style.display = "grid";
-      coinEl.classList.remove("flip");
-      void coinEl.offsetWidth;
-      coinEl.classList.add("flip");
-    }
-    function closeCoinOverlay(){ coinOverlay.style.display = "none"; }
-
-    coinOk.addEventListener("click", closeCoinOverlay);
-    coinOverlay.addEventListener("click", (e) => { if(e.target === coinOverlay) closeCoinOverlay(); });
-
-    function coinflip(){
-      const r = Math.random() < 0.5 ? "Kopf" : "Zahl";
-      const remove = (r === "Zahl");
-      return { result: r, remove };
-    }
-
-    function openLuck(){
-      const cur = parseItems(input.value);
-      const uniq = Array.from(new Set(cur));
-      luckSelect.innerHTML = "";
+    // Doppelte Chance
+    $("chanceBtn").addEventListener("click", () => {
+      const now = parseItems(input.value);
+      const uniq = uniqueNames(now);
+      const sel = $("chanceSelect");
+      sel.innerHTML = "";
       for(const n of uniq){
         const opt = document.createElement("option");
         opt.value = n;
         opt.textContent = n;
-        luckSelect.appendChild(opt);
+        sel.appendChild(opt);
       }
-      if(!uniq.length){ showToast("Erst Namen eintragen 🙂"); return; }
-      luckOverlay.style.display = "grid";
-    }
-    function closeLuck(){ luckOverlay.style.display = "none"; }
+      openOverlay(chanceOverlay);
+    });
+    $("chanceX").addEventListener("click", () => closeOverlay(chanceOverlay));
+    $("chanceClose").addEventListener("click", () => closeOverlay(chanceOverlay));
+    chanceOverlay.addEventListener("click", (e) => { if(e.target === chanceOverlay) closeOverlay(chanceOverlay); });
 
-    function addLuckName(name){
-      let cur = parseItems(input.value);
-      cur.push(name);
-      input.value = cur.join("\n");
+    $("chanceConfirm").addEventListener("click", () => {
+      const name = $("chanceSelect").value;
+      if(!name) return;
+      const now = parseItems(input.value);
+      now.push(name);
+      input.value = now.join("\n");
+      unlock("double");
+      showToast("Doppelte Chance: " + name);
+      closeOverlay(chanceOverlay);
       items = parseItems(input.value);
-      persist();
+      updateCoinVisibility();
       draw();
-      showToast(name + " hat jetzt 2x Chance");
+    });
+
+    // Zahl raten Overlay (Tabelle 1–20)
+    const guessGrid = $("guessGrid");
+    const guessStatus = $("guessStatus");
+    let guessSecret = 0;
+    let guessActive = false;
+
+    function guessStart(){
+      guessSecret = randInt(1, 20);
+      guessActive = true;
+      guessStatus.textContent = "Wähle eine Zahl";
+      guessGrid.innerHTML = "";
+
+      for(let i=1;i<=20;i++){
+        const b = document.createElement("button");
+        b.textContent = String(i);
+        b.addEventListener("click", () => {
+          if(!guessActive) return;
+          guessActive = false;
+
+          if(i === guessSecret){
+            guessStatus.textContent = `Richtig – es war ${guessSecret}`;
+            unlock("guesswin");
+            showToast(`Richtig: ${i}`);
+          }else{
+            guessStatus.textContent = `Falsch – es war ${guessSecret}`;
+            showToast(`Falsch: ${i}`);
+          }
+
+          Array.from(guessGrid.querySelectorAll("button")).forEach(x => x.disabled = true);
+        });
+        guessGrid.appendChild(b);
+      }
     }
 
-    function spin({ultra=false} = {}){
+    $("miniGuess").addEventListener("click", () => {
+      guessStart();
+      openOverlay(guessOverlay);
+    });
+    $("guessNew").addEventListener("click", guessStart);
+    $("guessX").addEventListener("click", () => closeOverlay(guessOverlay));
+    guessOverlay.addEventListener("click", (e) => { if(e.target === guessOverlay) closeOverlay(guessOverlay); });
+
+    // Coinflip
+    const coin = $("coin");
+    const coinNameA = $("coinNameA");
+    const coinNameB = $("coinNameB");
+    const coinResult = $("coinResult");
+    let coinBusy = false;
+
+    function openCoinflip(){
+      const now = parseItems(input.value);
+      if(now.length !== 2) return;
+      coinNameA.textContent = now[0];
+      coinNameB.textContent = now[1];
+      coinResult.textContent = "";
+      coin.classList.remove("flipping");
+      coin.style.transform = "rotateY(0deg)";
+      openOverlay(coinOverlay);
+    }
+    $("miniCoin").addEventListener("click", openCoinflip);
+
+    $("coinStart").addEventListener("click", () => {
+      if(coinBusy) return;
+      const now = parseItems(input.value);
+      if(now.length !== 2) return;
+
+      coinBusy = true;
+      unlock("coin2");
+
+      const a = now[0], b = now[1];
+      coinNameA.textContent = a;
+      coinNameB.textContent = b;
+      coinResult.textContent = "…";
+
+      const heads = rand01() < 0.5;
+      const totalMs = 5200 + Math.floor(rand01() * 2600);
+      const flips = 10 + randInt(0, 6);
+      const deg = flips * 180 + (heads ? 0 : 180);
+
+      coin.style.setProperty("--flipdeg", deg + "deg");
+      coin.classList.remove("flipping");
+      void coin.offsetWidth;
+      coin.style.animationDuration = (totalMs/1000).toFixed(2) + "s";
+      coin.classList.add("flipping");
+
+      setTimeout(() => {
+        coin.classList.remove("flipping");
+        coin.style.transform = heads ? "rotateY(0deg)" : "rotateY(180deg)";
+        const side = heads ? "Kopf" : "Zahl";
+        const winner = heads ? a : b;
+        coinResult.textContent = `Ergebnis: ${side} – ${winner}`;
+        pushHistory(`🪙 ${side}: ${winner}`);
+        showToast(`Coinflip: ${side} – ${winner}`);
+        coinBusy = false;
+      }, totalMs);
+    });
+
+    $("coinX").addEventListener("click", () => { coinBusy = false; closeOverlay(coinOverlay); });
+    $("coinClose").addEventListener("click", () => { coinBusy = false; closeOverlay(coinOverlay); });
+    coinOverlay.addEventListener("click", (e) => { if(e.target === coinOverlay){ coinBusy=false; closeOverlay(coinOverlay); } });
+
+    // TicTacToe
+    const tttGrid = $("tttGrid");
+    const tttStatus = $("tttStatus");
+    let ttt = Array(9).fill("");
+    let tttOver = false;
+
+    function tttRender(){
+      tttGrid.innerHTML = "";
+      for(let i=0;i<9;i++){
+        const b = document.createElement("button");
+        b.textContent = ttt[i];
+        b.disabled = tttOver || ttt[i] !== "";
+        b.addEventListener("click", () => tttMove(i));
+        tttGrid.appendChild(b);
+      }
+    }
+    function tttWinner(board){
+      const lines = [
+        [0,1,2],[3,4,5],[6,7,8],
+        [0,3,6],[1,4,7],[2,5,8],
+        [0,4,8],[2,4,6]
+      ];
+      for(const [a,b,c] of lines){
+        if(board[a] && board[a]===board[b] && board[a]===board[c]) return board[a];
+      }
+      if(board.every(x => x)) return "draw";
+      return null;
+    }
+    function tttMin(board, isMax){
+      const win = tttWinner(board);
+      if(win === "O") return {score: 10};
+      if(win === "X") return {score: -10};
+      if(win === "draw") return {score: 0};
+
+      if(isMax){
+        let best = {score: -Infinity};
+        for(let i=0;i<9;i++){
+          if(board[i]) continue;
+          board[i] = "O";
+          const r = tttMin(board, false);
+          board[i] = "";
+          best.score = Math.max(best.score, r.score);
+        }
+        return best;
+      }else{
+        let best = {score: Infinity};
+        for(let i=0;i<9;i++){
+          if(board[i]) continue;
+          board[i] = "X";
+          const r = tttMin(board, true);
+          board[i] = "";
+          best.score = Math.min(best.score, r.score);
+        }
+        return best;
+      }
+    }
+    function tttBestMove(board){
+      let best = {score: -Infinity, idx: -1};
+      for(let i=0;i<9;i++){
+        if(board[i]) continue;
+        board[i] = "O";
+        const r = tttMin(board, false);
+        board[i] = "";
+        if(r.score > best.score) best = {score:r.score, idx:i};
+      }
+      return best;
+    }
+    function tttAi(){
+      if(tttOver) return;
+      if(rand01() < 0.18){
+        const free = ttt.map((v,i) => v?null:i).filter(v => v!==null);
+        const idx = free[randInt(0, free.length-1)];
+        ttt[idx] = "O";
+      }else{
+        const copy = ttt.slice();
+        const best = tttBestMove(copy);
+        if(best.idx >= 0) ttt[best.idx] = "O";
+      }
+    }
+    function tttMove(i){
+      if(tttOver || ttt[i]) return;
+      ttt[i] = "X";
+      let w = tttWinner(ttt);
+      if(w){
+        tttOver = true;
+        tttStatus.textContent = (w==="draw") ? "Unentschieden" : (w==="X" ? "Du hast gewonnen" : "KI gewinnt");
+        if(w==="X") unlock("tttwin");
+        tttRender();
+        return;
+      }
+      tttAi();
+      w = tttWinner(ttt);
+      if(w){
+        tttOver = true;
+        tttStatus.textContent = (w==="draw") ? "Unentschieden" : (w==="X" ? "Du hast gewonnen" : "KI gewinnt");
+        if(w==="X") unlock("tttwin");
+      }else{
+        tttStatus.textContent = "";
+      }
+      tttRender();
+    }
+    function tttReset(){
+      ttt = Array(9).fill("");
+      tttOver = false;
+      tttStatus.textContent = "";
+      tttRender();
+    }
+    $("miniTtt").addEventListener("click", () => { tttReset(); openOverlay(tttOverlay); });
+    $("tttX").addEventListener("click", () => closeOverlay(tttOverlay));
+    $("tttReset").addEventListener("click", tttReset);
+    tttOverlay.addEventListener("click", (e) => { if(e.target === tttOverlay) closeOverlay(tttOverlay); });
+
+    // Snake
+    const snakeCanvas = $("snakeCanvas");
+    const sctx = snakeCanvas.getContext("2d");
+    const snakeStatus = $("snakeStatus");
+    let snake = null, dir = {x:1,y:0}, food = null, score=0, snakeTimer=null, snakeOver=true;
+    const cells = 20;
+    const cellSize = snakeCanvas.width / cells;
+
+    function randCell(){ return {x: randInt(0,cells-1), y: randInt(0,cells-1)}; }
+    function snakeReset(){
+      snake = [{x:10,y:10},{x:9,y:10},{x:8,y:10}];
+      dir = {x:1,y:0};
+      food = randCell();
+      score = 0;
+      snakeOver = false;
+      snakeStatus.textContent = "Score: 0";
+      snakeDraw();
+    }
+    function snakeStop(){
+      if(snakeTimer){ clearInterval(snakeTimer); snakeTimer=null; }
+    }
+    function snakeGameOver(){
+      snakeOver = true;
+      snakeStop();
+      snakeStatus.textContent = "Game Over. Score: " + score;
+    }
+    function snakeDraw(){
+      sctx.clearRect(0,0,snakeCanvas.width,snakeCanvas.height);
+      sctx.fillStyle = "rgba(255,45,214,.85)";
+      sctx.fillRect(food.x*cellSize, food.y*cellSize, cellSize, cellSize);
+      for(let i=0;i<snake.length;i++){
+        sctx.fillStyle = i===0 ? "rgba(0,195,255,.95)" : "rgba(255,255,255,.65)";
+        sctx.fillRect(snake[i].x*cellSize, snake[i].y*cellSize, cellSize-1, cellSize-1);
+      }
+    }
+    function snakeStep(){
+      if(snakeOver) return;
+      const head = snake[0];
+      const next = { x: head.x + dir.x, y: head.y + dir.y };
+      if(next.x < 0 || next.y < 0 || next.x >= cells || next.y >= cells){ snakeGameOver(); return; }
+      if(snake.some(p => p.x === next.x && p.y === next.y)){ snakeGameOver(); return; }
+      snake.unshift(next);
+      if(next.x === food.x && next.y === food.y){
+        score++;
+        snakeStatus.textContent = "Score: " + score;
+        if(score >= 10) unlock("snake10");
+        food = randCell();
+      }else{
+        snake.pop();
+      }
+      snakeDraw();
+    }
+    function setDir(nx, ny){
+      if(!snake || snakeOver) return;
+      if(nx === -dir.x && ny === -dir.y) return;
+      dir = {x:nx,y:ny};
+    }
+    document.addEventListener("keydown", (e) => {
+      if(snakeOverlay.style.display === "grid"){
+        if(e.key === "ArrowUp" || e.key === "w") setDir(0,-1);
+        if(e.key === "ArrowDown" || e.key === "s") setDir(0,1);
+        if(e.key === "ArrowLeft" || e.key === "a") setDir(-1,0);
+        if(e.key === "ArrowRight" || e.key === "d") setDir(1,0);
+      }
+    });
+    $("miniSnake").addEventListener("click", () => { openOverlay(snakeOverlay); snakeReset(); });
+    $("snakeStart").addEventListener("click", () => {
+      if(!snake || snakeOver) snakeReset();
+      if(snakeTimer) return;
+      snakeTimer = setInterval(snakeStep, 120);
+    });
+    $("snakeRestart").addEventListener("click", () => {
+      snakeReset();
+      snakeStop();
+      snakeTimer = setInterval(snakeStep, 120);
+    });
+    $("snakeStop").addEventListener("click", snakeStop);
+    $("snakeX").addEventListener("click", () => { snakeStop(); closeOverlay(snakeOverlay); });
+    snakeOverlay.addEventListener("click", (e) => { if(e.target === snakeOverlay){ snakeStop(); closeOverlay(snakeOverlay); } });
+
+    // Wheel actions
+    function spin(){
       if(spinning) return;
 
       items = parseItems(input.value);
+      updateCoinVisibility();
+
       if(items.length < 2){
-        showToast("Mindestens 2 Einträge 🙂");
+        showToast("Mindestens 2 Einträge");
         draw();
         return;
       }
-
-      const reverse = Math.random() < REVERSE_CHANCE;
 
       spinning = true;
       btnSpin.disabled = true;
       btnRemoveWinner.disabled = true;
 
-      startSpinSound();
+      unlock("firstspin");
 
-      const extraSpins = ultra ? 14 : 8;
-      const duration = ultra ? 2400 : 3800;
+      const reverse = rand01() < 0.02;
+      if(reverse) unlock("reverse2");
+
+      const plotTwist = rand01() < 0.01;
+      if(plotTwist) unlock("plot");
+
+      playSpinLoop();
+
+      const extraSpins = (superSpinArmed ? 20 : 8) + (plotTwist ? 1 : 0);
+      const duration = superSpinArmed ? 5200 : 3200;
+      superSpinArmed = false;
 
       const n = items.length;
       const slice = TAU / n;
 
-      const targetIndex = Math.floor(Math.random() * n);
-      const inside = (Math.random()*0.6 + 0.2) * slice;
+      const targetIndex = randInt(0, n-1);
+      const inside = (rand01()*0.6 + 0.2) * slice;
 
       const pointerAngle = -Math.PI/2;
       const targetAngle = pointerAngle - (targetIndex*slice + inside);
 
       const startAngle = angle;
-      const endAngle = reverse ? (targetAngle + extraSpins*TAU) : (targetAngle - extraSpins*TAU);
+      const endAngle = targetAngle - (reverse ? -extraSpins*TAU : extraSpins*TAU);
 
       const start = performance.now();
+      spinStartAt = start;
+      speedBoostUsed = false;
+      boostRequested = false;
+
       const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
 
       function frame(nowT){
         const t = Math.min(1, (nowT - start) / duration);
         const e = easeOutCubic(t);
+
+        if(boostRequested){
+          boostRequested = false;
+          angle += (reverse ? -1 : 1) * (0.35 * TAU);
+          wheelBox.classList.add("superGlow");
+          setTimeout(() => wheelBox.classList.remove("superGlow"), 900);
+        }
+
         angle = startAngle + (endAngle - startAngle) * e;
-
-        const speed01 = ultra ? (1 - t) * 1.1 : (1 - t);
-        updateSpinSound(Math.max(0, Math.min(1, speed01)));
-
         draw();
 
         if(t < 1){
           requestAnimationFrame(frame);
         }else{
+          stopSpinLoop();
           spinning = false;
           btnSpin.disabled = false;
 
@@ -873,207 +1543,102 @@ Stretch
           lastWinner = currentWinner();
           updateRemoveButton();
 
-          stopSpinSoundPop();
+          pushHistory(lastWinner.label);
+          showToast("Ergebnis: " + lastWinner.label);
 
-          showWinnerPopup(lastWinner.label);
-
-          if(reverse) showToast("Reverse Spin 😈");
-
-          if(Math.random() < 0.12){
-            miniInfo.style.display = "block";
-            miniInfo.textContent = "Geheim: 3x Pin = Ultra Spin. 10x Center = AHA Mode. Konami-Code 😉";
+          if(plotTwist && items.length >= 3){
+            angle = (angle + (reverse ? -1 : 1) * (slice * 0.98));
+            angle = ((angle % TAU) + TAU) % TAU;
+            draw();
+            lastWinner = currentWinner();
+            pushHistory("🎭 " + lastWinner.label);
+            showToast("Plot Twist: " + lastWinner.label);
+            updateRemoveButton();
           }
-
-          if(lastWinner.label === "AHA") showAhaPopup();
         }
       }
-
       requestAnimationFrame(frame);
     }
 
-    // --- EVENTS ---
-
-    // AHA secret (15 clicks on title)
-    secretTitle.addEventListener("click", () => {
-      secretClicks++;
-      if(secretClicks >= 15){
-        secretClicks = 0;
-        showAhaPopup();
+    function removeLastWinner(){
+      if(!lastWinner) return;
+      if(mode.value !== "remove"){
+        btnRemoveWinner.disabled = true;
+        showToast("Modus: Nudel lassen");
+        return;
       }
-    });
+      playSad();
+      const label = lastWinner.label;
+      const idx = items.findIndex(x => x === label);
+      if(idx === -1) return;
 
-    ahaClose.addEventListener("click", hideAhaPopup);
-    ahaOverlay.addEventListener("click", (e) => { if(e.target === ahaOverlay) hideAhaPopup(); });
+      items.splice(idx, 1);
+      input.value = items.join("\n");
 
-    btnCloseWinner.addEventListener("click", hideWinnerPopup);
-    winnerOverlay.addEventListener("click", (e) => { if(e.target === winnerOverlay) hideWinnerPopup(); });
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
 
-    btnKeep.addEventListener("click", () => {
-      hideWinnerPopup();
-      showToast("Nudel behalten");
-    });
-
-    btnRemove.addEventListener("click", () => {
-      playSadSound();
-      removeLastWinner();
-      hideWinnerPopup();
+      unlock("remove");
       showToast("Nudel entfernt");
-    });
+      updateCoinVisibility();
+      draw();
+    }
 
-    btnCoinflip.addEventListener("click", () => {
-      if(!lastWinner){ hideWinnerPopup(); return; }
-
-      openCoinOverlay();
-      const f = coinflip();
-
-      setTimeout(() => {
-        coinFace.textContent = (f.result === "Kopf") ? "K" : "Z";
-        coinResultText.textContent = "Ergebnis: " + f.result;
-
-        if(f.remove){
-          playSadSound();
-          removeLastWinner();
-          showToast("Coinflip: entfernt");
-        }else{
-          showToast("Coinflip: behalten");
-        }
-
-        hideWinnerPopup();
-        coinOk.disabled = false;
-      }, 1200);
-    });
-
-    // Streamer Luck
-    luckBtn.addEventListener("click", openLuck);
-    luckCancel.addEventListener("click", closeLuck);
-    luckOverlay.addEventListener("click", (e) => { if(e.target === luckOverlay) closeLuck(); });
-
-    luckConfirm.addEventListener("click", () => {
-      const name = luckSelect.value;
-      if(!name) return;
-      addLuckName(name);
-      closeLuck();
-    });
-
-    // Ultra spin via pin triple-click (cooldown 60s)
-    pin.addEventListener("click", () => {
-      if(pinClickTimer) clearTimeout(pinClickTimer);
-      pinClicks++;
-      pinClickTimer = setTimeout(() => { pinClicks = 0; }, 600);
-
-      if(pinClicks >= 3){
-        pinClicks = 0;
-        if(now() < ultraReadyAt){
-          const sec = Math.ceil((ultraReadyAt - now())/1000);
-          showToast("Ultra Spin cooldown: " + sec + "s");
-          return;
-        }
-        ultraReadyAt = now() + 60000;
-        showToast("Ultra Spin!");
-        spin({ultra:true});
+    function shuffle(){
+      items = parseItems(input.value);
+      for(let i = items.length - 1; i > 0; i--){
+        const j = randInt(0, i);
+        [items[i], items[j]] = [items[j], items[i]];
       }
-    });
+      input.value = items.join("\n");
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+      showToast("Gemischt");
+      updateCoinVisibility();
+      draw();
+    }
 
-    // AHA Mode via center 10 clicks
-    let capClicks = 0;
-    let capTimer = null;
-    centerCap.addEventListener("click", () => {
-      if(capTimer) clearTimeout(capTimer);
-      capClicks++;
-      capTimer = setTimeout(() => { capClicks = 0; }, 800);
+    function reset(){
+      angle = 0;
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+      showToast("Reset");
+      draw();
+    }
 
-      if(capClicks >= 10){
-        capClicks = 0;
-        ahaMode = !ahaMode;
-        persist();
-        draw();
-        showToast(ahaMode ? "AHA Mode ON" : "AHA Mode OFF");
-      }
-    });
-
-    // watermark click
-    wmBtn.addEventListener("click", () => showToast("NicoRU / AimWieNhSocke"));
-
-    // Keyboard easter eggs
-    document.addEventListener("keydown", (e) => {
-      const tag = (document.activeElement && document.activeElement.tagName) ? document.activeElement.tagName.toLowerCase() : "";
-      const typing = (tag === "textarea" || tag === "input" || tag === "select");
-
-      const key = e.key;
-      const k = (key.length === 1) ? key.toLowerCase() : key;
-      const expected = konami[konamiPos];
-      const normalizedExpected = (expected.length === 1) ? expected.toLowerCase() : expected;
-
-      if(k === normalizedExpected){
-        konamiPos++;
-        if(konamiPos === konami.length){
-          konamiPos = 0;
-          glowMode = !glowMode;
-          persist();
-          draw();
-          showToast(glowMode ? "Glow Mode ON" : "Glow Mode OFF");
-          showAhaPopup();
-        }
-      }else{
-        konamiPos = 0;
-      }
-
-      if(typing) return;
-
-      if(e.key.toLowerCase() === "g"){
-        glowMode = !glowMode;
-        persist();
-        draw();
-        showToast(glowMode ? "Glow Mode ON" : "Glow Mode OFF");
-      }
-
-      if(e.code === "Space"){
-        e.preventDefault();
-        spin();
-      }
-
-      if(e.key === "Escape"){
-        hideWinnerPopup();
-        hideAhaPopup();
-        closeLuck();
-        closeMini();
-        closeCoinOverlay();
-      }
-    });
-
-    // buttons
-    btnSpin.addEventListener("click", () => spin());
-
-    btnRemoveWinner.addEventListener("click", () => {
-      playSadSound();
-      removeLastWinner();
-      showToast("Nudel entfernt");
-    });
-
+    btnSpin.addEventListener("click", spin);
+    btnRemoveWinner.addEventListener("click", removeLastWinner);
     btnShuffle.addEventListener("click", shuffle);
     btnReset.addEventListener("click", reset);
 
-    // input live
     input.addEventListener("input", () => {
       items = parseItems(input.value);
       lastWinner = null;
       btnRemoveWinner.disabled = true;
-      persist();
+      updateCoinVisibility();
       draw();
     });
+    mode.addEventListener("change", updateRemoveButton);
 
-    bgMode.addEventListener("change", () => { applyBgMode(bgMode.value); persist(); });
-    mode.addEventListener("change", () => { updateRemoveButton(); persist(); });
-
-    miniOverlay.addEventListener("click", (e) => { if(e.target === miniOverlay) closeMini(); });
+    // ESC close (inkl. Zahl raten)
+    document.addEventListener("keydown", (e) => {
+      if(e.key !== "Escape") return;
+      closeOverlay(ahaOverlay);
+      closeOverlay(linksOverlay);
+      closeOverlay(soundOverlay);
+      closeOverlay(trophyOverlay);
+      closeOverlay(chanceOverlay);
+      closeOverlay(coinOverlay);
+      closeOverlay(tttOverlay);
+      closeOverlay(guessOverlay);
+      snakeStop();
+      closeOverlay(snakeOverlay);
+    });
 
     // init
-    restore();
-    applyBgMode(bgMode.value);
     items = parseItems(input.value);
-    updateRemoveButton();
+    updateCoinVisibility();
     draw();
-    persist();
   </script>
 </body>
 </html>
