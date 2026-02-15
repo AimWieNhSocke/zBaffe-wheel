@@ -306,18 +306,18 @@
       position: fixed;
       right: 10px;
       bottom: 10px;
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
       border-radius: 999px;
-      background: rgba(0,195,255,.06);
-      border: 1px solid rgba(0,195,255,.16);
+      background: rgba(0,195,255,.05);
+      border: 1px solid rgba(0,195,255,.14);
       display:grid;
       place-items:center;
       cursor:pointer;
       user-select:none;
-      opacity: .12;
+      opacity: .10;
       z-index: 2000;
-      font-size: 10px;
+      font-size: 9px;
       line-height: 1;
     }
     .creditsDot:hover{ opacity: .55; }
@@ -491,7 +491,6 @@
       box-shadow: 0 0 18px rgba(255,45,214,.10);
     }
 
-    /* Zahl raten Grid */
     .guessGrid{
       width: min(520px, 92vw);
       margin: 10px auto 0 auto;
@@ -560,17 +559,39 @@
   <div class="overlay" id="soundOverlay">
     <div class="box">
       <button class="closeX" id="soundX">×</button>
-      <h2>Sound</h2>
+      <h2>Einstellungen</h2>
 
       <div style="display:grid;gap:14px;margin-top:8px;">
         <div class="rangeRow">
-          <div style="font-weight:1100;opacity:.92;">Rad drehen</div>
+          <div style="display:flex;justify-content:space-between;gap:10px;">
+            <div style="font-weight:1100;opacity:.92;">Rad drehen</div>
+            <div id="spinVolLabel" style="font-weight:1200;opacity:.9;">8%</div>
+          </div>
           <input id="spinVol" type="range" min="0" max="100" value="8">
         </div>
 
         <div class="rangeRow">
-          <div style="font-weight:1100;opacity:.92;">Nudel entfernen</div>
+          <div style="display:flex;justify-content:space-between;gap:10px;">
+            <div style="font-weight:1100;opacity:.92;">Nudel entfernen</div>
+            <div id="sadVolLabel" style="font-weight:1200;opacity:.9;">40%</div>
+          </div>
           <input id="sadVol" type="range" min="0" max="100" value="40">
+        </div>
+
+        <div class="rangeRow">
+          <div style="display:flex;justify-content:space-between;gap:10px;">
+            <div style="font-weight:1100;opacity:.92;">Rad Dauer</div>
+            <div id="spinDurLabel" style="font-weight:1200;opacity:.9;">3s</div>
+          </div>
+          <input id="spinDur" type="range" min="1" max="60" value="3">
+        </div>
+
+        <div class="rangeRow">
+          <div style="display:flex;justify-content:space-between;gap:10px;">
+            <div style="font-weight:1100;opacity:.92;">Coinflip Dauer</div>
+            <div id="coinDurLabel" style="font-weight:1200;opacity:.9;">6s</div>
+          </div>
+          <input id="coinDur" type="range" min="1" max="60" value="6">
         </div>
 
         <label style="display:flex;gap:10px;align-items:center;justify-content:center;font-weight:1100;opacity:.92;">
@@ -673,7 +694,6 @@
     </div>
   </div>
 
-  <!-- Zahl raten Overlay -->
   <div class="overlay" id="guessOverlay">
     <div class="box">
       <button class="closeX" id="guessX">×</button>
@@ -697,7 +717,7 @@
 
       <button class="chipBtn" id="chanceBtn">Doppelte Chance</button>
       <button class="chipBtn" id="linksBtn">Links</button>
-      <button class="chipBtn" id="soundBtn">Sound</button>
+      <button class="chipBtn" id="soundBtn">Einstellungen</button>
     </div>
 
     <div class="trophyBlock" id="trophyBtn">Trophys</div>
@@ -750,6 +770,8 @@ test3</textarea>
     const $ = (id) => document.getElementById(id);
     const TAU = Math.PI * 2;
 
+    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
     function rand01(){
       const a = new Uint32Array(1);
       crypto.getRandomValues(a);
@@ -770,21 +792,27 @@ test3</textarea>
     function openOverlay(el){ el.style.display = "grid"; }
     function closeOverlay(el){ el.style.display = "none"; }
 
-    // SOUND
+    // SOUND + EINSTELLUNGEN
+    // Wenn du später den "traurigen" Sound gegen AHA tauschen willst:
+    // ersetz einfach sad.mp3 durch aha.mp3 (Dateiname) und lad die Datei mit hoch.
     const SOUND_FILES = { spin: "spin.mp3", sad: "sad.mp3" };
     let spinSfx = null, sadSfx = null;
 
-    let soundState = { spinVol: 0.08, sadVol: 0.40, muted: false };
+    let soundState = { spinVol: 0.08, sadVol: 0.40, spinDur: 3, coinDur: 6, muted: false };
+
     try{
       const saved = JSON.parse(localStorage.getItem("wheelSoundState") || "null");
       if(saved && typeof saved === "object"){
-        soundState.spinVol = typeof saved.spinVol === "number" ? saved.spinVol : soundState.spinVol;
-        soundState.sadVol  = typeof saved.sadVol  === "number" ? saved.sadVol  : soundState.sadVol;
-        soundState.muted   = !!saved.muted;
+        if(typeof saved.spinVol === "number") soundState.spinVol = saved.spinVol;
+        if(typeof saved.sadVol === "number") soundState.sadVol = saved.sadVol;
+        if(typeof saved.spinDur === "number") soundState.spinDur = saved.spinDur;
+        if(typeof saved.coinDur === "number") soundState.coinDur = saved.coinDur;
+        soundState.muted = !!saved.muted;
       }
     }catch(e){}
 
     function saveSound(){ try{ localStorage.setItem("wheelSoundState", JSON.stringify(soundState)); }catch(e){} }
+
     function initSounds(){
       if(!spinSfx) spinSfx = new Audio(SOUND_FILES.spin);
       if(!sadSfx)  sadSfx  = new Audio(SOUND_FILES.sad);
@@ -793,8 +821,8 @@ test3</textarea>
       applyVolumes();
     }
     function applyVolumes(){
-      if(spinSfx) spinSfx.volume = soundState.muted ? 0 : soundState.spinVol;
-      if(sadSfx)  sadSfx.volume  = soundState.muted ? 0 : soundState.sadVol;
+      if(spinSfx) spinSfx.volume = soundState.muted ? 0 : clamp(soundState.spinVol, 0, 1);
+      if(sadSfx)  sadSfx.volume  = soundState.muted ? 0 : clamp(soundState.sadVol, 0, 1);
     }
     function playSpinLoop(){
       try{
@@ -1101,20 +1129,33 @@ test3</textarea>
     $("linksClose").addEventListener("click", () => closeOverlay(linksOverlay));
     linksOverlay.addEventListener("click", (e) => { if(e.target === linksOverlay) closeOverlay(linksOverlay); });
 
-    // Sound overlay
+    // Einstellungen overlay
     const spinVol = $("spinVol"), sadVol = $("sadVol"), muteAll = $("muteAll");
-    function syncSoundUi(){
-      spinVol.value = String(Math.round(soundState.spinVol * 100));
-      sadVol.value  = String(Math.round(soundState.sadVol * 100));
-      muteAll.checked = soundState.muted;
+    const spinDur = $("spinDur"), coinDur = $("coinDur");
+    const spinVolLabel = $("spinVolLabel"), sadVolLabel = $("sadVolLabel");
+    const spinDurLabel = $("spinDurLabel"), coinDurLabel = $("coinDurLabel");
+
+    function syncSettingsUi(){
+      spinVol.value = String(Math.round(clamp(soundState.spinVol,0,1) * 100));
+      sadVol.value  = String(Math.round(clamp(soundState.sadVol,0,1) * 100));
+      spinDur.value = String(clamp(Math.round(soundState.spinDur || 3), 1, 60));
+      coinDur.value = String(clamp(Math.round(soundState.coinDur || 6), 1, 60));
+      muteAll.checked = !!soundState.muted;
+
+      spinVolLabel.textContent = spinVol.value + "%";
+      sadVolLabel.textContent  = sadVol.value + "%";
+      spinDurLabel.textContent = spinDur.value + "s";
+      coinDurLabel.textContent = coinDur.value + "s";
     }
+
     function checkNice(){
-      if(Math.round(soundState.spinVol * 100) === 69 && Math.round(soundState.sadVol * 100) === 69){
+      if(Math.round(clamp(soundState.spinVol,0,1)*100) === 69 && Math.round(clamp(soundState.sadVol,0,1)*100) === 69){
         unlock("nice69");
         showToast("Nice.");
       }
     }
-    $("soundBtn").addEventListener("click", () => { syncSoundUi(); openOverlay(soundOverlay); });
+
+    $("soundBtn").addEventListener("click", () => { syncSettingsUi(); openOverlay(soundOverlay); });
     $("soundX").addEventListener("click", () => closeOverlay(soundOverlay));
     $("soundClose").addEventListener("click", () => closeOverlay(soundOverlay));
     soundOverlay.addEventListener("click", (e) => { if(e.target === soundOverlay) closeOverlay(soundOverlay); });
@@ -1123,13 +1164,25 @@ test3</textarea>
       soundState.spinVol = Number(spinVol.value) / 100;
       soundState.muted = false;
       muteAll.checked = false;
+      spinVolLabel.textContent = spinVol.value + "%";
       applyVolumes(); saveSound(); checkNice();
     });
     sadVol.addEventListener("input", () => {
       soundState.sadVol = Number(sadVol.value) / 100;
       soundState.muted = false;
       muteAll.checked = false;
+      sadVolLabel.textContent = sadVol.value + "%";
       applyVolumes(); saveSound(); checkNice();
+    });
+    spinDur.addEventListener("input", () => {
+      soundState.spinDur = clamp(Number(spinDur.value), 1, 60);
+      spinDurLabel.textContent = spinDur.value + "s";
+      saveSound();
+    });
+    coinDur.addEventListener("input", () => {
+      soundState.coinDur = clamp(Number(coinDur.value), 1, 60);
+      coinDurLabel.textContent = coinDur.value + "s";
+      saveSound();
     });
     muteAll.addEventListener("change", () => {
       soundState.muted = muteAll.checked;
@@ -1174,7 +1227,7 @@ test3</textarea>
       draw();
     });
 
-    // Zahl raten Overlay (Tabelle 1–20)
+    // Zahl raten (1–20 Tabelle)
     const guessGrid = $("guessGrid");
     const guessStatus = $("guessStatus");
     let guessSecret = 0;
@@ -1249,13 +1302,18 @@ test3</textarea>
       coinResult.textContent = "…";
 
       const heads = rand01() < 0.5;
-      const totalMs = 5200 + Math.floor(rand01() * 2600);
+
+      const baseMs = clamp((soundState.coinDur || 6) * 1000, 1000, 60000);
+      const jitter = Math.floor(baseMs * (0.25 * rand01())); // bis 25% extra Spannung
+      const totalMs = clamp(baseMs + jitter, 1000, 60000);
+
       const flips = 10 + randInt(0, 6);
       const deg = flips * 180 + (heads ? 0 : 180);
 
       coin.style.setProperty("--flipdeg", deg + "deg");
       coin.classList.remove("flipping");
       void coin.offsetWidth;
+
       coin.style.animationDuration = (totalMs/1000).toFixed(2) + "s";
       coin.classList.add("flipping");
 
@@ -1494,8 +1552,10 @@ test3</textarea>
 
       playSpinLoop();
 
+      const baseMs = clamp((soundState.spinDur || 3) * 1000, 1000, 60000);
+      const duration = clamp(baseMs * (superSpinArmed ? 1.7 : 1.0), 1000, 60000);
+
       const extraSpins = (superSpinArmed ? 20 : 8) + (plotTwist ? 1 : 0);
-      const duration = superSpinArmed ? 5200 : 3200;
       superSpinArmed = false;
 
       const n = items.length;
@@ -1620,7 +1680,7 @@ test3</textarea>
     });
     mode.addEventListener("change", updateRemoveButton);
 
-    // ESC close (inkl. Zahl raten)
+    // ESC close
     document.addEventListener("keydown", (e) => {
       if(e.key !== "Escape") return;
       closeOverlay(ahaOverlay);
@@ -1638,6 +1698,8 @@ test3</textarea>
     // init
     items = parseItems(input.value);
     updateCoinVisibility();
+    syncSettingsUi();
+    saveSound();
     draw();
   </script>
 </body>
