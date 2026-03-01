@@ -44,7 +44,7 @@
       width: min(1280px, 96vw);
       margin: 18px auto 22px auto;
       display:grid;
-      grid-template-columns: 320px 1fr 280px;
+      grid-template-columns: 340px 1fr 280px;
       grid-template-rows: auto 1fr auto auto;
       gap: 18px;
       min-height: calc(100vh - 40px);
@@ -66,7 +66,6 @@
       align-items:center;
       justify-content:center;
       user-select:none;
-      cursor:pointer;
     }
 
     .controlsTop{
@@ -80,21 +79,30 @@
       padding-top: 10px;
     }
 
-    .trophyBlock{
+    .topRight{
       grid-column: 3 / 4;
       grid-row: 1 / 2;
-      padding: 18px 18px;
-      border-radius: 18px;
-      background: rgba(0, 140, 255, .18);
-      border: 1px solid rgba(0, 140, 255, .40);
-      box-shadow: var(--glowSoft);
-      font-weight: 1200;
       display:flex;
+      justify-content:flex-end;
       align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      user-select:none;
+      padding-top: 10px;
     }
+
+    .trophyBtn{
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.22);
+      color: #fff;
+      cursor:pointer;
+      box-shadow: var(--glowSoft);
+      font-size: 18px;
+      font-weight: 1200;
+      display:grid;
+      place-items:center;
+    }
+    .trophyBtn:hover{ background: rgba(0,0,0,.34); }
 
     select, .chipBtn{
       padding: 10px 14px;
@@ -122,32 +130,42 @@
       padding-top: 14px;
     }
 
-    .miniHeader{
-      padding: 22px 16px;
+    .miniCard{
       border-radius: 18px;
-      background: rgba(255,45,214,.24);
-      border: 1px solid rgba(255,45,214,.50);
-      box-shadow: 0 0 20px rgba(255,45,214,.18), 0 0 34px rgba(0,195,255,.10);
+      border: 1px solid rgba(255,45,214,.38);
+      background: rgba(255,45,214,.10);
+      box-shadow: 0 0 18px rgba(255,45,214,.12), 0 0 28px rgba(0,195,255,.08);
+      overflow:hidden;
+    }
+    .miniCardHeader{
+      padding: 14px 14px;
       font-weight: 1300;
-      font-size: 22px;
+      letter-spacing: .3px;
+      font-size: 18px;
+      background: linear-gradient(135deg, rgba(255,45,214,.18), rgba(0,195,255,.12));
+      border-bottom: 1px solid rgba(255,255,255,.10);
       text-align:center;
       user-select:none;
-      letter-spacing: .3px;
+    }
+    .miniCardBody{
+      padding: 12px;
+      display:grid;
+      gap: 10px;
     }
 
     .miniBtn{
       padding: 12px 14px;
       border-radius: 14px;
-      background: rgba(255,45,214,.22);
-      border: 1px solid rgba(255,45,214,.40);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.14);
       color:#fff;
       font-weight: 1100;
       cursor:pointer;
       user-select:none;
       text-align:center;
-      box-shadow: 0 0 16px rgba(255,45,214,.12);
+      box-shadow: 0 0 14px rgba(0,195,255,.06);
     }
-    .miniBtn:hover{ background: rgba(255,45,214,.32); }
+    .miniBtn:hover{ background: rgba(255,255,255,.10); }
     .miniBtn.hidden{ display:none; }
 
     .wheelArea{
@@ -175,7 +193,6 @@
       border-right: 18px solid transparent;
       border-bottom: 34px solid rgba(255,255,255,.95);
       filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
-      cursor:pointer;
     }
     .centerCap{
       position:absolute;
@@ -186,15 +203,6 @@
       border-radius: 50%;
       background: rgba(255,255,255,.95);
       box-shadow: inset 0 0 0 10px rgba(0,0,0,.12), 0 0 26px rgba(0,195,255,.18);
-      cursor:pointer;
-      user-select:none;
-    }
-
-    .superGlow{ animation: superGlow 700ms ease-in-out 0s 2; }
-    @keyframes superGlow{
-      0%{ filter: drop-shadow(0 18px 40px rgba(0,0,0,.38)); }
-      50%{ filter: drop-shadow(0 18px 60px rgba(0,195,255,.28)) drop-shadow(0 0 26px rgba(106,92,255,.22)); }
-      100%{ filter: drop-shadow(0 18px 40px rgba(0,0,0,.38)); }
     }
 
     .rightCol{
@@ -302,26 +310,6 @@
       box-sizing: border-box;
     }
 
-    .creditsDot{
-      position: fixed;
-      right: 10px;
-      bottom: 10px;
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: rgba(0,195,255,.05);
-      border: 1px solid rgba(0,195,255,.14);
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-      user-select:none;
-      opacity: .10;
-      z-index: 2000;
-      font-size: 9px;
-      line-height: 1;
-    }
-    .creditsDot:hover{ opacity: .55; }
-
     .toast{
       position: fixed;
       left: 50%;
@@ -384,44 +372,6 @@
       margin-top: 12px;
     }
 
-    .trophyList{
-      text-align:left;
-      display:grid;
-      gap:10px;
-      margin-top: 10px;
-      max-height: min(60vh, 520px);
-      overflow:auto;
-      padding-right: 4px;
-    }
-    .trophyItem{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.20);
-      opacity: .55;
-      filter: grayscale(1);
-    }
-    .trophyItem.unlocked{
-      opacity: 1;
-      filter:none;
-      border-color: rgba(0,195,255,.18);
-      background: rgba(0,195,255,.06);
-      box-shadow: 0 0 14px rgba(0,195,255,.08);
-    }
-    .trophyIcon{
-      width: 34px; height: 34px; border-radius: 10px;
-      display:grid; place-items:center;
-      font-weight: 1200;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.08);
-      flex: 0 0 auto;
-    }
-    .trophyName{ font-weight: 1200; }
-    .trophyDesc{ font-size: 12px; opacity:.85; font-weight: 850; }
-
     .rangeRow{ display:grid; gap:6px; text-align:left; width:min(520px, 92vw); margin: 0 auto; }
     input[type="range"]{ width:100%; }
 
@@ -432,6 +382,7 @@
       position: relative;
       transform-style: preserve-3d;
       border-radius: 999px;
+      transform: rotateY(0deg);
     }
     .coinFace{
       position:absolute; inset:0;
@@ -449,16 +400,6 @@
     .coinFace strong{ font-size: 14px; letter-spacing: .3px; opacity:.9; }
     .coinFace .name{ font-size: 18px; font-weight: 1200; margin-top: 6px; word-break: break-word; }
     .coinFace.tails{ transform: rotateY(180deg); }
-
-    @keyframes flipCrazy{
-      0%{ transform: rotateY(0deg); }
-      100%{ transform: rotateY(var(--flipdeg)); }
-    }
-    .coin.flipping{
-      animation-name: flipCrazy;
-      animation-timing-function: cubic-bezier(.2,.9,.2,1);
-      animation-fill-mode: both;
-    }
     .coinResult{ font-weight: 1200; font-size: 18px; opacity:.95; min-height: 22px; }
 
     .ttt{
@@ -516,7 +457,7 @@
       .page{ grid-template-columns: 1fr; grid-template-rows: auto auto auto auto auto; }
       .titleBlock{ grid-column: 1; grid-row: 1; }
       .controlsTop{ grid-column: 1; grid-row: 2; }
-      .trophyBlock{ grid-column: 1; grid-row: 3; }
+      .topRight{ grid-column: 1; grid-row: 3; justify-content:center; }
       .leftCol{ grid-column: 1; grid-row: 4; }
       .wheelArea{ grid-column: 1; grid-row: 5; }
       .rightCol{ grid-column: 1; grid-row: 6; }
@@ -528,18 +469,6 @@
 
 <body>
   <div class="toast" id="toast">---</div>
-
-  <div class="overlay" id="ahaOverlay">
-    <div class="box">
-      <button class="closeX" id="ahaX">×</button>
-      <h2>Glückwunsch</h2>
-      <div style="opacity:.9;font-weight:900;margin-bottom:10px;">du hast das gefunden</div>
-      <img src="AHA.png" alt="AHA" style="width:min(360px,78vw);height:auto;display:block;margin:0 auto;filter:drop-shadow(0 10px 20px rgba(0,0,0,.45));">
-      <div class="boxActions">
-        <button class="action" id="ahaOk">OK</button>
-      </div>
-    </div>
-  </div>
 
   <div class="overlay" id="linksOverlay">
     <div class="box">
@@ -556,9 +485,9 @@
     </div>
   </div>
 
-  <div class="overlay" id="soundOverlay">
+  <div class="overlay" id="settingsOverlay">
     <div class="box">
-      <button class="closeX" id="soundX">×</button>
+      <button class="closeX" id="settingsX">×</button>
       <h2>Einstellungen</h2>
 
       <div style="display:grid;gap:14px;margin-top:8px;">
@@ -601,7 +530,7 @@
       </div>
 
       <div class="boxActions">
-        <button class="action secondary" id="soundClose">Schließen</button>
+        <button class="action secondary" id="settingsClose">Schließen</button>
       </div>
     </div>
   </div>
@@ -609,8 +538,8 @@
   <div class="overlay" id="trophyOverlay">
     <div class="box">
       <button class="closeX" id="trophyX">×</button>
-      <h2>Trophy Room</h2>
-      <div class="trophyList" id="trophyList"></div>
+      <h2>Erfolge</h2>
+      <div style="opacity:.85;font-weight:1000;margin-top:8px;">Noch leer.</div>
       <div class="boxActions">
         <button class="action secondary" id="trophyClose">Schließen</button>
       </div>
@@ -621,6 +550,7 @@
     <div class="box">
       <button class="closeX" id="chanceX">×</button>
       <h2>Doppelte Chance</h2>
+      <div style="opacity:.85;font-weight:1000;margin-bottom:10px;">Name auswählen → bekommt 2x Chance</div>
 
       <div style="display:grid;gap:10px;max-width:520px;margin:0 auto;">
         <select id="chanceSelect"></select>
@@ -636,7 +566,9 @@
   <div class="overlay" id="coinOverlay">
     <div class="box">
       <button class="closeX" id="coinX">×</button>
-      <h2>Coinflip</h2>
+      <h2>Final Coinflip</h2>
+
+      <div style="opacity:.85;font-weight:1000;margin-bottom:10px;" id="coinInfo">Kopf = … | Zahl = …</div>
 
       <div class="coinWrap">
         <div class="coinStage">
@@ -662,6 +594,18 @@
           <button class="action" id="coinStart">Flip</button>
           <button class="action secondary" id="coinClose">Schließen</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="guessOverlay">
+    <div class="box">
+      <button class="closeX" id="guessX">×</button>
+      <h2>Zahl raten</h2>
+      <div class="coinResult" id="guessStatus"></div>
+      <div class="guessGrid" id="guessGrid"></div>
+      <div class="boxActions">
+        <button class="action secondary" id="guessNew">Neu</button>
       </div>
     </div>
   </div>
@@ -694,20 +638,8 @@
     </div>
   </div>
 
-  <div class="overlay" id="guessOverlay">
-    <div class="box">
-      <button class="closeX" id="guessX">×</button>
-      <h2>Zahl raten</h2>
-      <div class="coinResult" id="guessStatus"></div>
-      <div class="guessGrid" id="guessGrid"></div>
-      <div class="boxActions">
-        <button class="action secondary" id="guessNew">Neu</button>
-      </div>
-    </div>
-  </div>
-
   <div class="page">
-    <div class="titleBlock" id="brandTitle">zBaffe Glücksrad</div>
+    <div class="titleBlock">zBaffe Glücksrad</div>
 
     <div class="controlsTop">
       <select id="mode">
@@ -717,30 +649,36 @@
 
       <button class="chipBtn" id="chanceBtn">Doppelte Chance</button>
       <button class="chipBtn" id="linksBtn">Links</button>
-      <button class="chipBtn" id="soundBtn">Einstellungen</button>
+      <button class="chipBtn" id="settingsBtn">Einstellungen</button>
     </div>
 
-    <div class="trophyBlock" id="trophyBtn">Trophys</div>
+    <div class="topRight">
+      <button class="trophyBtn" id="trophyBtn" title="Erfolge">🏆</button>
+    </div>
 
     <div class="leftCol">
-      <div class="miniHeader">Mini Games</div>
-      <div class="miniBtn" id="miniGuess">Zahl raten</div>
-      <div class="miniBtn" id="miniTtt">TicTacToe</div>
-      <div class="miniBtn" id="miniSnake">Snake</div>
-      <div class="miniBtn hidden" id="miniCoin">Coinflip</div>
+      <div class="miniCard">
+        <div class="miniCardHeader">Mini Games</div>
+        <div class="miniCardBody">
+          <div class="miniBtn" id="miniGuess">Zahl raten</div>
+          <div class="miniBtn" id="miniTtt">TicTacToe</div>
+          <div class="miniBtn" id="miniSnake">Snake</div>
+          <div class="miniBtn hidden" id="miniCoin">Final Coinflip</div>
+        </div>
+      </div>
     </div>
 
     <div class="wheelArea">
       <div class="wheelBox" id="wheelBox">
-        <div class="pin" id="pin"></div>
+        <div class="pin"></div>
         <canvas id="wheel" width="1000" height="1000"></canvas>
-        <div class="centerCap" id="centerCap"></div>
+        <div class="centerCap"></div>
       </div>
     </div>
 
     <div class="rightCol">
       <div class="historyCard">
-        <div class="historyTitle">Rad Verlauf</div>
+        <div class="historyTitle">Verlauf</div>
         <div class="historyList" id="historyList"></div>
       </div>
     </div>
@@ -749,13 +687,13 @@
       <button class="action" id="spin">Nudel umrühren</button>
       <button class="action" id="removeWinner" disabled>Nudel entfernen</button>
       <button class="action secondary" id="shuffle">Mischen</button>
-      <button class="action secondary" id="reset">Rad zurück setzen</button>
+      <button class="action secondary" id="reset">Reset</button>
     </div>
 
     <div class="namesBlock">
       <div class="namesHead">
-        <div>Liste mit den Namen</div>
-        <div class="namesHint">1 Zeile = 1 Eintrag</div>
+        <div>Teilnehmer</div>
+        <div class="namesHint">eine Zeile = ein Name</div>
       </div>
       <textarea id="items">NicoRU/AimWieNhSOcke
 Test1
@@ -764,14 +702,11 @@ test3</textarea>
     </div>
   </div>
 
-  <div class="creditsDot" id="creditsDot">©</div>
-
   <script>
     const $ = (id) => document.getElementById(id);
     const TAU = Math.PI * 2;
 
     function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
-
     function rand01(){
       const a = new Uint32Array(1);
       crypto.getRandomValues(a);
@@ -792,26 +727,29 @@ test3</textarea>
     function openOverlay(el){ el.style.display = "grid"; }
     function closeOverlay(el){ el.style.display = "none"; }
 
-    // SOUND + EINSTELLUNGEN
-    // Wenn du später den "traurigen" Sound gegen AHA tauschen willst:
-    // ersetz einfach sad.mp3 durch aha.mp3 (Dateiname) und lad die Datei mit hoch.
+    const LINKS = {
+      tiktok: "https://www.tiktok.com/@zbaffe",
+      insta: "https://www.instagram.com/zbaffe/",
+      twitch: "https://www.twitch.tv/zbaffe"
+    };
+
+    // SOUND + SETTINGS
     const SOUND_FILES = { spin: "spin.mp3", sad: "sad.mp3" };
     let spinSfx = null, sadSfx = null;
 
-    let soundState = { spinVol: 0.08, sadVol: 0.40, spinDur: 3, coinDur: 6, muted: false };
-
+    let settings = { spinVol: 0.08, sadVol: 0.40, spinDur: 3, coinDur: 6, muted: false };
     try{
-      const saved = JSON.parse(localStorage.getItem("wheelSoundState") || "null");
+      const saved = JSON.parse(localStorage.getItem("wheelSettings") || "null");
       if(saved && typeof saved === "object"){
-        if(typeof saved.spinVol === "number") soundState.spinVol = saved.spinVol;
-        if(typeof saved.sadVol === "number") soundState.sadVol = saved.sadVol;
-        if(typeof saved.spinDur === "number") soundState.spinDur = saved.spinDur;
-        if(typeof saved.coinDur === "number") soundState.coinDur = saved.coinDur;
-        soundState.muted = !!saved.muted;
+        if(typeof saved.spinVol === "number") settings.spinVol = saved.spinVol;
+        if(typeof saved.sadVol === "number") settings.sadVol = saved.sadVol;
+        if(typeof saved.spinDur === "number") settings.spinDur = saved.spinDur;
+        if(typeof saved.coinDur === "number") settings.coinDur = saved.coinDur;
+        settings.muted = !!saved.muted;
       }
     }catch(e){}
 
-    function saveSound(){ try{ localStorage.setItem("wheelSoundState", JSON.stringify(soundState)); }catch(e){} }
+    function saveSettings(){ try{ localStorage.setItem("wheelSettings", JSON.stringify(settings)); }catch(e){} }
 
     function initSounds(){
       if(!spinSfx) spinSfx = new Audio(SOUND_FILES.spin);
@@ -821,8 +759,8 @@ test3</textarea>
       applyVolumes();
     }
     function applyVolumes(){
-      if(spinSfx) spinSfx.volume = soundState.muted ? 0 : clamp(soundState.spinVol, 0, 1);
-      if(sadSfx)  sadSfx.volume  = soundState.muted ? 0 : clamp(soundState.sadVol, 0, 1);
+      if(spinSfx) spinSfx.volume = settings.muted ? 0 : clamp(settings.spinVol, 0, 1);
+      if(sadSfx)  sadSfx.volume  = settings.muted ? 0 : clamp(settings.sadVol, 0, 1);
     }
     function playSpinLoop(){
       try{
@@ -852,58 +790,9 @@ test3</textarea>
     }
     document.addEventListener("pointerdown", () => { try{ initSounds(); }catch(e){} }, { once:true });
 
-    // TROPHIES
-    const TROPHIES = [
-      { id:"aha15", icon:"🗿", name:"AHA Mode", desc:"Irgendwas ist plötzlich passiert." },
-      { id:"madefor", icon:"🎁", name:"Made for zBaffe", desc:"Du hast was gefunden." },
-      { id:"firstspin", icon:"🍜", name:"Erster Spin", desc:"Einmal umrühren reicht." },
-      { id:"reverse2", icon:"🌀", name:"Reverse Luck", desc:"Manchmal läuft’s andersrum." },
-      { id:"coin2", icon:"🪙", name:"Final Coinflip", desc:"Wenn nur noch 2 übrig sind." },
-      { id:"remove", icon:"💔", name:"Nudel entfernt", desc:"Jemand musste gehen." },
-      { id:"superspin", icon:"⚡", name:"Super Spin", desc:"Du hast was freigeschaltet." },
-      { id:"speedboost", icon:"🚀", name:"Speed Boost", desc:"Mit Timing extra Schub." },
-      { id:"perfect", icon:"🎯", name:"Perfect Timing", desc:"Du hast den Moment erwischt." },
-      { id:"plot", icon:"🎭", name:"Plot Twist", desc:"Das war unfair… oder doch nicht?" },
-      { id:"nice69", icon:"😏", name:"Nice.", desc:"Manche Zahlen sind magisch." },
-      { id:"double", icon:"🎲", name:"Doppelte Chance", desc:"Jemand hat mehr Glück verdient." },
-      { id:"tttwin", icon:"❌", name:"TTT Win", desc:"Du hast gewonnen." },
-      { id:"snake10", icon:"🐍", name:"Snake 10+", desc:"Score 10 erreicht." },
-      { id:"guesswin", icon:"🔢", name:"Lucky Guess", desc:"Du hast richtig geraten." }
-    ];
-
-    let unlocked = {};
-    try{ unlocked = JSON.parse(localStorage.getItem("wheelTrophies") || "{}") || {}; }catch(e){ unlocked = {}; }
-    function saveTrophies(){ try{ localStorage.setItem("wheelTrophies", JSON.stringify(unlocked)); }catch(e){} }
-    function unlock(id){
-      if(unlocked[id]) return;
-      unlocked[id] = true;
-      saveTrophies();
-      showToast("Trophy freigeschaltet");
-    }
-    function renderTrophies(){
-      const list = $("trophyList");
-      list.innerHTML = "";
-      for(const t of TROPHIES){
-        const row = document.createElement("div");
-        row.className = "trophyItem" + (unlocked[t.id] ? " unlocked" : "");
-        row.innerHTML = `
-          <div class="trophyIcon">${t.icon}</div>
-          <div>
-            <div class="trophyName">${t.name}</div>
-            <div class="trophyDesc">${t.desc}</div>
-          </div>
-        `;
-        list.appendChild(row);
-      }
-    }
-
-    // Elements
+    // WHEEL
     const canvas = $("wheel");
     const ctx = canvas.getContext("2d");
-
-    const wheelBox = $("wheelBox");
-    const pin = $("pin");
-    const centerCap = $("centerCap");
 
     const btnSpin = $("spin");
     const btnRemoveWinner = $("removeWinner");
@@ -914,37 +803,23 @@ test3</textarea>
     const mode = $("mode");
     const historyList = $("historyList");
 
-    const ahaOverlay = $("ahaOverlay");
-    const linksOverlay = $("linksOverlay");
-    const soundOverlay = $("soundOverlay");
-    const trophyOverlay = $("trophyOverlay");
-    const chanceOverlay = $("chanceOverlay");
-    const coinOverlay = $("coinOverlay");
-    const tttOverlay = $("tttOverlay");
-    const snakeOverlay = $("snakeOverlay");
-    const guessOverlay = $("guessOverlay");
-
-    // Links
-    const TIKTOK_URL = "https://www.tiktok.com/@zbaffe";
-    const INSTAGRAM_URL = "https://www.instagram.com/zbaffe/";
-    const TWITCH_URL = "https://www.twitch.tv/zbaffe";
-    $("openTikTok").addEventListener("click", () => window.open(TIKTOK_URL, "_blank"));
-    $("openInsta").addEventListener("click", () => window.open(INSTAGRAM_URL, "_blank"));
-    $("openTwitch").addEventListener("click", () => window.open(TWITCH_URL, "_blank"));
-
-    // Wheel state
     let items = [];
     let angle = 0;
     let spinning = false;
     let lastWinner = null;
 
-    let superSpinArmed = false;
-    let spinStartAt = 0;
-    let speedBoostUsed = false;
-    let boostRequested = false;
-
     function parseItems(text){
       return text.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+    }
+    function syncCoinVisibility(){
+      const now = parseItems(input.value);
+      const btn = $("miniCoin");
+      if(now.length === 2) btn.classList.remove("hidden");
+      else btn.classList.add("hidden");
+    }
+    function updateRemoveButton(){
+      const canRemove = (mode.value === "remove") && items.length > 1;
+      btnRemoveWinner.disabled = !canRemove;
     }
     function pushHistory(text){
       const div = document.createElement("div");
@@ -953,24 +828,7 @@ test3</textarea>
       historyList.prepend(div);
       while(historyList.children.length > 10) historyList.removeChild(historyList.lastChild);
     }
-    function updateRemoveButton(){
-      const canRemove = (mode.value === "remove") && items.length > 1;
-      btnRemoveWinner.disabled = !canRemove;
-    }
-    function uniqueNames(arr){
-      const out = [];
-      const seen = new Set();
-      for(const x of arr){
-        if(!seen.has(x)){ seen.add(x); out.push(x); }
-      }
-      return out;
-    }
-    function updateCoinVisibility(){
-      const now = parseItems(input.value);
-      const miniCoin = $("miniCoin");
-      if(now.length === 2) miniCoin.classList.remove("hidden");
-      else miniCoin.classList.add("hidden");
-    }
+
     function niceColor(i){
       const colors = ["#00c3ff","#6a5cff","#ff2bd6","#4d9fff","#8a5cff"];
       return colors[i % colors.length];
@@ -1058,89 +916,161 @@ test3</textarea>
       return { idx, label: items[idx] ?? "—" };
     }
 
-    // Easter eggs
-    let titleClicks = 0;
-    $("brandTitle").addEventListener("click", () => {
-      titleClicks++;
-      if(titleClicks >= 15){
-        titleClicks = 0;
-        unlock("aha15");
-        openOverlay(ahaOverlay);
+    function spin(){
+      if(spinning) return;
+
+      items = parseItems(input.value);
+      syncCoinVisibility();
+
+      if(items.length < 2){
+        showToast("Mindestens 2 Einträge");
+        draw();
+        return;
       }
+
+      spinning = true;
+      btnSpin.disabled = true;
+      btnRemoveWinner.disabled = true;
+
+      playSpinLoop();
+
+      const duration = clamp((settings.spinDur || 3) * 1000, 1000, 60000);
+      const extraSpins = 8;
+
+      const n = items.length;
+      const slice = TAU / n;
+
+      const targetIndex = randInt(0, n-1);
+      const inside = (rand01()*0.6 + 0.2) * slice;
+
+      const pointerAngle = -Math.PI/2;
+      const targetAngle = pointerAngle - (targetIndex*slice + inside);
+
+      const startAngle = angle;
+      const endAngle = targetAngle - extraSpins*TAU;
+
+      const start = performance.now();
+      const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+
+      function frame(nowT){
+        const t = Math.min(1, (nowT - start) / duration);
+        const e = easeOutCubic(t);
+
+        angle = startAngle + (endAngle - startAngle) * e;
+        draw();
+
+        if(t < 1){
+          requestAnimationFrame(frame);
+        }else{
+          stopSpinLoop();
+          spinning = false;
+          btnSpin.disabled = false;
+
+          angle = ((angle % TAU) + TAU) % TAU;
+
+          lastWinner = currentWinner();
+          updateRemoveButton();
+          pushHistory(lastWinner.label);
+          showToast("Ergebnis: " + lastWinner.label);
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function removeLastWinner(){
+      if(!lastWinner) return;
+
+      if(mode.value !== "remove"){
+        btnRemoveWinner.disabled = true;
+        showToast("Modus: Nudel lassen");
+        return;
+      }
+
+      playSad();
+
+      const label = lastWinner.label;
+      const idx = items.findIndex(x => x === label);
+      if(idx === -1) return;
+
+      items.splice(idx, 1);
+      input.value = items.join("\n");
+
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+
+      showToast("Nudel entfernt");
+      syncCoinVisibility();
+      draw();
+    }
+
+    function shuffle(){
+      items = parseItems(input.value);
+      for(let i = items.length - 1; i > 0; i--){
+        const j = randInt(0, i);
+        [items[i], items[j]] = [items[j], items[i]];
+      }
+      input.value = items.join("\n");
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+      showToast("Gemischt");
+      syncCoinVisibility();
+      draw();
+    }
+
+    function reset(){
+      angle = 0;
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+      showToast("Reset");
+      draw();
+    }
+
+    btnSpin.addEventListener("click", spin);
+    btnRemoveWinner.addEventListener("click", removeLastWinner);
+    btnShuffle.addEventListener("click", shuffle);
+    btnReset.addEventListener("click", reset);
+
+    input.addEventListener("input", () => {
+      items = parseItems(input.value);
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+      syncCoinVisibility();
+      draw();
     });
 
-    let creditTimes = [];
-    $("creditsDot").addEventListener("click", () => {
-      const now = Date.now();
-      creditTimes = creditTimes.filter(t => now - t < 5000);
-      creditTimes.push(now);
-      showToast("Made by NicoRU/AimWieNhSocke");
-      if(creditTimes.length >= 5){
-        creditTimes = [];
-        unlock("madefor");
-        showToast("made for zBaffe");
-      }
-    });
+    mode.addEventListener("change", updateRemoveButton);
 
-    let capClicks = [];
-    centerCap.addEventListener("click", () => {
-      const now = Date.now();
-      capClicks = capClicks.filter(t => now - t < 4500);
-      capClicks.push(now);
-      if(capClicks.length >= 7){
-        capClicks = [];
-        superSpinArmed = true;
-        unlock("superspin");
-        showToast("Super Spin bereit");
-        wheelBox.classList.add("superGlow");
-        setTimeout(() => wheelBox.classList.remove("superGlow"), 1500);
-      }
-    });
-
-    pin.addEventListener("click", () => {
-      if(!spinning) return;
-      const t = performance.now() - spinStartAt;
-      if(t > 600 && t < 900){
-        unlock("perfect");
-        showToast("Perfect Timing");
-      }
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if(e.code !== "Space") return;
-      if(!spinning) return;
-      const t = performance.now() - spinStartAt;
-      if(t <= 1000 && !speedBoostUsed){
-        speedBoostUsed = true;
-        unlock("speedboost");
-        showToast("Speed Boost");
-        boostRequested = true;
-      }
-    });
-
-    // AHA overlay close
-    $("ahaX").addEventListener("click", () => closeOverlay(ahaOverlay));
-    $("ahaOk").addEventListener("click", () => closeOverlay(ahaOverlay));
-    ahaOverlay.addEventListener("click", (e) => { if(e.target === ahaOverlay) closeOverlay(ahaOverlay); });
-
-    // Links overlay
+    // LINKS
+    const linksOverlay = $("linksOverlay");
     $("linksBtn").addEventListener("click", () => openOverlay(linksOverlay));
     $("linksX").addEventListener("click", () => closeOverlay(linksOverlay));
     $("linksClose").addEventListener("click", () => closeOverlay(linksOverlay));
     linksOverlay.addEventListener("click", (e) => { if(e.target === linksOverlay) closeOverlay(linksOverlay); });
 
-    // Einstellungen overlay
+    $("openTikTok").addEventListener("click", () => window.open(LINKS.tiktok, "_blank"));
+    $("openInsta").addEventListener("click", () => window.open(LINKS.insta, "_blank"));
+    $("openTwitch").addEventListener("click", () => window.open(LINKS.twitch, "_blank"));
+
+    // TROPHY (leer)
+    const trophyOverlay = $("trophyOverlay");
+    $("trophyBtn").addEventListener("click", () => openOverlay(trophyOverlay));
+    $("trophyX").addEventListener("click", () => closeOverlay(trophyOverlay));
+    $("trophyClose").addEventListener("click", () => closeOverlay(trophyOverlay));
+    trophyOverlay.addEventListener("click", (e) => { if(e.target === trophyOverlay) closeOverlay(trophyOverlay); });
+
+    // SETTINGS
+    const settingsOverlay = $("settingsOverlay");
     const spinVol = $("spinVol"), sadVol = $("sadVol"), muteAll = $("muteAll");
     const spinDur = $("spinDur"), coinDur = $("coinDur");
     const spinVolLabel = $("spinVolLabel"), sadVolLabel = $("sadVolLabel");
     const spinDurLabel = $("spinDurLabel"), coinDurLabel = $("coinDurLabel");
 
     function syncSettingsUi(){
-      spinVol.value = String(Math.round(clamp(soundState.spinVol,0,1) * 100));
-      sadVol.value  = String(Math.round(clamp(soundState.sadVol,0,1) * 100));
-      spinDur.value = String(clamp(Math.round(soundState.spinDur || 3), 1, 60));
-      coinDur.value = String(clamp(Math.round(soundState.coinDur || 6), 1, 60));
-      muteAll.checked = !!soundState.muted;
+      spinVol.value = String(Math.round(clamp(settings.spinVol,0,1) * 100));
+      sadVol.value  = String(Math.round(clamp(settings.sadVol,0,1) * 100));
+      spinDur.value = String(clamp(Math.round(settings.spinDur || 3), 1, 60));
+      coinDur.value = String(clamp(Math.round(settings.coinDur || 6), 1, 60));
+      muteAll.checked = !!settings.muted;
 
       spinVolLabel.textContent = spinVol.value + "%";
       sadVolLabel.textContent  = sadVol.value + "%";
@@ -1148,57 +1078,47 @@ test3</textarea>
       coinDurLabel.textContent = coinDur.value + "s";
     }
 
-    function checkNice(){
-      if(Math.round(clamp(soundState.spinVol,0,1)*100) === 69 && Math.round(clamp(soundState.sadVol,0,1)*100) === 69){
-        unlock("nice69");
-        showToast("Nice.");
-      }
-    }
-
-    $("soundBtn").addEventListener("click", () => { syncSettingsUi(); openOverlay(soundOverlay); });
-    $("soundX").addEventListener("click", () => closeOverlay(soundOverlay));
-    $("soundClose").addEventListener("click", () => closeOverlay(soundOverlay));
-    soundOverlay.addEventListener("click", (e) => { if(e.target === soundOverlay) closeOverlay(soundOverlay); });
+    $("settingsBtn").addEventListener("click", () => { syncSettingsUi(); openOverlay(settingsOverlay); });
+    $("settingsX").addEventListener("click", () => closeOverlay(settingsOverlay));
+    $("settingsClose").addEventListener("click", () => closeOverlay(settingsOverlay));
+    settingsOverlay.addEventListener("click", (e) => { if(e.target === settingsOverlay) closeOverlay(settingsOverlay); });
 
     spinVol.addEventListener("input", () => {
-      soundState.spinVol = Number(spinVol.value) / 100;
-      soundState.muted = false;
+      settings.spinVol = Number(spinVol.value) / 100;
+      settings.muted = false;
       muteAll.checked = false;
       spinVolLabel.textContent = spinVol.value + "%";
-      applyVolumes(); saveSound(); checkNice();
+      applyVolumes(); saveSettings();
     });
     sadVol.addEventListener("input", () => {
-      soundState.sadVol = Number(sadVol.value) / 100;
-      soundState.muted = false;
+      settings.sadVol = Number(sadVol.value) / 100;
+      settings.muted = false;
       muteAll.checked = false;
       sadVolLabel.textContent = sadVol.value + "%";
-      applyVolumes(); saveSound(); checkNice();
+      applyVolumes(); saveSettings();
     });
     spinDur.addEventListener("input", () => {
-      soundState.spinDur = clamp(Number(spinDur.value), 1, 60);
+      settings.spinDur = clamp(Number(spinDur.value), 1, 60);
       spinDurLabel.textContent = spinDur.value + "s";
-      saveSound();
+      saveSettings();
     });
     coinDur.addEventListener("input", () => {
-      soundState.coinDur = clamp(Number(coinDur.value), 1, 60);
+      settings.coinDur = clamp(Number(coinDur.value), 1, 60);
       coinDurLabel.textContent = coinDur.value + "s";
-      saveSound();
+      saveSettings();
     });
     muteAll.addEventListener("change", () => {
-      soundState.muted = muteAll.checked;
-      applyVolumes(); saveSound();
+      settings.muted = muteAll.checked;
+      applyVolumes(); saveSettings();
     });
 
-    // Trophy overlay
-    $("trophyBtn").addEventListener("click", () => { renderTrophies(); openOverlay(trophyOverlay); });
-    $("trophyX").addEventListener("click", () => closeOverlay(trophyOverlay));
-    $("trophyClose").addEventListener("click", () => closeOverlay(trophyOverlay));
-    trophyOverlay.addEventListener("click", (e) => { if(e.target === trophyOverlay) closeOverlay(trophyOverlay); });
-
-    // Doppelte Chance
+    // DOPPELTE CHANCE
+    const chanceOverlay = $("chanceOverlay");
     $("chanceBtn").addEventListener("click", () => {
       const now = parseItems(input.value);
-      const uniq = uniqueNames(now);
+      const uniq = [];
+      const seen = new Set();
+      for(const n of now){ if(!seen.has(n)){ seen.add(n); uniq.push(n); } }
       const sel = $("chanceSelect");
       sel.innerHTML = "";
       for(const n of uniq){
@@ -1219,15 +1139,15 @@ test3</textarea>
       const now = parseItems(input.value);
       now.push(name);
       input.value = now.join("\n");
-      unlock("double");
       showToast("Doppelte Chance: " + name);
       closeOverlay(chanceOverlay);
       items = parseItems(input.value);
-      updateCoinVisibility();
+      syncCoinVisibility();
       draw();
     });
 
-    // Zahl raten (1–20 Tabelle)
+    // MINI: GUESS (Grid 1..20)
+    const guessOverlay = $("guessOverlay");
     const guessGrid = $("guessGrid");
     const guessStatus = $("guessStatus");
     let guessSecret = 0;
@@ -1238,7 +1158,6 @@ test3</textarea>
       guessActive = true;
       guessStatus.textContent = "Wähle eine Zahl";
       guessGrid.innerHTML = "";
-
       for(let i=1;i<=20;i++){
         const b = document.createElement("button");
         b.textContent = String(i);
@@ -1248,92 +1167,24 @@ test3</textarea>
 
           if(i === guessSecret){
             guessStatus.textContent = `Richtig – es war ${guessSecret}`;
-            unlock("guesswin");
-            showToast(`Richtig: ${i}`);
+            showToast("Richtig: " + i);
           }else{
             guessStatus.textContent = `Falsch – es war ${guessSecret}`;
-            showToast(`Falsch: ${i}`);
+            showToast("Falsch: " + i);
           }
-
           Array.from(guessGrid.querySelectorAll("button")).forEach(x => x.disabled = true);
         });
         guessGrid.appendChild(b);
       }
     }
 
-    $("miniGuess").addEventListener("click", () => {
-      guessStart();
-      openOverlay(guessOverlay);
-    });
+    $("miniGuess").addEventListener("click", () => { guessStart(); openOverlay(guessOverlay); });
     $("guessNew").addEventListener("click", guessStart);
     $("guessX").addEventListener("click", () => closeOverlay(guessOverlay));
     guessOverlay.addEventListener("click", (e) => { if(e.target === guessOverlay) closeOverlay(guessOverlay); });
 
-    // Coinflip
-    const coin = $("coin");
-    const coinNameA = $("coinNameA");
-    const coinNameB = $("coinNameB");
-    const coinResult = $("coinResult");
-    let coinBusy = false;
-
-    function openCoinflip(){
-      const now = parseItems(input.value);
-      if(now.length !== 2) return;
-      coinNameA.textContent = now[0];
-      coinNameB.textContent = now[1];
-      coinResult.textContent = "";
-      coin.classList.remove("flipping");
-      coin.style.transform = "rotateY(0deg)";
-      openOverlay(coinOverlay);
-    }
-    $("miniCoin").addEventListener("click", openCoinflip);
-
-    $("coinStart").addEventListener("click", () => {
-      if(coinBusy) return;
-      const now = parseItems(input.value);
-      if(now.length !== 2) return;
-
-      coinBusy = true;
-      unlock("coin2");
-
-      const a = now[0], b = now[1];
-      coinNameA.textContent = a;
-      coinNameB.textContent = b;
-      coinResult.textContent = "…";
-
-      const heads = rand01() < 0.5;
-
-      const baseMs = clamp((soundState.coinDur || 6) * 1000, 1000, 60000);
-      const jitter = Math.floor(baseMs * (0.25 * rand01())); // bis 25% extra Spannung
-      const totalMs = clamp(baseMs + jitter, 1000, 60000);
-
-      const flips = 10 + randInt(0, 6);
-      const deg = flips * 180 + (heads ? 0 : 180);
-
-      coin.style.setProperty("--flipdeg", deg + "deg");
-      coin.classList.remove("flipping");
-      void coin.offsetWidth;
-
-      coin.style.animationDuration = (totalMs/1000).toFixed(2) + "s";
-      coin.classList.add("flipping");
-
-      setTimeout(() => {
-        coin.classList.remove("flipping");
-        coin.style.transform = heads ? "rotateY(0deg)" : "rotateY(180deg)";
-        const side = heads ? "Kopf" : "Zahl";
-        const winner = heads ? a : b;
-        coinResult.textContent = `Ergebnis: ${side} – ${winner}`;
-        pushHistory(`🪙 ${side}: ${winner}`);
-        showToast(`Coinflip: ${side} – ${winner}`);
-        coinBusy = false;
-      }, totalMs);
-    });
-
-    $("coinX").addEventListener("click", () => { coinBusy = false; closeOverlay(coinOverlay); });
-    $("coinClose").addEventListener("click", () => { coinBusy = false; closeOverlay(coinOverlay); });
-    coinOverlay.addEventListener("click", (e) => { if(e.target === coinOverlay){ coinBusy=false; closeOverlay(coinOverlay); } });
-
-    // TicTacToe
+    // MINI: TTT
+    const tttOverlay = $("tttOverlay");
     const tttGrid = $("tttGrid");
     const tttStatus = $("tttStatus");
     let ttt = Array(9).fill("");
@@ -1419,7 +1270,6 @@ test3</textarea>
       if(w){
         tttOver = true;
         tttStatus.textContent = (w==="draw") ? "Unentschieden" : (w==="X" ? "Du hast gewonnen" : "KI gewinnt");
-        if(w==="X") unlock("tttwin");
         tttRender();
         return;
       }
@@ -1428,7 +1278,6 @@ test3</textarea>
       if(w){
         tttOver = true;
         tttStatus.textContent = (w==="draw") ? "Unentschieden" : (w==="X" ? "Du hast gewonnen" : "KI gewinnt");
-        if(w==="X") unlock("tttwin");
       }else{
         tttStatus.textContent = "";
       }
@@ -1440,12 +1289,14 @@ test3</textarea>
       tttStatus.textContent = "";
       tttRender();
     }
+
     $("miniTtt").addEventListener("click", () => { tttReset(); openOverlay(tttOverlay); });
     $("tttX").addEventListener("click", () => closeOverlay(tttOverlay));
     $("tttReset").addEventListener("click", tttReset);
     tttOverlay.addEventListener("click", (e) => { if(e.target === tttOverlay) closeOverlay(tttOverlay); });
 
-    // Snake
+    // MINI: SNAKE
+    const snakeOverlay = $("snakeOverlay");
     const snakeCanvas = $("snakeCanvas");
     const sctx = snakeCanvas.getContext("2d");
     const snakeStatus = $("snakeStatus");
@@ -1469,7 +1320,7 @@ test3</textarea>
     function snakeGameOver(){
       snakeOver = true;
       snakeStop();
-      snakeStatus.textContent = "Game Over. Score: " + score;
+      snakeStatus.textContent = "Game Over. Score: " + score + " (Restart drücken)";
     }
     function snakeDraw(){
       sctx.clearRect(0,0,snakeCanvas.width,snakeCanvas.height);
@@ -1490,7 +1341,6 @@ test3</textarea>
       if(next.x === food.x && next.y === food.y){
         score++;
         snakeStatus.textContent = "Score: " + score;
-        if(score >= 10) unlock("snake10");
         food = randCell();
       }else{
         snake.pop();
@@ -1510,6 +1360,7 @@ test3</textarea>
         if(e.key === "ArrowRight" || e.key === "d") setDir(1,0);
       }
     });
+
     $("miniSnake").addEventListener("click", () => { openOverlay(snakeOverlay); snakeReset(); });
     $("snakeStart").addEventListener("click", () => {
       if(!snake || snakeOver) snakeReset();
@@ -1525,182 +1376,125 @@ test3</textarea>
     $("snakeX").addEventListener("click", () => { snakeStop(); closeOverlay(snakeOverlay); });
     snakeOverlay.addEventListener("click", (e) => { if(e.target === snakeOverlay){ snakeStop(); closeOverlay(snakeOverlay); } });
 
-    // Wheel actions
-    function spin(){
-      if(spinning) return;
+    // MINI: COINFLIP (FIXED)
+    const coinOverlay = $("coinOverlay");
+    const coin = $("coin");
+    const coinNameA = $("coinNameA");
+    const coinNameB = $("coinNameB");
+    const coinResult = $("coinResult");
+    const coinInfo = $("coinInfo");
+    let coinBusy = false;
+    let coinRAF = null;
 
-      items = parseItems(input.value);
-      updateCoinVisibility();
+    function openCoinflip(){
+      const now = parseItems(input.value);
+      if(now.length !== 2){
+        showToast("Coinflip geht nur bei 2");
+        syncCoinVisibility();
+        return;
+      }
+      const a = now[0], b = now[1];
+      coinNameA.textContent = a;
+      coinNameB.textContent = b;
+      coinInfo.textContent = `Kopf = ${a} | Zahl = ${b}`;
+      coinResult.textContent = "";
+      coin.style.transform = "rotateY(0deg)";
+      openOverlay(coinOverlay);
+    }
 
-      if(items.length < 2){
-        showToast("Mindestens 2 Einträge");
-        draw();
+    $("miniCoin").addEventListener("click", openCoinflip);
+
+    function stopCoinAnim(){
+      if(coinRAF){
+        cancelAnimationFrame(coinRAF);
+        coinRAF = null;
+      }
+    }
+
+    $("coinStart").addEventListener("click", () => {
+      if(coinBusy) return;
+
+      const now = parseItems(input.value);
+      if(now.length !== 2){
+        showToast("Coinflip geht nur bei 2");
+        syncCoinVisibility();
         return;
       }
 
-      spinning = true;
-      btnSpin.disabled = true;
-      btnRemoveWinner.disabled = true;
+      coinBusy = true;
 
-      unlock("firstspin");
+      const a = now[0], b = now[1];
+      coinNameA.textContent = a;
+      coinNameB.textContent = b;
+      coinInfo.textContent = `Kopf = ${a} | Zahl = ${b}`;
+      coinResult.textContent = "…";
 
-      const reverse = rand01() < 0.02;
-      if(reverse) unlock("reverse2");
+      const heads = rand01() < 0.5; // true=Kopf=a, false=Zahl=b
+      const baseMs = clamp((settings.coinDur || 6) * 1000, 1000, 60000);
+      const jitter = Math.floor(baseMs * (0.25 * rand01()));
+      const totalMs = clamp(baseMs + jitter, 1000, 60000);
 
-      const plotTwist = rand01() < 0.01;
-      if(plotTwist) unlock("plot");
-
-      playSpinLoop();
-
-      const baseMs = clamp((soundState.spinDur || 3) * 1000, 1000, 60000);
-      const duration = clamp(baseMs * (superSpinArmed ? 1.7 : 1.0), 1000, 60000);
-
-      const extraSpins = (superSpinArmed ? 20 : 8) + (plotTwist ? 1 : 0);
-      superSpinArmed = false;
-
-      const n = items.length;
-      const slice = TAU / n;
-
-      const targetIndex = randInt(0, n-1);
-      const inside = (rand01()*0.6 + 0.2) * slice;
-
-      const pointerAngle = -Math.PI/2;
-      const targetAngle = pointerAngle - (targetIndex*slice + inside);
-
-      const startAngle = angle;
-      const endAngle = targetAngle - (reverse ? -extraSpins*TAU : extraSpins*TAU);
+      const finalDeg = heads ? 0 : 180;
 
       const start = performance.now();
-      spinStartAt = start;
-      speedBoostUsed = false;
-      boostRequested = false;
+      const spinSpeed = 360 * 6; // 6 Umdrehungen pro Sekunde am Anfang
+      const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 
-      const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+      stopCoinAnim();
+
+      const startBase = 0;
+      const extraTurns = 8 + randInt(0, 6); // extra Spannung
+      const endTarget = (extraTurns * 360) + finalDeg;
 
       function frame(nowT){
-        const t = Math.min(1, (nowT - start) / duration);
-        const e = easeOutCubic(t);
-
-        if(boostRequested){
-          boostRequested = false;
-          angle += (reverse ? -1 : 1) * (0.35 * TAU);
-          wheelBox.classList.add("superGlow");
-          setTimeout(() => wheelBox.classList.remove("superGlow"), 900);
-        }
-
-        angle = startAngle + (endAngle - startAngle) * e;
-        draw();
+        const t = Math.min(1, (nowT - start) / totalMs);
+        const e = easeOut(t);
+        const deg = startBase + (endTarget - startBase) * e;
+        coin.style.transform = `rotateY(${deg}deg)`;
 
         if(t < 1){
-          requestAnimationFrame(frame);
+          coinRAF = requestAnimationFrame(frame);
         }else{
-          stopSpinLoop();
-          spinning = false;
-          btnSpin.disabled = false;
-
-          angle = ((angle % TAU) + TAU) % TAU;
-
-          lastWinner = currentWinner();
-          updateRemoveButton();
-
-          pushHistory(lastWinner.label);
-          showToast("Ergebnis: " + lastWinner.label);
-
-          if(plotTwist && items.length >= 3){
-            angle = (angle + (reverse ? -1 : 1) * (slice * 0.98));
-            angle = ((angle % TAU) + TAU) % TAU;
-            draw();
-            lastWinner = currentWinner();
-            pushHistory("🎭 " + lastWinner.label);
-            showToast("Plot Twist: " + lastWinner.label);
-            updateRemoveButton();
-          }
+          coin.style.transform = `rotateY(${finalDeg}deg)`;
+          const side = heads ? "Kopf" : "Zahl";
+          const winner = heads ? a : b;
+          coinResult.textContent = `Ergebnis: ${side} – ${winner}`;
+          pushHistory(`🪙 ${winner}`);
+          showToast(`Coinflip: ${winner}`);
+          coinBusy = false;
+          stopCoinAnim();
         }
       }
-      requestAnimationFrame(frame);
-    }
 
-    function removeLastWinner(){
-      if(!lastWinner) return;
-      if(mode.value !== "remove"){
-        btnRemoveWinner.disabled = true;
-        showToast("Modus: Nudel lassen");
-        return;
-      }
-      playSad();
-      const label = lastWinner.label;
-      const idx = items.findIndex(x => x === label);
-      if(idx === -1) return;
-
-      items.splice(idx, 1);
-      input.value = items.join("\n");
-
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-
-      unlock("remove");
-      showToast("Nudel entfernt");
-      updateCoinVisibility();
-      draw();
-    }
-
-    function shuffle(){
-      items = parseItems(input.value);
-      for(let i = items.length - 1; i > 0; i--){
-        const j = randInt(0, i);
-        [items[i], items[j]] = [items[j], items[i]];
-      }
-      input.value = items.join("\n");
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      showToast("Gemischt");
-      updateCoinVisibility();
-      draw();
-    }
-
-    function reset(){
-      angle = 0;
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      showToast("Reset");
-      draw();
-    }
-
-    btnSpin.addEventListener("click", spin);
-    btnRemoveWinner.addEventListener("click", removeLastWinner);
-    btnShuffle.addEventListener("click", shuffle);
-    btnReset.addEventListener("click", reset);
-
-    input.addEventListener("input", () => {
-      items = parseItems(input.value);
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      updateCoinVisibility();
-      draw();
+      coinRAF = requestAnimationFrame(frame);
     });
-    mode.addEventListener("change", updateRemoveButton);
+
+    $("coinX").addEventListener("click", () => { coinBusy = false; stopCoinAnim(); closeOverlay(coinOverlay); });
+    $("coinClose").addEventListener("click", () => { coinBusy = false; stopCoinAnim(); closeOverlay(coinOverlay); });
+    coinOverlay.addEventListener("click", (e) => { if(e.target === coinOverlay){ coinBusy=false; stopCoinAnim(); closeOverlay(coinOverlay); } });
 
     // ESC close
     document.addEventListener("keydown", (e) => {
       if(e.key !== "Escape") return;
-      closeOverlay(ahaOverlay);
       closeOverlay(linksOverlay);
-      closeOverlay(soundOverlay);
+      closeOverlay(settingsOverlay);
       closeOverlay(trophyOverlay);
       closeOverlay(chanceOverlay);
       closeOverlay(coinOverlay);
-      closeOverlay(tttOverlay);
       closeOverlay(guessOverlay);
+      closeOverlay(tttOverlay);
       snakeStop();
       closeOverlay(snakeOverlay);
+      stopCoinAnim();
+      coinBusy = false;
     });
 
     // init
     items = parseItems(input.value);
-    updateCoinVisibility();
-    syncSettingsUi();
-    saveSound();
+    syncCoinVisibility();
+    updateRemoveButton();
     draw();
+    saveSettings();
   </script>
 </body>
 </html>
