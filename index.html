@@ -169,7 +169,6 @@
       box-shadow: 0 0 14px rgba(0,195,255,.06);
     }
     .miniBtn:hover{ background: rgba(255,255,255,.10); }
-    .miniBtn.hidden{ display:none; }
 
     .wheelArea{
       grid-column: 2 / 3;
@@ -196,6 +195,7 @@
       border-right: 18px solid transparent;
       border-bottom: 34px solid rgba(255,255,255,.95);
       filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
+      z-index: 2;
     }
     .centerCap{
       position:absolute;
@@ -206,6 +206,7 @@
       border-radius: 50%;
       background: rgba(255,255,255,.95);
       box-shadow: inset 0 0 0 10px rgba(0,0,0,.12), 0 0 26px rgba(0,195,255,.18);
+      z-index: 1;
     }
 
     .rightCol{
@@ -423,14 +424,14 @@
       letter-spacing: .2px;
       margin-top: 6px;
       word-break: break-word;
+      transition: transform 0.2s ease;
     }
     .winnerPulse{
-      animation: pulseGlow 1.05s ease-in-out infinite;
-      text-shadow: 0 0 14px rgba(0,195,255,.35), 0 0 22px rgba(106,92,255,.22);
+      animation: pulseGlow 0.8s ease-in-out 3;
     }
     @keyframes pulseGlow{
       0%{ transform: scale(1); filter: drop-shadow(0 0 0 rgba(0,0,0,0)); }
-      50%{ transform: scale(1.03); filter: drop-shadow(0 0 12px rgba(0,195,255,.20)); }
+      50%{ transform: scale(1.1); filter: drop-shadow(0 0 20px var(--blue)); }
       100%{ transform: scale(1); filter: drop-shadow(0 0 0 rgba(0,0,0,0)); }
     }
     .winnerSub{
@@ -452,19 +453,20 @@
     }
     .trophyRow{
       display:flex;
-      align-items:flex-start;
+      align-items:center;
       gap: 10px;
       padding: 10px 12px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.20);
-      opacity: .55;
+      opacity: .5;
       filter: grayscale(1);
+      transition: opacity 0.3s ease, filter 0.3s ease;
     }
     .trophyRow.unlocked{
       opacity: 1;
       filter: none;
-      border-color: rgba(0,195,255,.20);
+      border-color: rgba(0,195,255,.3);
       background: rgba(0,195,255,.06);
       box-shadow: 0 0 14px rgba(0,195,255,.08);
     }
@@ -475,6 +477,7 @@
       display:grid;
       place-items:center;
       font-weight: 1200;
+      font-size: 18px;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.08);
       flex: 0 0 auto;
@@ -503,14 +506,11 @@
   <div class="overlay" id="linksOverlay">
     <div class="box">
       <button class="closeX" id="linksX">×</button>
-      <h2>Links</h2>
+      <h2>Socials</h2>
       <div class="boxActions">
         <button class="action" id="openTikTok">TikTok</button>
         <button class="action secondary" id="openInsta">Instagram</button>
         <button class="action secondary" id="openTwitch">Twitch</button>
-      </div>
-      <div class="boxActions">
-        <button class="action secondary" id="linksClose">Schließen</button>
       </div>
     </div>
   </div>
@@ -519,40 +519,31 @@
     <div class="box">
       <button class="closeX" id="settingsX">×</button>
       <h2>Einstellungen</h2>
-
       <div style="display:grid;gap:14px;margin-top:8px;">
         <div class="rangeRow">
           <div style="display:flex;justify-content:space-between;gap:10px;">
-            <div style="font-weight:1100;opacity:.92;">Rad drehen</div>
+            <div style="font-weight:1100;opacity:.92;">Rad Sound</div>
             <div id="spinVolLabel" style="font-weight:1200;opacity:.9;">8%</div>
           </div>
           <input id="spinVol" type="range" min="0" max="100" value="8">
         </div>
-
         <div class="rangeRow">
           <div style="display:flex;justify-content:space-between;gap:10px;">
-            <div style="font-weight:1100;opacity:.92;">Nudel entfernen</div>
+            <div style="font-weight:1100;opacity:.92;">Lösch Sound</div>
             <div id="sadVolLabel" style="font-weight:1200;opacity:.9;">40%</div>
           </div>
           <input id="sadVol" type="range" min="0" max="100" value="40">
         </div>
-
         <div class="rangeRow">
           <div style="display:flex;justify-content:space-between;gap:10px;">
             <div style="font-weight:1100;opacity:.92;">Rad Dauer</div>
             <div id="spinDurLabel" style="font-weight:1200;opacity:.9;">3s</div>
           </div>
-          <input id="spinDur" type="range" min="1" max="60" value="3">
+          <input id="spinDur" type="range" min="1" max="10" value="3">
         </div>
-
-        <label style="display:flex;gap:10px;align-items:center;justify-content:center;font-weight:1100;opacity:.92;">
-          <input id="muteAll" type="checkbox">
-          Alles stumm
+        <label style="display:flex;gap:10px;align-items:center;justify-content:center;font-weight:1100;opacity:.92;cursor:pointer;">
+          <input id="muteAll" type="checkbox"> Stumm
         </label>
-      </div>
-
-      <div class="boxActions">
-        <button class="action secondary" id="settingsClose">Schließen</button>
       </div>
     </div>
   </div>
@@ -561,17 +552,11 @@
     <div class="box">
       <button class="closeX" id="trophyX">×</button>
       <h2>Erfolge</h2>
-
-      <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;opacity:.9;font-weight:1100;">
-        <div>Drehs: <span id="cntSpins">0</span></div>
-        <div>Entfernt: <span id="cntRemoves">0</span></div>
+      <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;opacity:.9;font-weight:1100;background:rgba(0,0,0,.2);padding:10px;border-radius:10px;margin: 10px 0;">
+        <div>🔥 Spins: <span id="cntSpins">0</span></div>
+        <div>💔 Gelöscht: <span id="cntRemoves">0</span></div>
       </div>
-
       <div class="trophyList" id="trophyList"></div>
-
-      <div class="boxActions">
-        <button class="action secondary" id="trophyClose">Schließen</button>
-      </div>
     </div>
   </div>
 
@@ -596,9 +581,8 @@
         <option value="keep">Nudel lassen</option>
         <option value="remove" selected>Nudel entfernen</option>
       </select>
-
-      <button class="chipBtn" id="linksBtn">Links</button>
-      <button class="chipBtn" id="settingsBtn">Einstellungen</button>
+      <button class="chipBtn" id="linksBtn">Socials</button>
+      <button class="chipBtn" id="settingsBtn">⚙️</button>
     </div>
 
     <div class="topRight">
@@ -607,11 +591,11 @@
 
     <div class="leftCol">
       <div class="miniCard">
-        <div class="miniCardHeader">Mini Games (später)</div>
+        <div class="miniCardHeader">Mini Games</div>
         <div class="miniCardBody">
-          <div class="miniBtn" id="miniDummy1">kommt gleich</div>
-          <div class="miniBtn" id="miniDummy2">kommt gleich</div>
-          <div class="miniBtn" id="miniDummy3">kommt gleich</div>
+          <button class="miniBtn" id="gameSnake">Snake</button>
+          <button class="miniBtn" id="gameTTT">TicTacToe</button>
+          <button class="miniBtn" id="gameCoin">Coinflip</button>
         </div>
       </div>
     </div>
@@ -681,7 +665,7 @@ test3</textarea>
         twitch: "https://www.twitch.tv/zbaffe"
       };
 
-      // Confetti
+      // Confetti System
       const conf = $("confetti");
       const cctx = conf.getContext("2d");
       let confettiParts = [];
@@ -696,18 +680,18 @@ test3</textarea>
 
       const startConfetti = (ms=1400) => {
         confettiEndAt = performance.now() + ms;
-        const count = 140;
+        const count = 150;
         const w = conf.width, h = conf.height;
         const colors = ["#00c3ff","#6a5cff","#ff2bd6","#ffffff","#4d9fff"];
         for(let i=0;i<count;i++){
           confettiParts.push({
             x: rand01()*w,
-            y: -rand01()*h*0.2,
-            vx: (rand01()-0.5)*3*devicePixelRatio,
-            vy: (2+rand01()*6)*devicePixelRatio,
+            y: -rand01()*h*0.3,
+            vx: (rand01()-0.5)*5*devicePixelRatio,
+            vy: (2+rand01()*8)*devicePixelRatio,
             rot: rand01()*TAU,
-            vr: (rand01()-0.5)*0.2,
-            s: (4+rand01()*8)*devicePixelRatio,
+            vr: (rand01()-0.5)*0.3,
+            s: (5+rand01()*10)*devicePixelRatio,
             c: colors[i%colors.length],
             a: 1
           });
@@ -722,7 +706,7 @@ test3</textarea>
           p.x += p.vx;
           p.y += p.vy;
           p.rot += p.vr;
-          p.vy += 0.04*devicePixelRatio;
+          p.vy += 0.08*devicePixelRatio; // Gravity
           if(p.y > h + 50*devicePixelRatio) p.a = 0;
           cctx.save();
           cctx.globalAlpha = Math.max(0, p.a);
@@ -741,24 +725,34 @@ test3</textarea>
         }
       }
 
-      // Trophies basic
+      // Trophies System
       const TROPHIES = [
         { id:"first_spin", icon:"🍜", name:"Warm-Up", desc:"Erster Spin" },
+        { id:"ten_spins", icon:"🔥", name:"Pro-Spinner", desc:"10 Spins" },
         { id:"first_remove", icon:"💔", name:"No Mercy", desc:"Erstes Entfernen" },
         { id:"plot_survivor", icon:"🎭", name:"Plot Twist Survivor", desc:"Fake-Winner erlebt" }
       ];
       let trophyState = {};
-      try{ trophyState = JSON.parse(localStorage.getItem("wheelTrophies") || "{}") || {}; }catch(e){}
+      try{ trophyState = JSON.parse(localStorage.getItem("wheelTrophies") || "{}"); }catch(e){}
       let counters = { spins: 0, removes: 0 };
       try{ counters = JSON.parse(localStorage.getItem("wheelCounters") || "null") || counters; }catch(e){}
+      
       const saveCounters = ()=>{ try{ localStorage.setItem("wheelCounters", JSON.stringify(counters)); }catch(e){} };
       const saveTrophies = ()=>{ try{ localStorage.setItem("wheelTrophies", JSON.stringify(trophyState)); }catch(e){} };
+      
+      const checkTrophies = () => {
+        if(counters.spins >= 1) unlockTrophy("first_spin");
+        if(counters.spins >= 10) unlockTrophy("ten_spins");
+        if(counters.removes >= 1) unlockTrophy("first_remove");
+      };
+
       const unlockTrophy = (id) => {
         if(trophyState[id]) return;
         trophyState[id] = true;
         saveTrophies();
-        showToast("Erfolg freigeschaltet");
+        showToast("🏆 Erfolg: " + TROPHIES.find(t=>t.id===id).name);
       };
+      
       const renderTrophies = () => {
         $("cntSpins").textContent = String(counters.spins||0);
         $("cntRemoves").textContent = String(counters.removes||0);
@@ -772,7 +766,7 @@ test3</textarea>
         }
       };
 
-      // Sounds + settings
+      // Sounds + Settings
       const SOUND_FILES = { spin:"spin.mp3", sad:"sad.mp3", lk:"lk.mp3" };
       let spinSfx=null, sadSfx=null, lkSfx=null;
 
@@ -816,7 +810,7 @@ test3</textarea>
       };
       document.addEventListener("pointerdown", ()=>{ try{ initSounds(); }catch(e){} }, { once:true });
 
-      // Wheel
+      // Wheel Logic
       const canvas = $("wheel");
       const ctx = canvas.getContext("2d");
 
@@ -858,9 +852,9 @@ test3</textarea>
 
         if(items.length===0){
           ctx.beginPath(); ctx.arc(cx,cy,r,0,TAU);
-          ctx.fillStyle="rgba(255,255,255,.08)"; ctx.fill();
-          ctx.fillStyle="rgba(255,255,255,.65)";
-          ctx.font="900 44px system-ui";
+          ctx.fillStyle="rgba(255,255,255,.05)"; ctx.fill();
+          ctx.fillStyle="rgba(255,255,255,.4)";
+          ctx.font="900 32px system-ui";
           ctx.textAlign="center";
           ctx.fillText("Keine Einträge", cx, cy);
           return;
@@ -868,11 +862,6 @@ test3</textarea>
 
         const n=items.length;
         const slice=TAU/n;
-
-        ctx.beginPath();
-        ctx.arc(cx,cy,r*1.04,0,TAU);
-        ctx.fillStyle="rgba(255,255,255,.10)";
-        ctx.fill();
 
         ctx.save();
         ctx.translate(cx,cy);
@@ -888,36 +877,26 @@ test3</textarea>
           ctx.closePath();
           ctx.fillStyle=niceColor(i);
           ctx.fill();
-
-          ctx.strokeStyle="rgba(0,0,0,.18)";
-          ctx.lineWidth=6;
+          ctx.strokeStyle="rgba(0,0,0,.15)";
+          ctx.lineWidth=4;
           ctx.stroke();
 
           const label=items[i]||"—";
           let size=44;
-          if(label.length>16) size=34;
-          if(label.length>24) size=28;
+          if(label.length>12) size=32;
+          if(label.length>20) size=24;
 
           ctx.save();
           ctx.rotate(start+slice/2);
           ctx.textAlign="right";
-          ctx.fillStyle="rgba(0,0,0,.78)";
+          ctx.fillStyle="rgba(0,0,0,.8)";
           ctx.font=`900 ${size}px system-ui`;
-          ctx.shadowColor="rgba(255,255,255,.45)";
-          ctx.shadowBlur=5;
-          ctx.fillText(label, r-24, 14);
+          ctx.shadowColor="rgba(255,255,255,.3)";
+          ctx.shadowBlur=4;
+          ctx.fillText(label, r-20, 10);
           ctx.restore();
         }
-
         ctx.restore();
-
-        const grad=ctx.createRadialGradient(cx,cy,r*0.2,cx,cy,r*1.08);
-        grad.addColorStop(0,"rgba(255,255,255,.08)");
-        grad.addColorStop(1,"rgba(0,0,0,.36)");
-        ctx.beginPath();
-        ctx.arc(cx,cy,r,0,TAU);
-        ctx.fillStyle=grad;
-        ctx.fill();
       };
 
       const currentWinner = ()=>{
@@ -964,7 +943,7 @@ test3</textarea>
         return true;
       };
 
-      // Winner popup + fake winner (selten + cooldown)
+      // Winner popup + Pulsing + Confetti
       const winnerOverlay = $("winnerOverlay");
       const winnerNameEl = $("winnerName");
       const winnerSubEl = $("winnerSub");
@@ -988,7 +967,7 @@ test3</textarea>
       const celebrate = ()=>{
         winnerNameEl.classList.add("winnerPulse");
         startConfetti(1400);
-        setTimeout(()=>winnerNameEl.classList.remove("winnerPulse"), 1800);
+        setTimeout(()=>winnerNameEl.classList.remove("winnerPulse"), 2400);
       };
 
       const showWinnerPopup = (realName)=>{
@@ -1016,7 +995,6 @@ test3</textarea>
             fakeTimer=null;
             celebrate();
           },700);
-
           return;
         }
 
@@ -1038,13 +1016,12 @@ test3</textarea>
         if(pendingRealWinner){ showToast("Warte…"); return; }
         const name=winnerNameEl.textContent||"";
         if(!name) return;
-
         playSad();
         const ok=removeByName(name);
         if(ok){
           counters.removes=(counters.removes||0)+1;
           saveCounters();
-          unlockTrophy("first_remove");
+          checkTrophies();
           showToast("Nudel entfernt");
           lastWinner=null;
           btnRemoveWinner.disabled=true;
@@ -1052,44 +1029,33 @@ test3</textarea>
         }
       });
 
-      // Spin / Buttons
+      // Spin / Logic
       const spin = ()=>{
         if(spinning) return;
-
         items=parseItems(input.value);
         renderNameChips();
         draw();
-
-        if(items.length<2){
-          showToast("Mindestens 2 Einträge zum Drehen");
-          return;
-        }
+        if(items.length<2){ showToast("Mindestens 2 Einträge"); return; }
 
         counters.spins=(counters.spins||0)+1;
         saveCounters();
-        unlockTrophy("first_spin");
+        checkTrophies();
 
         spinning=true;
         btnSpin.disabled=true;
         btnRemoveWinner.disabled=true;
-
         playSpinLoop();
 
-        const duration = clamp((settings.spinDur||3)*1000, 1000, 60000);
-        const extraSpins = 8;
-
+        const duration = clamp((settings.spinDur||3)*1000, 1000, 10000);
+        const extraSpins = 4 + randInt(0,3);
         const n=items.length;
         const slice=TAU/n;
-
         const targetIndex=randInt(0,n-1);
-        const inside=(rand01()*0.6+0.2)*slice;
-
+        const inside=(rand01()*0.8+0.1)*slice;
         const pointer=-Math.PI/2;
         const targetAngle=pointer-(targetIndex*slice+inside);
-
         const startAngle=angle;
         const endAngle=targetAngle-extraSpins*TAU;
-
         const start=performance.now();
         const easeOutCubic=(t)=>1-Math.pow(1-t,3);
 
@@ -1098,39 +1064,30 @@ test3</textarea>
           const e=easeOutCubic(t);
           angle=startAngle+(endAngle-startAngle)*e;
           draw();
-
-          if(t<1){
-            requestAnimationFrame(frame);
+          if(t<1){ requestAnimationFrame(frame);
           }else{
             stopSpinLoop();
             spinning=false;
             btnSpin.disabled=false;
-
             angle=((angle%TAU)+TAU)%TAU;
-
             lastWinner=currentWinner();
             pushHistory(lastWinner.label);
             updateRemoveButton();
             showWinnerPopup(lastWinner.label);
           }
         };
-
         requestAnimationFrame(frame);
       };
 
       const removeLastWinner = ()=>{
         if(!lastWinner) return;
-        if(mode.value!=="remove"){
-          btnRemoveWinner.disabled=true;
-          showToast("Modus: Nudel lassen");
-          return;
-        }
+        if(mode.value!=="remove"){ showToast("Modus: Nudel lassen"); return; }
         playSad();
         const ok=removeByName(lastWinner.label);
         if(ok){
           counters.removes=(counters.removes||0)+1;
           saveCounters();
-          unlockTrophy("first_remove");
+          checkTrophies();
           showToast("Nudel entfernt");
           lastWinner=null;
           btnRemoveWinner.disabled=true;
@@ -1174,7 +1131,7 @@ test3</textarea>
 
       mode.addEventListener("change", updateRemoveButton);
 
-      // Overlays wiring
+      // Overlays
       const linksOverlay = $("linksOverlay");
       const settingsOverlay = $("settingsOverlay");
       const trophyOverlay = $("trophyOverlay");
@@ -1184,74 +1141,53 @@ test3</textarea>
       $("trophyBtn").addEventListener("click", ()=>{ renderTrophies(); openOverlay(trophyOverlay); });
 
       $("linksX").addEventListener("click", ()=>closeOverlay(linksOverlay));
-      $("linksClose").addEventListener("click", ()=>closeOverlay(linksOverlay));
       linksOverlay.addEventListener("click", (e)=>{ if(e.target===linksOverlay) closeOverlay(linksOverlay); });
 
       $("settingsX").addEventListener("click", ()=>closeOverlay(settingsOverlay));
-      $("settingsClose").addEventListener("click", ()=>closeOverlay(settingsOverlay));
       settingsOverlay.addEventListener("click", (e)=>{ if(e.target===settingsOverlay) closeOverlay(settingsOverlay); });
 
       $("trophyX").addEventListener("click", ()=>closeOverlay(trophyOverlay));
-      $("trophyClose").addEventListener("click", ()=>closeOverlay(trophyOverlay));
       trophyOverlay.addEventListener("click", (e)=>{ if(e.target===trophyOverlay) closeOverlay(trophyOverlay); });
 
       $("openTikTok").addEventListener("click", ()=>window.open(LINKS.tiktok,"_blank"));
       $("openInsta").addEventListener("click", ()=>window.open(LINKS.insta,"_blank"));
       $("openTwitch").addEventListener("click", ()=>window.open(LINKS.twitch,"_blank"));
 
-      // Settings UI
+      // Settings
       const spinVol=$("spinVol"), sadVol=$("sadVol"), spinDur=$("spinDur"), muteAll=$("muteAll");
       const spinVolLabel=$("spinVolLabel"), sadVolLabel=$("sadVolLabel"), spinDurLabel=$("spinDurLabel");
 
       function syncSettingsUi(){
         spinVol.value=String(Math.round(clamp(settings.spinVol,0,1)*100));
         sadVol.value=String(Math.round(clamp(settings.sadVol,0,1)*100));
-        spinDur.value=String(clamp(Math.round(settings.spinDur||3),1,60));
+        spinDur.value=String(clamp(Math.round(settings.spinDur||3),1,10));
         muteAll.checked=!!settings.muted;
-
         spinVolLabel.textContent=spinVol.value+"%";
         sadVolLabel.textContent=sadVol.value+"%";
         spinDurLabel.textContent=spinDur.value+"s";
       }
 
-      spinVol.addEventListener("input", ()=>{
-        settings.spinVol=Number(spinVol.value)/100;
-        settings.muted=false;
-        muteAll.checked=false;
-        spinVolLabel.textContent=spinVol.value+"%";
-        applyVolumes(); saveSettings();
-      });
-      sadVol.addEventListener("input", ()=>{
-        settings.sadVol=Number(sadVol.value)/100;
-        settings.muted=false;
-        muteAll.checked=false;
-        sadVolLabel.textContent=sadVol.value+"%";
-        applyVolumes(); saveSettings();
-      });
-      spinDur.addEventListener("input", ()=>{
-        settings.spinDur=clamp(Number(spinDur.value),1,60);
-        spinDurLabel.textContent=spinDur.value+"s";
-        saveSettings();
-      });
-      muteAll.addEventListener("change", ()=>{
-        settings.muted=muteAll.checked;
-        applyVolumes(); saveSettings();
-      });
+      spinVol.addEventListener("input", ()=>{ settings.spinVol=Number(spinVol.value)/100; spinVolLabel.textContent=spinVol.value+"%"; applyVolumes(); saveSettings(); });
+      sadVol.addEventListener("input", ()=>{ settings.sadVol=Number(sadVol.value)/100; sadVolLabel.textContent=sadVol.value+"%"; applyVolumes(); saveSettings(); });
+      spinDur.addEventListener("input", ()=>{ settings.spinDur=clamp(Number(spinDur.value),1,10); spinDurLabel.textContent=spinDur.value+"s"; saveSettings(); });
+      muteAll.addEventListener("change", ()=>{ settings.muted=muteAll.checked; applyVolumes(); saveSettings(); });
+
+      // Mini Game Placeholder Actions
+      $("gameSnake").addEventListener("click", ()=>showToast("Snake wird gestartet..."));
+      $("gameTTT").addEventListener("click", ()=>showToast("TicTacToe wird gestartet..."));
+      $("gameCoin").addEventListener("click", ()=>showToast("Coinflip wird gestartet..."));
 
       document.addEventListener("keydown", (e)=>{
         if(e.key!=="Escape") return;
-        closeOverlay(linksOverlay);
-        closeOverlay(settingsOverlay);
-        closeOverlay(trophyOverlay);
-        clearFakeTimer();
-        closeOverlay(winnerOverlay);
+        closeOverlay(linksOverlay); closeOverlay(settingsOverlay); closeOverlay(trophyOverlay);
+        clearFakeTimer(); closeOverlay(winnerOverlay);
       });
 
       // Init
       items=parseItems(input.value);
       renderNameChips();
+      checkTrophies();
       syncSettingsUi();
-      saveSettings();
       draw();
     })();
   </script>
