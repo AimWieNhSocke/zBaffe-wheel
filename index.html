@@ -9,17 +9,13 @@
     :root{
       --bg: rgba(8, 6, 18, .94);
       --text: #ffffff;
-
       --blue: #00c3ff;
       --violet: #6a5cff;
       --pink: #ff2bd6;
-
       --glowSoft: 0 0 18px rgba(0,195,255,.18), 0 0 28px rgba(106,92,255,.14);
       --glowStrong: 0 0 18px rgba(0,195,255,.35), 0 0 28px rgba(106,92,255,.28);
-
       --card: rgba(0,0,0,.20);
       --cardBorder: rgba(255,255,255,.12);
-
       --nameBox: rgba(110, 80, 255, .30);
       --nameBoxBorder: rgba(110, 80, 255, .55);
     }
@@ -959,13 +955,13 @@ test3</textarea>
       }
     }
 
-    // ========= Trophys + Counter =========
+    // ========= Trophy + Counter =========
     const TROPHIES = [
-      { id:"ttt_master", icon:"❌", name:"TicTacToe Meister", desc:"KI geschlagen" },
-      { id:"plot_survivor", icon:"🎭", name:"Plot Twist Survivor", desc:"Fake-Winner erlebt" },
-      { id:"snake_best10", icon:"🐍", name:"Snake Highscore 10+", desc:"Highscore erreicht" },
       { id:"first_spin", icon:"🍜", name:"Warm-Up", desc:"Erster Spin" },
-      { id:"first_remove", icon:"💔", name:"No Mercy", desc:"Erstes Entfernen" }
+      { id:"first_remove", icon:"💔", name:"No Mercy", desc:"Erstes Entfernen" },
+      { id:"plot_survivor", icon:"🎭", name:"Plot Twist Survivor", desc:"Fake-Winner erlebt" },
+      { id:"ttt_master", icon:"❌", name:"TicTacToe Meister", desc:"KI geschlagen" },
+      { id:"snake_best10", icon:"🐍", name:"Snake Highscore 10+", desc:"Highscore 10 erreicht" }
     ];
 
     let trophyState = {};
@@ -1090,18 +1086,21 @@ test3</textarea>
     let lastWinner = null;
 
     function parseItems(text){
-      return text.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      return text.split(/\\r?\\n/).map(s => s.trim()).filter(Boolean);
     }
+
     function syncCoinVisibility(){
       const now = parseItems(input.value);
       const btn = $("miniCoin");
       if(now.length === 2) btn.classList.remove("hidden");
       else btn.classList.add("hidden");
     }
+
     function updateRemoveButton(){
       const canRemove = (mode.value === "remove") && items.length > 1 && !!lastWinner;
       btnRemoveWinner.disabled = !canRemove;
     }
+
     function pushHistory(text){
       const div = document.createElement("div");
       div.className = "histItem";
@@ -1109,6 +1108,7 @@ test3</textarea>
       historyList.prepend(div);
       while(historyList.children.length > 10) historyList.removeChild(historyList.lastChild);
     }
+
     function niceColor(i){
       const colors = ["#00c3ff","#6a5cff","#ff2bd6","#4d9fff","#8a5cff"];
       return colors[i % colors.length];
@@ -1169,7 +1169,7 @@ test3</textarea>
         ctx.rotate(start + slice/2);
         ctx.textAlign = "right";
         ctx.fillStyle = "rgba(0,0,0,.78)";
-        ctx.font = `900 ${size}px system-ui`;
+        ctx.font = \`900 \${size}px system-ui\`;
         ctx.shadowColor = "rgba(255,255,255,.45)";
         ctx.shadowBlur = 5;
         ctx.fillText(label, r - 24, 14);
@@ -1202,10 +1202,10 @@ test3</textarea>
       for(const name of now){
         const chip = document.createElement("div");
         chip.className = "chip";
-        chip.innerHTML = `<div class="t">${name}</div><button class="x" title="Löschen">×</button>`;
+        chip.innerHTML = \`<div class="t">\${name}</div><button class="x" title="Löschen">×</button>\`;
         chip.querySelector(".x").addEventListener("click", () => {
           const next = parseItems(input.value).filter(n => n !== name);
-          input.value = next.join("\n");
+          input.value = next.join("\\n");
           items = next;
           lastWinner = null;
           btnRemoveWinner.disabled = true;
@@ -1217,250 +1217,18 @@ test3</textarea>
       }
     }
 
-    function spin(){
-      if(spinning) return;
-
-      items = parseItems(input.value);
-      syncCoinVisibility();
-      renderNameChips();
-      draw();
-
-      if(items.length < 2){
-        showToast("Mindestens 2 Einträge zum Drehen");
-        return;
-      }
-
-      counters.spins = (counters.spins||0) + 1;
-      saveCounters();
-      unlockTrophy("first_spin");
-
-      spinning = true;
-      btnSpin.disabled = true;
-      btnRemoveWinner.disabled = true;
-
-      playSpinLoop();
-
-      const duration = clamp((settings.spinDur || 3) * 1000, 1000, 60000);
-      const extraSpins = 8;
-
-      const n = items.length;
-      const slice = TAU / n;
-
-      const targetIndex = randInt(0, n-1);
-      const inside = (rand01()*0.6 + 0.2) * slice;
-
-      const pointerAngle = -Math.PI/2;
-      const targetAngle = pointerAngle - (targetIndex*slice + inside);
-
-      const startAngle = angle;
-      const endAngle = targetAngle - extraSpins*TAU;
-
-      const start = performance.now();
-      const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
-
-      function frame(nowT){
-        const t = Math.min(1, (nowT - start) / duration);
-        const e = easeOutCubic(t);
-
-        angle = startAngle + (endAngle - startAngle) * e;
-        draw();
-
-        if(t < 1){
-          requestAnimationFrame(frame);
-        }else{
-          stopSpinLoop();
-          spinning = false;
-          btnSpin.disabled = false;
-
-          angle = ((angle % TAU) + TAU) % TAU;
-
-          lastWinner = currentWinner();
-          pushHistory(lastWinner.label);
-          updateRemoveButton();
-
-          showWinnerPopup(lastWinner.label);
-        }
-      }
-      requestAnimationFrame(frame);
-    }
-
     function removeByName(name){
       const idx = items.findIndex(x => x === name);
       if(idx === -1) return false;
       items.splice(idx, 1);
-      input.value = items.join("\n");
+      input.value = items.join("\\n");
       syncCoinVisibility();
       renderNameChips();
       draw();
       return true;
     }
 
-    function removeLastWinner(){
-      if(!lastWinner) return;
-      if(mode.value !== "remove"){
-        btnRemoveWinner.disabled = true;
-        showToast("Modus: Nudel lassen");
-        return;
-      }
-      playSad();
-      const ok = removeByName(lastWinner.label);
-      if(ok){
-        counters.removes = (counters.removes||0) + 1;
-        saveCounters();
-        unlockTrophy("first_remove");
-        showToast("Nudel entfernt");
-        lastWinner = null;
-        btnRemoveWinner.disabled = true;
-      }
-    }
-
-    function shuffle(){
-      items = parseItems(input.value);
-      for(let i = items.length - 1; i > 0; i--){
-        const j = randInt(0, i);
-        [items[i], items[j]] = [items[j], items[i]];
-      }
-      input.value = items.join("\n");
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      showToast("Gemischt");
-      syncCoinVisibility();
-      renderNameChips();
-      draw();
-    }
-
-    function reset(){
-      angle = 0;
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      showToast("Reset");
-      draw();
-    }
-
-    btnSpin.addEventListener("click", spin);
-    btnRemoveWinner.addEventListener("click", removeLastWinner);
-    btnShuffle.addEventListener("click", shuffle);
-    btnReset.addEventListener("click", reset);
-
-    input.addEventListener("input", () => {
-      items = parseItems(input.value);
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      syncCoinVisibility();
-      renderNameChips();
-      draw();
-    });
-
-    mode.addEventListener("change", updateRemoveButton);
-
-    // ========= Links =========
-    const linksOverlay = $("linksOverlay");
-    $("linksBtn").addEventListener("click", () => openOverlay(linksOverlay));
-    $("linksX").addEventListener("click", () => closeOverlay(linksOverlay));
-    $("linksClose").addEventListener("click", () => closeOverlay(linksOverlay));
-    linksOverlay.addEventListener("click", (e) => { if(e.target === linksOverlay) closeOverlay(linksOverlay); });
-
-    $("openTikTok").addEventListener("click", () => window.open(LINKS.tiktok, "_blank"));
-    $("openInsta").addEventListener("click", () => window.open(LINKS.insta, "_blank"));
-    $("openTwitch").addEventListener("click", () => window.open(LINKS.twitch, "_blank"));
-
-    // ========= Trophy Overlay =========
-    const trophyOverlay = $("trophyOverlay");
-    $("trophyBtn").addEventListener("click", () => { renderTrophies(); openOverlay(trophyOverlay); });
-    $("trophyX").addEventListener("click", () => closeOverlay(trophyOverlay));
-    $("trophyClose").addEventListener("click", () => closeOverlay(trophyOverlay));
-    trophyOverlay.addEventListener("click", (e) => { if(e.target === trophyOverlay) closeOverlay(trophyOverlay); });
-
-    // ========= Settings Overlay =========
-    const settingsOverlay = $("settingsOverlay");
-    const spinVol = $("spinVol"), sadVol = $("sadVol"), muteAll = $("muteAll");
-    const spinDur = $("spinDur"), coinDur = $("coinDur");
-    const spinVolLabel = $("spinVolLabel"), sadVolLabel = $("sadVolLabel");
-    const spinDurLabel = $("spinDurLabel"), coinDurLabel = $("coinDurLabel");
-
-    function syncSettingsUi(){
-      spinVol.value = String(Math.round(clamp(settings.spinVol,0,1) * 100));
-      sadVol.value  = String(Math.round(clamp(settings.sadVol,0,1) * 100));
-      spinDur.value = String(clamp(Math.round(settings.spinDur || 3), 1, 60));
-      coinDur.value = String(clamp(Math.round(settings.coinDur || 6), 1, 60));
-      muteAll.checked = !!settings.muted;
-
-      spinVolLabel.textContent = spinVol.value + "%";
-      sadVolLabel.textContent  = sadVol.value + "%";
-      spinDurLabel.textContent = spinDur.value + "s";
-      coinDurLabel.textContent = coinDur.value + "s";
-    }
-
-    $("settingsBtn").addEventListener("click", () => { syncSettingsUi(); openOverlay(settingsOverlay); });
-    $("settingsX").addEventListener("click", () => closeOverlay(settingsOverlay));
-    $("settingsClose").addEventListener("click", () => closeOverlay(settingsOverlay));
-    settingsOverlay.addEventListener("click", (e) => { if(e.target === settingsOverlay) closeOverlay(settingsOverlay); });
-
-    spinVol.addEventListener("input", () => {
-      settings.spinVol = Number(spinVol.value) / 100;
-      settings.muted = false;
-      muteAll.checked = false;
-      spinVolLabel.textContent = spinVol.value + "%";
-      applyVolumes(); saveSettings();
-    });
-    sadVol.addEventListener("input", () => {
-      settings.sadVol = Number(sadVol.value) / 100;
-      settings.muted = false;
-      muteAll.checked = false;
-      sadVolLabel.textContent = sadVol.value + "%";
-      applyVolumes(); saveSettings();
-    });
-    spinDur.addEventListener("input", () => {
-      settings.spinDur = clamp(Number(spinDur.value), 1, 60);
-      spinDurLabel.textContent = spinDur.value + "s";
-      saveSettings();
-    });
-    coinDur.addEventListener("input", () => {
-      settings.coinDur = clamp(Number(coinDur.value), 1, 60);
-      coinDurLabel.textContent = coinDur.value + "s";
-      saveSettings();
-    });
-    muteAll.addEventListener("change", () => {
-      settings.muted = muteAll.checked;
-      applyVolumes(); saveSettings();
-    });
-
-    // ========= Doppelte Chance =========
-    const chanceOverlay = $("chanceOverlay");
-    $("chanceBtn").addEventListener("click", () => {
-      const now = parseItems(input.value);
-      const uniq = [];
-      const seen = new Set();
-      for(const n of now){ if(!seen.has(n)){ seen.add(n); uniq.push(n); } }
-      const sel = $("chanceSelect");
-      sel.innerHTML = "";
-      for(const n of uniq){
-        const opt = document.createElement("option");
-        opt.value = n;
-        opt.textContent = n;
-        sel.appendChild(opt);
-      }
-      openOverlay(chanceOverlay);
-    });
-    $("chanceX").addEventListener("click", () => closeOverlay(chanceOverlay));
-    $("chanceClose").addEventListener("click", () => closeOverlay(chanceOverlay));
-    chanceOverlay.addEventListener("click", (e) => { if(e.target === chanceOverlay) closeOverlay(chanceOverlay); });
-
-    $("chanceConfirm").addEventListener("click", () => {
-      const name = $("chanceSelect").value;
-      if(!name) return;
-      const now = parseItems(input.value);
-      now.push(name);
-      input.value = now.join("\n");
-      showToast("Doppelte Chance: " + name);
-      closeOverlay(chanceOverlay);
-      items = parseItems(input.value);
-      syncCoinVisibility();
-      renderNameChips();
-      draw();
-    });
-
-    // ========= Winner Popup + Fake Winner =========
+    // ========= Winner popup + fake winner =========
     const winnerOverlay = $("winnerOverlay");
     const winnerNameEl = $("winnerName");
     const winnerSubEl = $("winnerSub");
@@ -1468,7 +1236,6 @@ test3</textarea>
     const FAKE_WIN_CHANCE = 0.002;
     const FAKE_WIN_COOLDOWN_SPINS = 25;
     let spinsSinceFake = 999;
-
     let pendingRealWinner = null;
     let fakeTimer = null;
 
@@ -1542,7 +1309,6 @@ test3</textarea>
 
       playSad();
       const ok = removeByName(name);
-
       if(ok){
         counters.removes = (counters.removes||0) + 1;
         saveCounters();
@@ -1554,22 +1320,144 @@ test3</textarea>
       }
     });
 
-    // ========= Mini: Coinflip (ohne Einsatz) =========
+    // ========= Spin logic =========
+    function spin(){
+      if(spinning) return;
+
+      items = parseItems(input.value);
+      syncCoinVisibility();
+      renderNameChips();
+      draw();
+
+      if(items.length < 2){
+        showToast("Mindestens 2 Einträge zum Drehen");
+        return;
+      }
+
+      counters.spins = (counters.spins||0) + 1;
+      saveCounters();
+      unlockTrophy("first_spin");
+
+      spinning = true;
+      btnSpin.disabled = true;
+      btnRemoveWinner.disabled = true;
+
+      playSpinLoop();
+
+      const duration = clamp((settings.spinDur || 3) * 1000, 1000, 60000);
+      const extraSpins = 8;
+
+      const n = items.length;
+      const slice = TAU / n;
+
+      const targetIndex = randInt(0, n-1);
+      const inside = (rand01()*0.6 + 0.2) * slice;
+
+      const pointerAngle = -Math.PI/2;
+      const targetAngle = pointerAngle - (targetIndex*slice + inside);
+
+      const startAngle = angle;
+      const endAngle = targetAngle - extraSpins*TAU;
+
+      const start = performance.now();
+      const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+
+      function frame(nowT){
+        const t = Math.min(1, (nowT - start) / duration);
+        const e = easeOutCubic(t);
+
+        angle = startAngle + (endAngle - startAngle) * e;
+        draw();
+
+        if(t < 1){
+          requestAnimationFrame(frame);
+        }else{
+          stopSpinLoop();
+          spinning = false;
+          btnSpin.disabled = false;
+
+          angle = ((angle % TAU) + TAU) % TAU;
+
+          lastWinner = currentWinner();
+          pushHistory(lastWinner.label);
+          updateRemoveButton();
+
+          showWinnerPopup(lastWinner.label);
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function removeLastWinner(){
+      if(!lastWinner) return;
+      if(mode.value !== "remove"){
+        btnRemoveWinner.disabled = true;
+        showToast("Modus: Nudel lassen");
+        return;
+      }
+      playSad();
+      const ok = removeByName(lastWinner.label);
+      if(ok){
+        counters.removes = (counters.removes||0) + 1;
+        saveCounters();
+        unlockTrophy("first_remove");
+        showToast("Nudel entfernt");
+        lastWinner = null;
+        btnRemoveWinner.disabled = true;
+      }
+    }
+
+    function shuffle(){
+      items = parseItems(input.value);
+      for(let i = items.length - 1; i > 0; i--){
+        const j = randInt(0, i);
+        [items[i], items[j]] = [items[j], items[i]];
+      }
+      input.value = items.join("\\n");
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+      showToast("Gemischt");
+      syncCoinVisibility();
+      renderNameChips();
+      draw();
+    }
+
+    function reset(){
+      angle = 0;
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+      showToast("Reset");
+      draw();
+    }
+
+    btnSpin.addEventListener("click", spin);
+    btnRemoveWinner.addEventListener("click", removeLastWinner);
+    btnShuffle.addEventListener("click", shuffle);
+    btnReset.addEventListener("click", reset);
+
+    input.addEventListener("input", () => {
+      items = parseItems(input.value);
+      lastWinner = null;
+      btnRemoveWinner.disabled = true;
+      syncCoinVisibility();
+      renderNameChips();
+      draw();
+    });
+
+    mode.addEventListener("change", updateRemoveButton);
+
+    // ========= Coinflip (no bet) =========
     const coinOverlay = $("coinOverlay");
     const coin = $("coin");
     const coinNameA = $("coinNameA");
     const coinNameB = $("coinNameB");
     const coinResult = $("coinResult");
     const coinInfo = $("coinInfo");
-
     let coinBusy = false;
     let coinRAF = null;
 
     function stopCoinAnim(){
-      if(coinRAF){
-        cancelAnimationFrame(coinRAF);
-        coinRAF = null;
-      }
+      if(coinRAF){ cancelAnimationFrame(coinRAF); coinRAF = null; }
     }
 
     function openCoinflip(){
@@ -1601,7 +1489,6 @@ test3</textarea>
       }
 
       coinBusy = true;
-
       const a = now[0], b = now[1];
       coinNameA.textContent = a;
       coinNameB.textContent = b;
@@ -1612,12 +1499,10 @@ test3</textarea>
       const baseMs = clamp((settings.coinDur || 6) * 1000, 1000, 60000);
       const jitter = Math.floor(baseMs * (0.25 * rand01()));
       const totalMs = clamp(baseMs + jitter, 1000, 60000);
-
       const finalDeg = heads ? 0 : 180;
 
       const start = performance.now();
       const easeOut = (t) => 1 - Math.pow(1 - t, 3);
-
       stopCoinAnim();
 
       const startBase = 0;
@@ -1642,7 +1527,6 @@ test3</textarea>
           stopCoinAnim();
         }
       }
-
       coinRAF = requestAnimationFrame(frame);
     });
 
@@ -1650,7 +1534,43 @@ test3</textarea>
     $("coinClose").addEventListener("click", () => { coinBusy = false; stopCoinAnim(); closeOverlay(coinOverlay); });
     coinOverlay.addEventListener("click", (e) => { if(e.target === coinOverlay){ coinBusy=false; stopCoinAnim(); closeOverlay(coinOverlay); } });
 
-    // ========= Mini: TicTacToe =========
+    // ========= Guess =========
+    const guessOverlay = $("guessOverlay");
+    const guessGrid = $("guessGrid");
+    const guessStatus = $("guessStatus");
+    let guessSecret = 0;
+    let guessActive = false;
+
+    function guessStart(){
+      guessSecret = randInt(1, 20);
+      guessActive = true;
+      guessStatus.textContent = "Wähle eine Zahl";
+      guessGrid.innerHTML = "";
+      for(let i=1;i<=20;i++){
+        const b = document.createElement("button");
+        b.textContent = String(i);
+        b.addEventListener("click", () => {
+          if(!guessActive) return;
+          guessActive = false;
+          if(i === guessSecret){
+            guessStatus.textContent = `Richtig – es war ${guessSecret}`;
+            showToast("Richtig: " + i);
+          }else{
+            guessStatus.textContent = `Falsch – es war ${guessSecret}`;
+            showToast("Falsch: " + i);
+          }
+          Array.from(guessGrid.querySelectorAll("button")).forEach(x => x.disabled = true);
+        });
+        guessGrid.appendChild(b);
+      }
+    }
+
+    $("miniGuess").addEventListener("click", () => { guessStart(); openOverlay(guessOverlay); });
+    $("guessNew").addEventListener("click", guessStart);
+    $("guessX").addEventListener("click", () => closeOverlay(guessOverlay));
+    guessOverlay.addEventListener("click", (e) => { if(e.target === guessOverlay) closeOverlay(guessOverlay); });
+
+    // ========= TicTacToe =========
     const tttOverlay = $("tttOverlay");
     const tttGrid = $("tttGrid");
     const tttStatus = $("tttStatus");
@@ -1764,7 +1684,7 @@ test3</textarea>
     $("tttReset").addEventListener("click", tttReset);
     tttOverlay.addEventListener("click", (e) => { if(e.target === tttOverlay) closeOverlay(tttOverlay); });
 
-    // ========= Mini: Snake (Highscore + Mobile Buttons) =========
+    // ========= Snake =========
     const snakeOverlay = $("snakeOverlay");
     const snakeCanvas = $("snakeCanvas");
     const sctx = snakeCanvas.getContext("2d");
@@ -1859,32 +1779,162 @@ test3</textarea>
     $("snakeX").addEventListener("click", () => { snakeStop(); closeOverlay(snakeOverlay); });
     snakeOverlay.addEventListener("click", (e) => { if(e.target === snakeOverlay){ snakeStop(); closeOverlay(snakeOverlay); } });
 
-    // ========= Buttons / Overlay wiring =========
-    const trophyOverlay = $("trophyOverlay");
-    $("trophyBtn").addEventListener("click", () => { renderTrophies(); openOverlay(trophyOverlay); });
+    // ========= Guess open =========
+    $("miniGuess").addEventListener("click", () => { guessStart(); openOverlay($("guessOverlay")); });
 
-    $("linksX").addEventListener("click", () => closeOverlay(linksOverlay));
-    $("linksClose").addEventListener("click", () => closeOverlay(linksOverlay));
-    $("settingsX").addEventListener("click", () => closeOverlay(settingsOverlay));
-    $("settingsClose").addEventListener("click", () => closeOverlay(settingsOverlay));
-    $("trophyX").addEventListener("click", () => closeOverlay(trophyOverlay));
-    $("trophyClose").addEventListener("click", () => closeOverlay(trophyOverlay));
-    $("chanceX").addEventListener("click", () => closeOverlay(chanceOverlay));
-    $("chanceClose").addEventListener("click", () => closeOverlay(chanceOverlay));
+    // ========= Top buttons =========
+    $("linksBtn").addEventListener("click", () => openOverlay($("linksOverlay")));
+    $("chanceBtn").addEventListener("click", () => openOverlay($("chanceOverlay")));
+    $("settingsBtn").addEventListener("click", () => { syncSettingsUi(); openOverlay($("settingsOverlay")); });
+    $("trophyBtn").addEventListener("click", () => { renderTrophies(); openOverlay($("trophyOverlay")); });
+
+    // ========= Close wiring =========
+    $("linksX").addEventListener("click", () => closeOverlay($("linksOverlay")));
+    $("linksClose").addEventListener("click", () => closeOverlay($("linksOverlay")));
+    $("settingsX").addEventListener("click", () => closeOverlay($("settingsOverlay")));
+    $("settingsClose").addEventListener("click", () => closeOverlay($("settingsOverlay")));
+    $("trophyX").addEventListener("click", () => closeOverlay($("trophyOverlay")));
+    $("trophyClose").addEventListener("click", () => closeOverlay($("trophyOverlay")));
+    $("chanceX").addEventListener("click", () => closeOverlay($("chanceOverlay")));
+    $("chanceClose").addEventListener("click", () => closeOverlay($("chanceOverlay")));
+
+    // ========= Links buttons =========
+    $("openTikTok").addEventListener("click", () => window.open(LINKS.tiktok, "_blank"));
+    $("openInsta").addEventListener("click", () => window.open(LINKS.insta, "_blank"));
+    $("openTwitch").addEventListener("click", () => window.open(LINKS.twitch, "_blank"));
+
+    // ========= Settings UI sync =========
+    const spinVol = $("spinVol"), sadVol = $("sadVol"), muteAll = $("muteAll");
+    const spinDur = $("spinDur"), coinDur = $("coinDur");
+    const spinVolLabel = $("spinVolLabel"), sadVolLabel = $("sadVolLabel");
+    const spinDurLabel = $("spinDurLabel"), coinDurLabel = $("coinDurLabel");
+
+    function syncSettingsUi(){
+      spinVol.value = String(Math.round(clamp(settings.spinVol,0,1) * 100));
+      sadVol.value  = String(Math.round(clamp(settings.sadVol,0,1) * 100));
+      spinDur.value = String(clamp(Math.round(settings.spinDur || 3), 1, 60));
+      coinDur.value = String(clamp(Math.round(settings.coinDur || 6), 1, 60));
+      muteAll.checked = !!settings.muted;
+      spinVolLabel.textContent = spinVol.value + "%";
+      sadVolLabel.textContent  = sadVol.value + "%";
+      spinDurLabel.textContent = spinDur.value + "s";
+      coinDurLabel.textContent = coinDur.value + "s";
+    }
+
+    spinVol.addEventListener("input", () => {
+      settings.spinVol = Number(spinVol.value) / 100;
+      settings.muted = false;
+      muteAll.checked = false;
+      spinVolLabel.textContent = spinVol.value + "%";
+      applyVolumes(); saveSettings();
+    });
+    sadVol.addEventListener("input", () => {
+      settings.sadVol = Number(sadVol.value) / 100;
+      settings.muted = false;
+      muteAll.checked = false;
+      sadVolLabel.textContent = sadVol.value + "%";
+      applyVolumes(); saveSettings();
+    });
+    spinDur.addEventListener("input", () => {
+      settings.spinDur = clamp(Number(spinDur.value), 1, 60);
+      spinDurLabel.textContent = spinDur.value + "s";
+      saveSettings();
+    });
+    coinDur.addEventListener("input", () => {
+      settings.coinDur = clamp(Number(coinDur.value), 1, 60);
+      coinDurLabel.textContent = coinDur.value + "s";
+      saveSettings();
+    });
+    muteAll.addEventListener("change", () => {
+      settings.muted = muteAll.checked;
+      applyVolumes(); saveSettings();
+    });
+
+    // ========= Chance confirm =========
+    $("chanceConfirm").addEventListener("click", () => {
+      const sel = $("chanceSelect");
+      const name = sel.value;
+      if(!name) return;
+      const now = parseItems(input.value);
+      now.push(name);
+      input.value = now.join("\n");
+      showToast("Doppelte Chance: " + name);
+      closeOverlay($("chanceOverlay"));
+      items = parseItems(input.value);
+      syncCoinVisibility();
+      renderNameChips();
+      draw();
+    });
+
+    // Fill chance select on open
+    $("chanceBtn").addEventListener("click", () => {
+      const now = parseItems(input.value);
+      const uniq = [];
+      const seen = new Set();
+      for(const n of now){ if(!seen.has(n)){ seen.add(n); uniq.push(n); } }
+      const sel = $("chanceSelect");
+      sel.innerHTML = "";
+      for(const n of uniq){
+        const opt = document.createElement("option");
+        opt.value = n;
+        opt.textContent = n;
+        sel.appendChild(opt);
+      }
+    });
+
+    // ========= Guess logic =========
+    const guessGrid = $("guessGrid");
+    const guessStatus = $("guessStatus");
+    let guessSecret = 0;
+    let guessActive = false;
+
+    function guessStart(){
+      guessSecret = randInt(1, 20);
+      guessActive = true;
+      guessStatus.textContent = "Wähle eine Zahl";
+      guessGrid.innerHTML = "";
+      for(let i=1;i<=20;i++){
+        const b = document.createElement("button");
+        b.textContent = String(i);
+        b.addEventListener("click", () => {
+          if(!guessActive) return;
+          guessActive = false;
+          if(i === guessSecret){
+            guessStatus.textContent = `Richtig – es war ${guessSecret}`;
+            showToast("Richtig: " + i);
+          }else{
+            guessStatus.textContent = `Falsch – es war ${guessSecret}`;
+            showToast("Falsch: " + i);
+          }
+          Array.from(guessGrid.querySelectorAll("button")).forEach(x => x.disabled = true);
+        });
+        guessGrid.appendChild(b);
+      }
+    }
+    $("guessNew").addEventListener("click", guessStart);
+    $("guessX").addEventListener("click", () => closeOverlay($("guessOverlay")));
+    $("guessOverlay").addEventListener("click", (e) => { if(e.target === $("guessOverlay")) closeOverlay($("guessOverlay")); });
+
+    // ========= overlays close =========
+    $("coinX").addEventListener("click", () => { coinBusy=false; stopCoinAnim(); closeOverlay(coinOverlay); });
+    $("coinClose").addEventListener("click", () => { coinBusy=false; stopCoinAnim(); closeOverlay(coinOverlay); });
+
+    $("tttX").addEventListener("click", () => closeOverlay(tttOverlay));
 
     // ========= ESC close =========
     document.addEventListener("keydown", (e) => {
       if(e.key !== "Escape") return;
-      closeOverlay(linksOverlay);
-      closeOverlay(settingsOverlay);
-      closeOverlay(trophyOverlay);
-      closeOverlay(chanceOverlay);
-      closeOverlay(winnerOverlay);
-      closeOverlay(coinOverlay);
-      closeOverlay(guessOverlay);
-      closeOverlay(tttOverlay);
+      closeOverlay($("linksOverlay"));
+      closeOverlay($("settingsOverlay"));
+      closeOverlay($("trophyOverlay"));
+      closeOverlay($("chanceOverlay"));
+      closeOverlay($("winnerOverlay"));
+      closeOverlay($("coinOverlay"));
+      closeOverlay($("guessOverlay"));
+      closeOverlay($("tttOverlay"));
       snakeStop();
-      closeOverlay(snakeOverlay);
+      closeOverlay($("snakeOverlay"));
+      stopCoinAnim();
       coinBusy = false;
       clearFakeTimer();
     });
