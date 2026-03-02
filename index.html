@@ -12,10 +12,13 @@
       --blue: #00c3ff;
       --violet: #6a5cff;
       --pink: #ff2bd6;
+
       --glowSoft: 0 0 18px rgba(0,195,255,.18), 0 0 28px rgba(106,92,255,.14);
       --glowStrong: 0 0 18px rgba(0,195,255,.35), 0 0 28px rgba(106,92,255,.28);
+
       --card: rgba(0,0,0,.20);
       --cardBorder: rgba(255,255,255,.12);
+
       --nameBox: rgba(110, 80, 255, .30);
       --nameBoxBorder: rgba(110, 80, 255, .55);
     }
@@ -479,107 +482,6 @@
     .trophyName{ font-weight: 1200; }
     .trophyDesc{ font-size: 12px; opacity:.85; font-weight: 850; margin-top: 2px; }
 
-    .coinWrap{ display:grid; place-items:center; gap: 12px; margin-top: 8px; }
-    .coinStage{ perspective: 1000px; width: 240px; height: 240px; }
-    .coin{
-      width: 240px; height: 240px;
-      position: relative;
-      transform-style: preserve-3d;
-      border-radius: 999px;
-      transform: rotateY(0deg);
-    }
-    .coinFace{
-      position:absolute; inset:0;
-      border-radius: 999px;
-      display:grid; place-items:center;
-      padding: 18px;
-      box-sizing: border-box;
-      border: 1px solid rgba(255,255,255,.18);
-      background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.22), rgba(255,255,255,.06));
-      box-shadow: 0 0 18px rgba(0,195,255,.14), 0 0 24px rgba(106,92,255,.12);
-      backface-visibility: hidden;
-      overflow:hidden;
-      text-align:center;
-    }
-    .coinFace strong{ font-size: 14px; letter-spacing: .3px; opacity:.9; }
-    .coinFace .name{ font-size: 18px; font-weight: 1200; margin-top: 6px; word-break: break-word; }
-    .coinFace.tails{ transform: rotateY(180deg); }
-    .coinResult{ font-weight: 1200; font-size: 18px; opacity:.95; min-height: 22px; }
-
-    .guessGrid{
-      width: min(520px, 92vw);
-      margin: 10px auto 0 auto;
-      display:grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-    }
-    .guessGrid button{
-      height: 58px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
-      color:#fff;
-      font-weight: 1200;
-      font-size: 18px;
-      cursor:pointer;
-      box-shadow: 0 0 14px rgba(0,195,255,.08);
-    }
-    .guessGrid button:hover{ background: rgba(255,255,255,.10); }
-    .guessGrid button:disabled{ opacity:.55; cursor:not-allowed; }
-
-    .ttt{
-      width: min(360px, 92vw);
-      margin: 0 auto;
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-    .ttt button{
-      height: 105px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
-      color:#fff;
-      font-size: 42px;
-      font-weight: 1200;
-      cursor:pointer;
-      box-shadow: 0 0 16px rgba(0,195,255,.08);
-    }
-    .ttt button:disabled{ opacity:.55; cursor:not-allowed; }
-
-    .snakeWrap{ display:grid; gap: 10px; place-items:center; }
-    #snakeCanvas{
-      width: min(420px, 92vw);
-      height: auto;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.25);
-      box-shadow: 0 0 18px rgba(255,45,214,.10);
-    }
-    .snakeControls{
-      display:grid;
-      gap: 8px;
-      justify-items:center;
-      margin-top: 4px;
-    }
-    .snakeRow{
-      display:flex;
-      gap: 8px;
-      justify-content:center;
-    }
-    .snakeBtn{
-      width: 54px;
-      height: 46px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.08);
-      color:#fff;
-      font-weight: 1200;
-      cursor:pointer;
-      box-shadow: 0 0 14px rgba(0,195,255,.06);
-    }
-    .snakeBtn:active{ transform: scale(.98); }
-
     @media (max-width: 980px){
       .page{ grid-template-columns: 1fr; grid-template-rows: auto auto auto auto auto; }
       .titleBlock{ grid-column: 1; grid-row: 1; }
@@ -643,14 +545,6 @@
           <input id="spinDur" type="range" min="1" max="60" value="3">
         </div>
 
-        <div class="rangeRow">
-          <div style="display:flex;justify-content:space-between;gap:10px;">
-            <div style="font-weight:1100;opacity:.92;">Coinflip Dauer</div>
-            <div id="coinDurLabel" style="font-weight:1200;opacity:.9;">6s</div>
-          </div>
-          <input id="coinDur" type="range" min="1" max="60" value="6">
-        </div>
-
         <label style="display:flex;gap:10px;align-items:center;justify-content:center;font-weight:1100;opacity:.92;">
           <input id="muteAll" type="checkbox">
           Alles stumm
@@ -681,118 +575,15 @@
     </div>
   </div>
 
-  <div class="overlay" id="chanceOverlay">
-    <div class="box">
-      <button class="closeX" id="chanceX">×</button>
-      <h2>Doppelte Chance</h2>
-      <div style="opacity:.85;font-weight:1000;margin-bottom:10px;">Name auswählen → bekommt 2x Chance</div>
-
-      <div style="display:grid;gap:10px;max-width:520px;margin:0 auto;">
-        <select id="chanceSelect"></select>
-        <button class="action" id="chanceConfirm">Bestätigen</button>
-      </div>
-
-      <div class="boxActions">
-        <button class="action secondary" id="chanceClose">Schließen</button>
-      </div>
-    </div>
-  </div>
-
   <div class="overlay" id="winnerOverlay">
     <div class="box">
       <button class="closeX" id="winnerX">×</button>
       <h2>Gewinner</h2>
       <div class="winnerName" id="winnerName">—</div>
       <div class="winnerSub" id="winnerSub"></div>
-
       <div class="boxActions" style="margin-top:14px;">
         <button class="action secondary" id="winnerKeep">Nudel lassen</button>
         <button class="action" id="winnerRemove">Nudel entfernen</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="overlay" id="coinOverlay">
-    <div class="box">
-      <button class="closeX" id="coinX">×</button>
-      <h2>Final Coinflip</h2>
-
-      <div style="opacity:.85;font-weight:1000;margin-bottom:10px;" id="coinInfo">Kopf = … | Zahl = …</div>
-
-      <div class="coinWrap">
-        <div class="coinStage">
-          <div class="coin" id="coin">
-            <div class="coinFace heads">
-              <div>
-                <strong>Kopf</strong>
-                <div class="name" id="coinNameA">A</div>
-              </div>
-            </div>
-            <div class="coinFace tails">
-              <div>
-                <strong>Zahl</strong>
-                <div class="name" id="coinNameB">B</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="coinResult" id="coinResult"></div>
-
-        <div class="boxActions">
-          <button class="action" id="coinStart">Flip</button>
-          <button class="action secondary" id="coinClose">Schließen</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="overlay" id="guessOverlay">
-    <div class="box">
-      <button class="closeX" id="guessX">×</button>
-      <h2>Zahl raten</h2>
-      <div class="coinResult" id="guessStatus"></div>
-      <div class="guessGrid" id="guessGrid"></div>
-      <div class="boxActions">
-        <button class="action secondary" id="guessNew">Neu</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="overlay" id="tttOverlay">
-    <div class="box">
-      <button class="closeX" id="tttX">×</button>
-      <h2>TicTacToe</h2>
-      <div class="ttt" id="tttGrid"></div>
-      <div class="coinResult" id="tttStatus"></div>
-      <div class="boxActions">
-        <button class="action secondary" id="tttReset">Neu</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="overlay" id="snakeOverlay">
-    <div class="box">
-      <button class="closeX" id="snakeX">×</button>
-      <h2>Snake</h2>
-      <div class="snakeWrap">
-        <canvas id="snakeCanvas" width="420" height="420"></canvas>
-        <div class="coinResult" id="snakeStatus"></div>
-
-        <div class="snakeControls">
-          <div class="snakeRow"><button class="snakeBtn" id="snUp">↑</button></div>
-          <div class="snakeRow">
-            <button class="snakeBtn" id="snLeft">←</button>
-            <button class="snakeBtn" id="snDown">↓</button>
-            <button class="snakeBtn" id="snRight">→</button>
-          </div>
-        </div>
-
-        <div class="boxActions">
-          <button class="action" id="snakeStart">Start</button>
-          <button class="action secondary" id="snakeRestart">Restart</button>
-          <button class="action secondary" id="snakeStop">Stop</button>
-        </div>
       </div>
     </div>
   </div>
@@ -806,7 +597,6 @@
         <option value="remove" selected>Nudel entfernen</option>
       </select>
 
-      <button class="chipBtn" id="chanceBtn">Doppelte Chance</button>
       <button class="chipBtn" id="linksBtn">Links</button>
       <button class="chipBtn" id="settingsBtn">Einstellungen</button>
     </div>
@@ -817,18 +607,17 @@
 
     <div class="leftCol">
       <div class="miniCard">
-        <div class="miniCardHeader">Mini Games</div>
+        <div class="miniCardHeader">Mini Games (später)</div>
         <div class="miniCardBody">
-          <div class="miniBtn" id="miniGuess">Zahl raten</div>
-          <div class="miniBtn" id="miniTtt">TicTacToe</div>
-          <div class="miniBtn" id="miniSnake">Snake</div>
-          <div class="miniBtn hidden" id="miniCoin">Final Coinflip</div>
+          <div class="miniBtn" id="miniDummy1">kommt gleich</div>
+          <div class="miniBtn" id="miniDummy2">kommt gleich</div>
+          <div class="miniBtn" id="miniDummy3">kommt gleich</div>
         </div>
       </div>
     </div>
 
     <div class="wheelArea">
-      <div class="wheelBox" id="wheelBox">
+      <div class="wheelBox">
         <div class="pin"></div>
         <canvas id="wheel" width="1000" height="1000"></canvas>
         <div class="centerCap"></div>
@@ -863,1090 +652,608 @@ test3</textarea>
   </div>
 
   <script>
-    const $ = (id) => document.getElementById(id);
-    const TAU = Math.PI * 2;
+    (() => {
+      const $ = (id) => document.getElementById(id);
+      const TAU = Math.PI * 2;
 
-    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
-    function rand01(){
-      const a = new Uint32Array(1);
-      crypto.getRandomValues(a);
-      return a[0] / 4294967296;
-    }
-    function randInt(min, maxInc){
-      return min + Math.floor(rand01() * (maxInc - min + 1));
-    }
+      const toast = $("toast");
+      const showToast = (text) => {
+        toast.textContent = text;
+        toast.classList.add("show");
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => toast.classList.remove("show"), 2300);
+      };
 
-    const toast = $("toast");
-    function showToast(text){
-      toast.textContent = text;
-      toast.classList.add("show");
-      clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => toast.classList.remove("show"), 2300);
-    }
+      const clamp = (n,a,b)=>Math.max(a,Math.min(b,n));
+      const rand01 = () => {
+        const a = new Uint32Array(1);
+        crypto.getRandomValues(a);
+        return a[0] / 4294967296;
+      };
+      const randInt = (min,maxInc)=> min + Math.floor(rand01()*(maxInc-min+1));
 
-    function openOverlay(el){ el.style.display = "grid"; }
-    function closeOverlay(el){ el.style.display = "none"; }
+      const openOverlay = (el)=> el.style.display="grid";
+      const closeOverlay = (el)=> el.style.display="none";
 
-    const LINKS = {
-      tiktok: "https://www.tiktok.com/@zbaffe",
-      insta: "https://www.instagram.com/zbaffe/",
-      twitch: "https://www.twitch.tv/zbaffe"
-    };
+      const LINKS = {
+        tiktok: "https://www.tiktok.com/@zbaffe",
+        insta: "https://www.instagram.com/zbaffe/",
+        twitch: "https://www.twitch.tv/zbaffe"
+      };
 
-    // ========= Confetti =========
-    const conf = $("confetti");
-    const cctx = conf.getContext("2d");
-    let confettiParts = [];
-    let confettiEndAt = 0;
-    function resizeConf(){
-      conf.width = Math.floor(window.innerWidth * devicePixelRatio);
-      conf.height = Math.floor(window.innerHeight * devicePixelRatio);
-    }
-    window.addEventListener("resize", resizeConf);
-    resizeConf();
+      // Confetti
+      const conf = $("confetti");
+      const cctx = conf.getContext("2d");
+      let confettiParts = [];
+      let confettiEndAt = 0;
 
-    function startConfetti(ms=1400){
-      const now = performance.now();
-      confettiEndAt = now + ms;
-      const count = 140;
-      const w = conf.width, h = conf.height;
-      const colors = ["#00c3ff","#6a5cff","#ff2bd6","#ffffff","#4d9fff"];
-      for(let i=0;i<count;i++){
-        confettiParts.push({
-          x: rand01()*w,
-          y: -rand01()*h*0.2,
-          vx: (rand01()-0.5)*3*devicePixelRatio,
-          vy: (2+rand01()*6)*devicePixelRatio,
-          rot: rand01()*TAU,
-          vr: (rand01()-0.5)*0.2,
-          s: (4+rand01()*8)*devicePixelRatio,
-          c: colors[i%colors.length],
-          a: 1
-        });
-      }
-      if(!startConfetti._raf) startConfetti._raf = requestAnimationFrame(confettiFrame);
-    }
+      const resizeConf = () => {
+        conf.width = Math.floor(window.innerWidth * devicePixelRatio);
+        conf.height = Math.floor(window.innerHeight * devicePixelRatio);
+      };
+      window.addEventListener("resize", resizeConf);
+      resizeConf();
 
-    function confettiFrame(t){
-      const w = conf.width, h = conf.height;
-      cctx.clearRect(0,0,w,h);
+      const startConfetti = (ms=1400) => {
+        confettiEndAt = performance.now() + ms;
+        const count = 140;
+        const w = conf.width, h = conf.height;
+        const colors = ["#00c3ff","#6a5cff","#ff2bd6","#ffffff","#4d9fff"];
+        for(let i=0;i<count;i++){
+          confettiParts.push({
+            x: rand01()*w,
+            y: -rand01()*h*0.2,
+            vx: (rand01()-0.5)*3*devicePixelRatio,
+            vy: (2+rand01()*6)*devicePixelRatio,
+            rot: rand01()*TAU,
+            vr: (rand01()-0.5)*0.2,
+            s: (4+rand01()*8)*devicePixelRatio,
+            c: colors[i%colors.length],
+            a: 1
+          });
+        }
+        if(!startConfetti._raf) startConfetti._raf = requestAnimationFrame(confettiFrame);
+      };
 
-      for(const p of confettiParts){
-        p.x += p.vx;
-        p.y += p.vy;
-        p.rot += p.vr;
-        p.vy += 0.04*devicePixelRatio;
-        if(p.y > h + 50*devicePixelRatio) p.a = 0;
-        cctx.save();
-        cctx.globalAlpha = Math.max(0, p.a);
-        cctx.translate(p.x, p.y);
-        cctx.rotate(p.rot);
-        cctx.fillStyle = p.c;
-        cctx.fillRect(-p.s/2, -p.s/2, p.s, p.s*0.55);
-        cctx.restore();
-      }
-      confettiParts = confettiParts.filter(p => p.a > 0);
-
-      if(t < confettiEndAt || confettiParts.length){
-        startConfetti._raf = requestAnimationFrame(confettiFrame);
-      }else{
-        startConfetti._raf = null;
+      function confettiFrame(t){
+        const w = conf.width, h = conf.height;
         cctx.clearRect(0,0,w,h);
-      }
-    }
-
-    // ========= Trophy + Counter =========
-    const TROPHIES = [
-      { id:"first_spin", icon:"🍜", name:"Warm-Up", desc:"Erster Spin" },
-      { id:"first_remove", icon:"💔", name:"No Mercy", desc:"Erstes Entfernen" },
-      { id:"plot_survivor", icon:"🎭", name:"Plot Twist Survivor", desc:"Fake-Winner erlebt" },
-      { id:"ttt_master", icon:"❌", name:"TicTacToe Meister", desc:"KI geschlagen" },
-      { id:"snake_best10", icon:"🐍", name:"Snake Highscore 10+", desc:"Highscore 10 erreicht" }
-    ];
-
-    let trophyState = {};
-    try{ trophyState = JSON.parse(localStorage.getItem("wheelTrophies") || "{}") || {}; }catch(e){ trophyState = {}; }
-
-    let counters = { spins: 0, removes: 0 };
-    try{ counters = JSON.parse(localStorage.getItem("wheelCounters") || "null") || counters; }catch(e){}
-    function saveCounters(){ try{ localStorage.setItem("wheelCounters", JSON.stringify(counters)); }catch(e){} }
-    function saveTrophies(){ try{ localStorage.setItem("wheelTrophies", JSON.stringify(trophyState)); }catch(e){} }
-
-    function unlockTrophy(id){
-      if(trophyState[id]) return;
-      trophyState[id] = true;
-      saveTrophies();
-      showToast("Erfolg freigeschaltet");
-    }
-
-    function renderTrophies(){
-      $("cntSpins").textContent = String(counters.spins || 0);
-      $("cntRemoves").textContent = String(counters.removes || 0);
-      const list = $("trophyList");
-      list.innerHTML = "";
-      for(const t of TROPHIES){
-        const row = document.createElement("div");
-        row.className = "trophyRow" + (trophyState[t.id] ? " unlocked" : "");
-        row.innerHTML = `
-          <div class="trophyIcon">${t.icon}</div>
-          <div>
-            <div class="trophyName">${t.name}</div>
-            <div class="trophyDesc">${t.desc}</div>
-          </div>
-        `;
-        list.appendChild(row);
-      }
-    }
-
-    // ========= Sounds + Settings =========
-    const SOUND_FILES = { spin: "spin.mp3", sad: "sad.mp3", lk: "lk.mp3" };
-    let spinSfx=null, sadSfx=null, lkSfx=null;
-
-    let settings = { spinVol: 0.08, sadVol: 0.40, spinDur: 3, coinDur: 6, muted: false };
-    try{
-      const saved = JSON.parse(localStorage.getItem("wheelSettings") || "null");
-      if(saved && typeof saved === "object"){
-        if(typeof saved.spinVol === "number") settings.spinVol = saved.spinVol;
-        if(typeof saved.sadVol === "number") settings.sadVol = saved.sadVol;
-        if(typeof saved.spinDur === "number") settings.spinDur = saved.spinDur;
-        if(typeof saved.coinDur === "number") settings.coinDur = saved.coinDur;
-        settings.muted = !!saved.muted;
-      }
-    }catch(e){}
-
-    function saveSettings(){ try{ localStorage.setItem("wheelSettings", JSON.stringify(settings)); }catch(e){} }
-
-    function initSounds(){
-      if(!spinSfx) spinSfx = new Audio(SOUND_FILES.spin);
-      if(!sadSfx)  sadSfx  = new Audio(SOUND_FILES.sad);
-      if(!lkSfx)   lkSfx   = new Audio(SOUND_FILES.lk);
-      spinSfx.preload = "auto";
-      sadSfx.preload  = "auto";
-      lkSfx.preload   = "auto";
-      applyVolumes();
-    }
-    function applyVolumes(){
-      const spinV = settings.muted ? 0 : clamp(settings.spinVol,0,1);
-      const sadV  = settings.muted ? 0 : clamp(settings.sadVol,0,1);
-      if(spinSfx) spinSfx.volume = spinV;
-      if(sadSfx)  sadSfx.volume  = sadV;
-      if(lkSfx)   lkSfx.volume   = sadV;
-    }
-    function playSpinLoop(){
-      try{
-        initSounds(); applyVolumes();
-        spinSfx.pause();
-        spinSfx.currentTime = 0;
-        spinSfx.loop = true;
-        spinSfx.play();
-      }catch(e){}
-    }
-    function stopSpinLoop(){
-      try{
-        if(!spinSfx) return;
-        spinSfx.pause();
-        spinSfx.currentTime = 0;
-      }catch(e){}
-    }
-    function playSad(){
-      try{
-        initSounds(); applyVolumes();
-        sadSfx.pause();
-        sadSfx.currentTime = 0;
-        sadSfx.play();
-      }catch(e){}
-    }
-    function playLK(){
-      try{
-        initSounds(); applyVolumes();
-        lkSfx.pause();
-        lkSfx.currentTime = 0;
-        lkSfx.play();
-      }catch(e){}
-    }
-    document.addEventListener("pointerdown", () => { try{ initSounds(); }catch(e){} }, { once:true });
-
-    // ========= Wheel =========
-    const canvas = $("wheel");
-    const ctx = canvas.getContext("2d");
-
-    const btnSpin = $("spin");
-    const btnRemoveWinner = $("removeWinner");
-    const btnShuffle = $("shuffle");
-    const btnReset = $("reset");
-
-    const input = $("items");
-    const mode = $("mode");
-    const historyList = $("historyList");
-    const nameChips = $("nameChips");
-
-    let items = [];
-    let angle = 0;
-    let spinning = false;
-    let lastWinner = null;
-
-    function parseItems(text){
-      return text.split(/\\r?\\n/).map(s => s.trim()).filter(Boolean);
-    }
-
-    function syncCoinVisibility(){
-      const now = parseItems(input.value);
-      const btn = $("miniCoin");
-      if(now.length === 2) btn.classList.remove("hidden");
-      else btn.classList.add("hidden");
-    }
-
-    function updateRemoveButton(){
-      const canRemove = (mode.value === "remove") && items.length > 1 && !!lastWinner;
-      btnRemoveWinner.disabled = !canRemove;
-    }
-
-    function pushHistory(text){
-      const div = document.createElement("div");
-      div.className = "histItem";
-      div.textContent = text;
-      historyList.prepend(div);
-      while(historyList.children.length > 10) historyList.removeChild(historyList.lastChild);
-    }
-
-    function niceColor(i){
-      const colors = ["#00c3ff","#6a5cff","#ff2bd6","#4d9fff","#8a5cff"];
-      return colors[i % colors.length];
-    }
-
-    function draw(){
-      const w = canvas.width, h = canvas.height;
-      const cx = w/2, cy = h/2;
-      const r = Math.min(w, h) * 0.48;
-
-      ctx.clearRect(0,0,w,h);
-
-      if(items.length === 0){
-        ctx.beginPath();
-        ctx.arc(cx, cy, r, 0, TAU);
-        ctx.fillStyle = "rgba(255,255,255,.08)";
-        ctx.fill();
-        ctx.fillStyle = "rgba(255,255,255,.65)";
-        ctx.font = "900 44px system-ui";
-        ctx.textAlign = "center";
-        ctx.fillText("Keine Einträge", cx, cy);
-        return;
+        for(const p of confettiParts){
+          p.x += p.vx;
+          p.y += p.vy;
+          p.rot += p.vr;
+          p.vy += 0.04*devicePixelRatio;
+          if(p.y > h + 50*devicePixelRatio) p.a = 0;
+          cctx.save();
+          cctx.globalAlpha = Math.max(0, p.a);
+          cctx.translate(p.x, p.y);
+          cctx.rotate(p.rot);
+          cctx.fillStyle = p.c;
+          cctx.fillRect(-p.s/2, -p.s/2, p.s, p.s*0.55);
+          cctx.restore();
+        }
+        confettiParts = confettiParts.filter(p => p.a > 0);
+        if(t < confettiEndAt || confettiParts.length){
+          startConfetti._raf = requestAnimationFrame(confettiFrame);
+        }else{
+          startConfetti._raf = null;
+          cctx.clearRect(0,0,w,h);
+        }
       }
 
-      const n = items.length;
-      const slice = TAU / n;
+      // Trophies basic
+      const TROPHIES = [
+        { id:"first_spin", icon:"🍜", name:"Warm-Up", desc:"Erster Spin" },
+        { id:"first_remove", icon:"💔", name:"No Mercy", desc:"Erstes Entfernen" },
+        { id:"plot_survivor", icon:"🎭", name:"Plot Twist Survivor", desc:"Fake-Winner erlebt" }
+      ];
+      let trophyState = {};
+      try{ trophyState = JSON.parse(localStorage.getItem("wheelTrophies") || "{}") || {}; }catch(e){}
+      let counters = { spins: 0, removes: 0 };
+      try{ counters = JSON.parse(localStorage.getItem("wheelCounters") || "null") || counters; }catch(e){}
+      const saveCounters = ()=>{ try{ localStorage.setItem("wheelCounters", JSON.stringify(counters)); }catch(e){} };
+      const saveTrophies = ()=>{ try{ localStorage.setItem("wheelTrophies", JSON.stringify(trophyState)); }catch(e){} };
+      const unlockTrophy = (id) => {
+        if(trophyState[id]) return;
+        trophyState[id] = true;
+        saveTrophies();
+        showToast("Erfolg freigeschaltet");
+      };
+      const renderTrophies = () => {
+        $("cntSpins").textContent = String(counters.spins||0);
+        $("cntRemoves").textContent = String(counters.removes||0);
+        const list = $("trophyList");
+        list.innerHTML = "";
+        for(const t of TROPHIES){
+          const row = document.createElement("div");
+          row.className = "trophyRow" + (trophyState[t.id] ? " unlocked" : "");
+          row.innerHTML = `<div class="trophyIcon">${t.icon}</div><div><div class="trophyName">${t.name}</div><div class="trophyDesc">${t.desc}</div></div>`;
+          list.appendChild(row);
+        }
+      };
 
-      ctx.beginPath();
-      ctx.arc(cx, cy, r*1.04, 0, TAU);
-      ctx.fillStyle = "rgba(255,255,255,.10)";
-      ctx.fill();
+      // Sounds + settings
+      const SOUND_FILES = { spin:"spin.mp3", sad:"sad.mp3", lk:"lk.mp3" };
+      let spinSfx=null, sadSfx=null, lkSfx=null;
 
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(angle);
+      let settings = { spinVol:0.08, sadVol:0.40, spinDur:3, muted:false };
+      try{
+        const saved = JSON.parse(localStorage.getItem("wheelSettings") || "null");
+        if(saved && typeof saved === "object"){
+          if(typeof saved.spinVol==="number") settings.spinVol=saved.spinVol;
+          if(typeof saved.sadVol==="number") settings.sadVol=saved.sadVol;
+          if(typeof saved.spinDur==="number") settings.spinDur=saved.spinDur;
+          settings.muted=!!saved.muted;
+        }
+      }catch(e){}
+      const saveSettings = ()=>{ try{ localStorage.setItem("wheelSettings", JSON.stringify(settings)); }catch(e){} };
 
-      for(let i=0;i<n;i++){
-        const start = i * slice;
-        const end = start + slice;
+      const initSounds = ()=>{
+        if(!spinSfx) spinSfx = new Audio(SOUND_FILES.spin);
+        if(!sadSfx) sadSfx = new Audio(SOUND_FILES.sad);
+        if(!lkSfx) lkSfx = new Audio(SOUND_FILES.lk);
+        spinSfx.preload="auto"; sadSfx.preload="auto"; lkSfx.preload="auto";
+        applyVolumes();
+      };
+      const applyVolumes = ()=>{
+        const spinV = settings.muted ? 0 : clamp(settings.spinVol,0,1);
+        const sadV  = settings.muted ? 0 : clamp(settings.sadVol,0,1);
+        if(spinSfx) spinSfx.volume = spinV;
+        if(sadSfx) sadSfx.volume = sadV;
+        if(lkSfx) lkSfx.volume = sadV;
+      };
+      const playSpinLoop = ()=>{
+        try{ initSounds(); applyVolumes(); spinSfx.pause(); spinSfx.currentTime=0; spinSfx.loop=true; spinSfx.play(); }catch(e){}
+      };
+      const stopSpinLoop = ()=>{
+        try{ if(!spinSfx) return; spinSfx.pause(); spinSfx.currentTime=0; }catch(e){}
+      };
+      const playSad = ()=>{
+        try{ initSounds(); applyVolumes(); sadSfx.pause(); sadSfx.currentTime=0; sadSfx.play(); }catch(e){}
+      };
+      const playLK = ()=>{
+        try{ initSounds(); applyVolumes(); lkSfx.pause(); lkSfx.currentTime=0; lkSfx.play(); }catch(e){}
+      };
+      document.addEventListener("pointerdown", ()=>{ try{ initSounds(); }catch(e){} }, { once:true });
+
+      // Wheel
+      const canvas = $("wheel");
+      const ctx = canvas.getContext("2d");
+
+      const btnSpin = $("spin");
+      const btnRemoveWinner = $("removeWinner");
+      const btnShuffle = $("shuffle");
+      const btnReset = $("reset");
+
+      const input = $("items");
+      const mode = $("mode");
+      const historyList = $("historyList");
+      const nameChips = $("nameChips");
+
+      let items = [];
+      let angle = 0;
+      let spinning = false;
+      let lastWinner = null;
+
+      const parseItems = (text)=> text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+
+      const pushHistory = (text)=>{
+        const div=document.createElement("div");
+        div.className="histItem";
+        div.textContent=text;
+        historyList.prepend(div);
+        while(historyList.children.length>10) historyList.removeChild(historyList.lastChild);
+      };
+
+      const niceColor = (i)=>{
+        const colors=["#00c3ff","#6a5cff","#ff2bd6","#4d9fff","#8a5cff"];
+        return colors[i % colors.length];
+      };
+
+      const draw = ()=>{
+        const w=canvas.width, h=canvas.height;
+        const cx=w/2, cy=h/2;
+        const r=Math.min(w,h)*0.48;
+        ctx.clearRect(0,0,w,h);
+
+        if(items.length===0){
+          ctx.beginPath(); ctx.arc(cx,cy,r,0,TAU);
+          ctx.fillStyle="rgba(255,255,255,.08)"; ctx.fill();
+          ctx.fillStyle="rgba(255,255,255,.65)";
+          ctx.font="900 44px system-ui";
+          ctx.textAlign="center";
+          ctx.fillText("Keine Einträge", cx, cy);
+          return;
+        }
+
+        const n=items.length;
+        const slice=TAU/n;
 
         ctx.beginPath();
-        ctx.moveTo(0,0);
-        ctx.arc(0,0,r, start, end);
-        ctx.closePath();
-        ctx.fillStyle = niceColor(i);
+        ctx.arc(cx,cy,r*1.04,0,TAU);
+        ctx.fillStyle="rgba(255,255,255,.10)";
         ctx.fill();
-
-        ctx.strokeStyle = "rgba(0,0,0,.18)";
-        ctx.lineWidth = 6;
-        ctx.stroke();
-
-        const label = items[i] || "—";
-        let size = 44;
-        if(label.length > 16) size = 34;
-        if(label.length > 24) size = 28;
 
         ctx.save();
-        ctx.rotate(start + slice/2);
-        ctx.textAlign = "right";
-        ctx.fillStyle = "rgba(0,0,0,.78)";
-        ctx.font = \`900 \${size}px system-ui\`;
-        ctx.shadowColor = "rgba(255,255,255,.45)";
-        ctx.shadowBlur = 5;
-        ctx.fillText(label, r - 24, 14);
+        ctx.translate(cx,cy);
+        ctx.rotate(angle);
+
+        for(let i=0;i<n;i++){
+          const start=i*slice;
+          const end=start+slice;
+
+          ctx.beginPath();
+          ctx.moveTo(0,0);
+          ctx.arc(0,0,r,start,end);
+          ctx.closePath();
+          ctx.fillStyle=niceColor(i);
+          ctx.fill();
+
+          ctx.strokeStyle="rgba(0,0,0,.18)";
+          ctx.lineWidth=6;
+          ctx.stroke();
+
+          const label=items[i]||"—";
+          let size=44;
+          if(label.length>16) size=34;
+          if(label.length>24) size=28;
+
+          ctx.save();
+          ctx.rotate(start+slice/2);
+          ctx.textAlign="right";
+          ctx.fillStyle="rgba(0,0,0,.78)";
+          ctx.font=`900 ${size}px system-ui`;
+          ctx.shadowColor="rgba(255,255,255,.45)";
+          ctx.shadowBlur=5;
+          ctx.fillText(label, r-24, 14);
+          ctx.restore();
+        }
+
         ctx.restore();
-      }
 
-      ctx.restore();
+        const grad=ctx.createRadialGradient(cx,cy,r*0.2,cx,cy,r*1.08);
+        grad.addColorStop(0,"rgba(255,255,255,.08)");
+        grad.addColorStop(1,"rgba(0,0,0,.36)");
+        ctx.beginPath();
+        ctx.arc(cx,cy,r,0,TAU);
+        ctx.fillStyle=grad;
+        ctx.fill();
+      };
 
-      const grad = ctx.createRadialGradient(cx,cy,r*0.2,cx,cy,r*1.08);
-      grad.addColorStop(0, "rgba(255,255,255,.08)");
-      grad.addColorStop(1, "rgba(0,0,0,.36)");
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, TAU);
-      ctx.fillStyle = grad;
-      ctx.fill();
-    }
+      const currentWinner = ()=>{
+        const n=items.length;
+        const slice=TAU/n;
+        const pointer=-Math.PI/2;
+        const a=((pointer-angle)%TAU+TAU)%TAU;
+        const idx=Math.floor(a/slice)%n;
+        return { idx, label: items[idx] ?? "—" };
+      };
 
-    function currentWinner(){
-      const n = items.length;
-      const slice = TAU / n;
-      const pointerAngle = -Math.PI/2;
-      const a = ((pointerAngle - angle) % TAU + TAU) % TAU;
-      const idx = Math.floor(a / slice) % n;
-      return { idx, label: items[idx] ?? "—" };
-    }
+      const updateRemoveButton = ()=>{
+        const can=(mode.value==="remove") && items.length>1 && !!lastWinner;
+        btnRemoveWinner.disabled=!can;
+      };
 
-    function renderNameChips(){
-      const now = parseItems(input.value);
-      nameChips.innerHTML = "";
-      for(const name of now){
-        const chip = document.createElement("div");
-        chip.className = "chip";
-        chip.innerHTML = \`<div class="t">\${name}</div><button class="x" title="Löschen">×</button>\`;
-        chip.querySelector(".x").addEventListener("click", () => {
-          const next = parseItems(input.value).filter(n => n !== name);
-          input.value = next.join("\\n");
-          items = next;
-          lastWinner = null;
-          btnRemoveWinner.disabled = true;
-          syncCoinVisibility();
-          renderNameChips();
-          draw();
-        });
-        nameChips.appendChild(chip);
-      }
-    }
+      const renderNameChips = ()=>{
+        const now=parseItems(input.value);
+        nameChips.innerHTML="";
+        for(const name of now){
+          const chip=document.createElement("div");
+          chip.className="chip";
+          chip.innerHTML=`<div class="t">${name}</div><button class="x">×</button>`;
+          chip.querySelector(".x").addEventListener("click", ()=>{
+            const next=parseItems(input.value).filter(n=>n!==name);
+            input.value=next.join("\n");
+            items=next;
+            lastWinner=null;
+            btnRemoveWinner.disabled=true;
+            renderNameChips();
+            draw();
+          });
+          nameChips.appendChild(chip);
+        }
+      };
 
-    function removeByName(name){
-      const idx = items.findIndex(x => x === name);
-      if(idx === -1) return false;
-      items.splice(idx, 1);
-      input.value = items.join("\\n");
-      syncCoinVisibility();
-      renderNameChips();
-      draw();
-      return true;
-    }
+      const removeByName = (name)=>{
+        const idx=items.findIndex(x=>x===name);
+        if(idx===-1) return false;
+        items.splice(idx,1);
+        input.value=items.join("\n");
+        renderNameChips();
+        draw();
+        return true;
+      };
 
-    // ========= Winner popup + fake winner =========
-    const winnerOverlay = $("winnerOverlay");
-    const winnerNameEl = $("winnerName");
-    const winnerSubEl = $("winnerSub");
+      // Winner popup + fake winner (selten + cooldown)
+      const winnerOverlay = $("winnerOverlay");
+      const winnerNameEl = $("winnerName");
+      const winnerSubEl = $("winnerSub");
 
-    const FAKE_WIN_CHANCE = 0.002;
-    const FAKE_WIN_COOLDOWN_SPINS = 25;
-    let spinsSinceFake = 999;
-    let pendingRealWinner = null;
-    let fakeTimer = null;
+      const FAKE_WIN_CHANCE = 0.002;
+      const FAKE_WIN_COOLDOWN_SPINS = 25;
+      let spinsSinceFake = 999;
+      let pendingRealWinner = null;
+      let fakeTimer = null;
 
-    function clearFakeTimer(){
-      if(fakeTimer){ clearTimeout(fakeTimer); fakeTimer = null; }
-      pendingRealWinner = null;
-    }
+      const clearFakeTimer = ()=>{
+        if(fakeTimer){ clearTimeout(fakeTimer); fakeTimer=null; }
+        pendingRealWinner=null;
+      };
 
-    function setWinnerText(name, sub){
-      winnerNameEl.textContent = name;
-      winnerSubEl.textContent = sub || "";
-    }
+      const setWinnerText = (name, sub)=>{
+        winnerNameEl.textContent=name;
+        winnerSubEl.textContent=sub||"";
+      };
 
-    function celebrate(){
-      winnerNameEl.classList.add("winnerPulse");
-      startConfetti(1400);
-      setTimeout(() => winnerNameEl.classList.remove("winnerPulse"), 1800);
-    }
+      const celebrate = ()=>{
+        winnerNameEl.classList.add("winnerPulse");
+        startConfetti(1400);
+        setTimeout(()=>winnerNameEl.classList.remove("winnerPulse"), 1800);
+      };
 
-    function showWinnerPopup(realName){
-      clearFakeTimer();
-      spinsSinceFake++;
+      const showWinnerPopup = (realName)=>{
+        clearFakeTimer();
+        spinsSinceFake++;
 
-      const canFake = spinsSinceFake >= FAKE_WIN_COOLDOWN_SPINS;
-      const doFake = canFake && (items.length >= 2) && (rand01() < FAKE_WIN_CHANCE);
+        const canFake = spinsSinceFake >= FAKE_WIN_COOLDOWN_SPINS;
+        const doFake = canFake && items.length>=2 && (rand01()<FAKE_WIN_CHANCE);
 
-      if(doFake){
-        const other = items.filter(x => x !== realName);
-        const fake = other.length ? other[randInt(0, other.length - 1)] : realName;
+        if(doFake){
+          const other = items.filter(x=>x!==realName);
+          const fake = other.length ? other[randInt(0, other.length-1)] : realName;
 
-        spinsSinceFake = 0;
-        pendingRealWinner = realName;
+          spinsSinceFake=0;
+          pendingRealWinner=realName;
 
-        setWinnerText(fake, "…");
+          setWinnerText(fake,"…");
+          openOverlay(winnerOverlay);
+          playLK();
+          unlockTrophy("plot_survivor");
+
+          fakeTimer=setTimeout(()=>{
+            setWinnerText(pendingRealWinner,"Plot Twist");
+            pendingRealWinner=null;
+            fakeTimer=null;
+            celebrate();
+          },700);
+
+          return;
+        }
+
+        setWinnerText(realName,"");
         openOverlay(winnerOverlay);
+        celebrate();
+      };
 
-        playLK();
-        unlockTrophy("plot_survivor");
+      $("winnerX").addEventListener("click", ()=>{ clearFakeTimer(); closeOverlay(winnerOverlay); });
+      winnerOverlay.addEventListener("click", (e)=>{ if(e.target===winnerOverlay){ clearFakeTimer(); closeOverlay(winnerOverlay); } });
 
-        fakeTimer = setTimeout(() => {
-          setWinnerText(pendingRealWinner, "Plot Twist");
-          pendingRealWinner = null;
-          fakeTimer = null;
-          celebrate();
-        }, 700);
-
-        return;
-      }
-
-      setWinnerText(realName, "");
-      openOverlay(winnerOverlay);
-      celebrate();
-    }
-
-    $("winnerX").addEventListener("click", () => { clearFakeTimer(); closeOverlay(winnerOverlay); });
-    winnerOverlay.addEventListener("click", (e) => { if(e.target === winnerOverlay){ clearFakeTimer(); closeOverlay(winnerOverlay); } });
-
-    $("winnerKeep").addEventListener("click", () => {
-      clearFakeTimer();
-      closeOverlay(winnerOverlay);
-      showToast("Nudel bleibt");
-    });
-
-    $("winnerRemove").addEventListener("click", () => {
-      if(pendingRealWinner){
-        showToast("Warte…");
-        return;
-      }
-      const name = winnerNameEl.textContent || "";
-      if(!name) return;
-
-      playSad();
-      const ok = removeByName(name);
-      if(ok){
-        counters.removes = (counters.removes||0) + 1;
-        saveCounters();
-        unlockTrophy("first_remove");
-        showToast("Nudel entfernt");
-        lastWinner = null;
-        btnRemoveWinner.disabled = true;
+      $("winnerKeep").addEventListener("click", ()=>{
+        clearFakeTimer();
         closeOverlay(winnerOverlay);
-      }
-    });
+        showToast("Nudel bleibt");
+      });
 
-    // ========= Spin logic =========
-    function spin(){
-      if(spinning) return;
+      $("winnerRemove").addEventListener("click", ()=>{
+        if(pendingRealWinner){ showToast("Warte…"); return; }
+        const name=winnerNameEl.textContent||"";
+        if(!name) return;
 
-      items = parseItems(input.value);
-      syncCoinVisibility();
-      renderNameChips();
-      draw();
+        playSad();
+        const ok=removeByName(name);
+        if(ok){
+          counters.removes=(counters.removes||0)+1;
+          saveCounters();
+          unlockTrophy("first_remove");
+          showToast("Nudel entfernt");
+          lastWinner=null;
+          btnRemoveWinner.disabled=true;
+          closeOverlay(winnerOverlay);
+        }
+      });
 
-      if(items.length < 2){
-        showToast("Mindestens 2 Einträge zum Drehen");
-        return;
-      }
+      // Spin / Buttons
+      const spin = ()=>{
+        if(spinning) return;
 
-      counters.spins = (counters.spins||0) + 1;
-      saveCounters();
-      unlockTrophy("first_spin");
-
-      spinning = true;
-      btnSpin.disabled = true;
-      btnRemoveWinner.disabled = true;
-
-      playSpinLoop();
-
-      const duration = clamp((settings.spinDur || 3) * 1000, 1000, 60000);
-      const extraSpins = 8;
-
-      const n = items.length;
-      const slice = TAU / n;
-
-      const targetIndex = randInt(0, n-1);
-      const inside = (rand01()*0.6 + 0.2) * slice;
-
-      const pointerAngle = -Math.PI/2;
-      const targetAngle = pointerAngle - (targetIndex*slice + inside);
-
-      const startAngle = angle;
-      const endAngle = targetAngle - extraSpins*TAU;
-
-      const start = performance.now();
-      const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
-
-      function frame(nowT){
-        const t = Math.min(1, (nowT - start) / duration);
-        const e = easeOutCubic(t);
-
-        angle = startAngle + (endAngle - startAngle) * e;
+        items=parseItems(input.value);
+        renderNameChips();
         draw();
 
-        if(t < 1){
-          requestAnimationFrame(frame);
-        }else{
-          stopSpinLoop();
-          spinning = false;
-          btnSpin.disabled = false;
-
-          angle = ((angle % TAU) + TAU) % TAU;
-
-          lastWinner = currentWinner();
-          pushHistory(lastWinner.label);
-          updateRemoveButton();
-
-          showWinnerPopup(lastWinner.label);
+        if(items.length<2){
+          showToast("Mindestens 2 Einträge zum Drehen");
+          return;
         }
-      }
-      requestAnimationFrame(frame);
-    }
 
-    function removeLastWinner(){
-      if(!lastWinner) return;
-      if(mode.value !== "remove"){
-        btnRemoveWinner.disabled = true;
-        showToast("Modus: Nudel lassen");
-        return;
-      }
-      playSad();
-      const ok = removeByName(lastWinner.label);
-      if(ok){
-        counters.removes = (counters.removes||0) + 1;
+        counters.spins=(counters.spins||0)+1;
         saveCounters();
-        unlockTrophy("first_remove");
-        showToast("Nudel entfernt");
-        lastWinner = null;
-        btnRemoveWinner.disabled = true;
-      }
-    }
+        unlockTrophy("first_spin");
 
-    function shuffle(){
-      items = parseItems(input.value);
-      for(let i = items.length - 1; i > 0; i--){
-        const j = randInt(0, i);
-        [items[i], items[j]] = [items[j], items[i]];
-      }
-      input.value = items.join("\\n");
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      showToast("Gemischt");
-      syncCoinVisibility();
-      renderNameChips();
-      draw();
-    }
+        spinning=true;
+        btnSpin.disabled=true;
+        btnRemoveWinner.disabled=true;
 
-    function reset(){
-      angle = 0;
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      showToast("Reset");
-      draw();
-    }
+        playSpinLoop();
 
-    btnSpin.addEventListener("click", spin);
-    btnRemoveWinner.addEventListener("click", removeLastWinner);
-    btnShuffle.addEventListener("click", shuffle);
-    btnReset.addEventListener("click", reset);
+        const duration = clamp((settings.spinDur||3)*1000, 1000, 60000);
+        const extraSpins = 8;
 
-    input.addEventListener("input", () => {
-      items = parseItems(input.value);
-      lastWinner = null;
-      btnRemoveWinner.disabled = true;
-      syncCoinVisibility();
-      renderNameChips();
-      draw();
-    });
+        const n=items.length;
+        const slice=TAU/n;
 
-    mode.addEventListener("change", updateRemoveButton);
+        const targetIndex=randInt(0,n-1);
+        const inside=(rand01()*0.6+0.2)*slice;
 
-    // ========= Coinflip (no bet) =========
-    const coinOverlay = $("coinOverlay");
-    const coin = $("coin");
-    const coinNameA = $("coinNameA");
-    const coinNameB = $("coinNameB");
-    const coinResult = $("coinResult");
-    const coinInfo = $("coinInfo");
-    let coinBusy = false;
-    let coinRAF = null;
+        const pointer=-Math.PI/2;
+        const targetAngle=pointer-(targetIndex*slice+inside);
 
-    function stopCoinAnim(){
-      if(coinRAF){ cancelAnimationFrame(coinRAF); coinRAF = null; }
-    }
+        const startAngle=angle;
+        const endAngle=targetAngle-extraSpins*TAU;
 
-    function openCoinflip(){
-      const now = parseItems(input.value);
-      if(now.length !== 2){
-        showToast("Coinflip nur bei 2");
-        syncCoinVisibility();
-        return;
-      }
-      const a = now[0], b = now[1];
-      coinNameA.textContent = a;
-      coinNameB.textContent = b;
-      coinInfo.textContent = `Kopf = ${a} | Zahl = ${b}`;
-      coinResult.textContent = "";
-      coin.style.transform = "rotateY(0deg)";
-      openOverlay(coinOverlay);
-    }
+        const start=performance.now();
+        const easeOutCubic=(t)=>1-Math.pow(1-t,3);
 
-    $("miniCoin").addEventListener("click", openCoinflip);
+        const frame=(now)=>{
+          const t=Math.min(1,(now-start)/duration);
+          const e=easeOutCubic(t);
+          angle=startAngle+(endAngle-startAngle)*e;
+          draw();
 
-    $("coinStart").addEventListener("click", () => {
-      if(coinBusy) return;
-
-      const now = parseItems(input.value);
-      if(now.length !== 2){
-        showToast("Coinflip nur bei 2");
-        syncCoinVisibility();
-        return;
-      }
-
-      coinBusy = true;
-      const a = now[0], b = now[1];
-      coinNameA.textContent = a;
-      coinNameB.textContent = b;
-      coinInfo.textContent = `Kopf = ${a} | Zahl = ${b}`;
-      coinResult.textContent = "…";
-
-      const heads = rand01() < 0.5;
-      const baseMs = clamp((settings.coinDur || 6) * 1000, 1000, 60000);
-      const jitter = Math.floor(baseMs * (0.25 * rand01()));
-      const totalMs = clamp(baseMs + jitter, 1000, 60000);
-      const finalDeg = heads ? 0 : 180;
-
-      const start = performance.now();
-      const easeOut = (t) => 1 - Math.pow(1 - t, 3);
-      stopCoinAnim();
-
-      const startBase = 0;
-      const extraTurns = 8 + randInt(0, 6);
-      const endTarget = (extraTurns * 360) + finalDeg;
-
-      function frame(nowT){
-        const t = Math.min(1, (nowT - start) / totalMs);
-        const e = easeOut(t);
-        const deg = startBase + (endTarget - startBase) * e;
-        coin.style.transform = `rotateY(${deg}deg)`;
-
-        if(t < 1){
-          coinRAF = requestAnimationFrame(frame);
-        }else{
-          coin.style.transform = `rotateY(${finalDeg}deg)`;
-          const winner = heads ? a : b;
-          coinResult.textContent = `Ergebnis: ${winner}`;
-          pushHistory(`🪙 ${winner}`);
-          showToast(`Coinflip: ${winner}`);
-          coinBusy = false;
-          stopCoinAnim();
-        }
-      }
-      coinRAF = requestAnimationFrame(frame);
-    });
-
-    $("coinX").addEventListener("click", () => { coinBusy = false; stopCoinAnim(); closeOverlay(coinOverlay); });
-    $("coinClose").addEventListener("click", () => { coinBusy = false; stopCoinAnim(); closeOverlay(coinOverlay); });
-    coinOverlay.addEventListener("click", (e) => { if(e.target === coinOverlay){ coinBusy=false; stopCoinAnim(); closeOverlay(coinOverlay); } });
-
-    // ========= Guess =========
-    const guessOverlay = $("guessOverlay");
-    const guessGrid = $("guessGrid");
-    const guessStatus = $("guessStatus");
-    let guessSecret = 0;
-    let guessActive = false;
-
-    function guessStart(){
-      guessSecret = randInt(1, 20);
-      guessActive = true;
-      guessStatus.textContent = "Wähle eine Zahl";
-      guessGrid.innerHTML = "";
-      for(let i=1;i<=20;i++){
-        const b = document.createElement("button");
-        b.textContent = String(i);
-        b.addEventListener("click", () => {
-          if(!guessActive) return;
-          guessActive = false;
-          if(i === guessSecret){
-            guessStatus.textContent = `Richtig – es war ${guessSecret}`;
-            showToast("Richtig: " + i);
+          if(t<1){
+            requestAnimationFrame(frame);
           }else{
-            guessStatus.textContent = `Falsch – es war ${guessSecret}`;
-            showToast("Falsch: " + i);
+            stopSpinLoop();
+            spinning=false;
+            btnSpin.disabled=false;
+
+            angle=((angle%TAU)+TAU)%TAU;
+
+            lastWinner=currentWinner();
+            pushHistory(lastWinner.label);
+            updateRemoveButton();
+            showWinnerPopup(lastWinner.label);
           }
-          Array.from(guessGrid.querySelectorAll("button")).forEach(x => x.disabled = true);
-        });
-        guessGrid.appendChild(b);
-      }
-    }
+        };
 
-    $("miniGuess").addEventListener("click", () => { guessStart(); openOverlay(guessOverlay); });
-    $("guessNew").addEventListener("click", guessStart);
-    $("guessX").addEventListener("click", () => closeOverlay(guessOverlay));
-    guessOverlay.addEventListener("click", (e) => { if(e.target === guessOverlay) closeOverlay(guessOverlay); });
+        requestAnimationFrame(frame);
+      };
 
-    // ========= TicTacToe =========
-    const tttOverlay = $("tttOverlay");
-    const tttGrid = $("tttGrid");
-    const tttStatus = $("tttStatus");
-    let ttt = Array(9).fill("");
-    let tttOver = false;
-
-    function tttRender(){
-      tttGrid.innerHTML = "";
-      for(let i=0;i<9;i++){
-        const b = document.createElement("button");
-        b.textContent = ttt[i];
-        b.disabled = tttOver || ttt[i] !== "";
-        b.addEventListener("click", () => tttMove(i));
-        tttGrid.appendChild(b);
-      }
-    }
-    function tttWinner(board){
-      const lines = [
-        [0,1,2],[3,4,5],[6,7,8],
-        [0,3,6],[1,4,7],[2,5,8],
-        [0,4,8],[2,4,6]
-      ];
-      for(const [a,b,c] of lines){
-        if(board[a] && board[a]===board[b] && board[a]===board[c]) return board[a];
-      }
-      if(board.every(x => x)) return "draw";
-      return null;
-    }
-    function tttMin(board, isMax){
-      const win = tttWinner(board);
-      if(win === "O") return {score: 10};
-      if(win === "X") return {score: -10};
-      if(win === "draw") return {score: 0};
-
-      if(isMax){
-        let best = {score: -Infinity};
-        for(let i=0;i<9;i++){
-          if(board[i]) continue;
-          board[i] = "O";
-          const r = tttMin(board, false);
-          board[i] = "";
-          best.score = Math.max(best.score, r.score);
+      const removeLastWinner = ()=>{
+        if(!lastWinner) return;
+        if(mode.value!=="remove"){
+          btnRemoveWinner.disabled=true;
+          showToast("Modus: Nudel lassen");
+          return;
         }
-        return best;
-      }else{
-        let best = {score: Infinity};
-        for(let i=0;i<9;i++){
-          if(board[i]) continue;
-          board[i] = "X";
-          const r = tttMin(board, true);
-          board[i] = "";
-          best.score = Math.min(best.score, r.score);
+        playSad();
+        const ok=removeByName(lastWinner.label);
+        if(ok){
+          counters.removes=(counters.removes||0)+1;
+          saveCounters();
+          unlockTrophy("first_remove");
+          showToast("Nudel entfernt");
+          lastWinner=null;
+          btnRemoveWinner.disabled=true;
         }
-        return best;
+      };
+
+      const shuffle = ()=>{
+        items=parseItems(input.value);
+        for(let i=items.length-1;i>0;i--){
+          const j=randInt(0,i);
+          [items[i],items[j]]=[items[j],items[i]];
+        }
+        input.value=items.join("\n");
+        lastWinner=null;
+        btnRemoveWinner.disabled=true;
+        showToast("Gemischt");
+        renderNameChips();
+        draw();
+      };
+
+      const reset = ()=>{
+        angle=0;
+        lastWinner=null;
+        btnRemoveWinner.disabled=true;
+        showToast("Reset");
+        draw();
+      };
+
+      btnSpin.addEventListener("click", spin);
+      btnRemoveWinner.addEventListener("click", removeLastWinner);
+      btnShuffle.addEventListener("click", shuffle);
+      btnReset.addEventListener("click", reset);
+
+      input.addEventListener("input", ()=>{
+        items=parseItems(input.value);
+        lastWinner=null;
+        btnRemoveWinner.disabled=true;
+        renderNameChips();
+        draw();
+      });
+
+      mode.addEventListener("change", updateRemoveButton);
+
+      // Overlays wiring
+      const linksOverlay = $("linksOverlay");
+      const settingsOverlay = $("settingsOverlay");
+      const trophyOverlay = $("trophyOverlay");
+
+      $("linksBtn").addEventListener("click", ()=>openOverlay(linksOverlay));
+      $("settingsBtn").addEventListener("click", ()=>{ syncSettingsUi(); openOverlay(settingsOverlay); });
+      $("trophyBtn").addEventListener("click", ()=>{ renderTrophies(); openOverlay(trophyOverlay); });
+
+      $("linksX").addEventListener("click", ()=>closeOverlay(linksOverlay));
+      $("linksClose").addEventListener("click", ()=>closeOverlay(linksOverlay));
+      linksOverlay.addEventListener("click", (e)=>{ if(e.target===linksOverlay) closeOverlay(linksOverlay); });
+
+      $("settingsX").addEventListener("click", ()=>closeOverlay(settingsOverlay));
+      $("settingsClose").addEventListener("click", ()=>closeOverlay(settingsOverlay));
+      settingsOverlay.addEventListener("click", (e)=>{ if(e.target===settingsOverlay) closeOverlay(settingsOverlay); });
+
+      $("trophyX").addEventListener("click", ()=>closeOverlay(trophyOverlay));
+      $("trophyClose").addEventListener("click", ()=>closeOverlay(trophyOverlay));
+      trophyOverlay.addEventListener("click", (e)=>{ if(e.target===trophyOverlay) closeOverlay(trophyOverlay); });
+
+      $("openTikTok").addEventListener("click", ()=>window.open(LINKS.tiktok,"_blank"));
+      $("openInsta").addEventListener("click", ()=>window.open(LINKS.insta,"_blank"));
+      $("openTwitch").addEventListener("click", ()=>window.open(LINKS.twitch,"_blank"));
+
+      // Settings UI
+      const spinVol=$("spinVol"), sadVol=$("sadVol"), spinDur=$("spinDur"), muteAll=$("muteAll");
+      const spinVolLabel=$("spinVolLabel"), sadVolLabel=$("sadVolLabel"), spinDurLabel=$("spinDurLabel");
+
+      function syncSettingsUi(){
+        spinVol.value=String(Math.round(clamp(settings.spinVol,0,1)*100));
+        sadVol.value=String(Math.round(clamp(settings.sadVol,0,1)*100));
+        spinDur.value=String(clamp(Math.round(settings.spinDur||3),1,60));
+        muteAll.checked=!!settings.muted;
+
+        spinVolLabel.textContent=spinVol.value+"%";
+        sadVolLabel.textContent=sadVol.value+"%";
+        spinDurLabel.textContent=spinDur.value+"s";
       }
-    }
-    function tttBestMove(board){
-      let best = {score: -Infinity, idx: -1};
-      for(let i=0;i<9;i++){
-        if(board[i]) continue;
-        board[i] = "O";
-        const r = tttMin(board, false);
-        board[i] = "";
-        if(r.score > best.score) best = {score:r.score, idx:i};
-      }
-      return best;
-    }
-    function tttAi(){
-      if(tttOver) return;
-      if(rand01() < 0.18){
-        const free = ttt.map((v,i) => v?null:i).filter(v => v!==null);
-        const idx = free[randInt(0, free.length-1)];
-        ttt[idx] = "O";
-      }else{
-        const copy = ttt.slice();
-        const best = tttBestMove(copy);
-        if(best.idx >= 0) ttt[best.idx] = "O";
-      }
-    }
-    function tttMove(i){
-      if(tttOver || ttt[i]) return;
-      ttt[i] = "X";
-      let w = tttWinner(ttt);
-      if(w){
-        tttOver = true;
-        tttStatus.textContent = (w==="draw") ? "Unentschieden" : (w==="X" ? "Du hast gewonnen" : "KI gewinnt");
-        if(w === "X") unlockTrophy("ttt_master");
-        tttRender();
-        return;
-      }
-      tttAi();
-      w = tttWinner(ttt);
-      if(w){
-        tttOver = true;
-        tttStatus.textContent = (w==="draw") ? "Unentschieden" : (w==="X" ? "Du hast gewonnen" : "KI gewinnt");
-        if(w === "X") unlockTrophy("ttt_master");
-      }else{
-        tttStatus.textContent = "";
-      }
-      tttRender();
-    }
-    function tttReset(){
-      ttt = Array(9).fill("");
-      tttOver = false;
-      tttStatus.textContent = "";
-      tttRender();
-    }
 
-    $("miniTtt").addEventListener("click", () => { tttReset(); openOverlay(tttOverlay); });
-    $("tttX").addEventListener("click", () => closeOverlay(tttOverlay));
-    $("tttReset").addEventListener("click", tttReset);
-    tttOverlay.addEventListener("click", (e) => { if(e.target === tttOverlay) closeOverlay(tttOverlay); });
+      spinVol.addEventListener("input", ()=>{
+        settings.spinVol=Number(spinVol.value)/100;
+        settings.muted=false;
+        muteAll.checked=false;
+        spinVolLabel.textContent=spinVol.value+"%";
+        applyVolumes(); saveSettings();
+      });
+      sadVol.addEventListener("input", ()=>{
+        settings.sadVol=Number(sadVol.value)/100;
+        settings.muted=false;
+        muteAll.checked=false;
+        sadVolLabel.textContent=sadVol.value+"%";
+        applyVolumes(); saveSettings();
+      });
+      spinDur.addEventListener("input", ()=>{
+        settings.spinDur=clamp(Number(spinDur.value),1,60);
+        spinDurLabel.textContent=spinDur.value+"s";
+        saveSettings();
+      });
+      muteAll.addEventListener("change", ()=>{
+        settings.muted=muteAll.checked;
+        applyVolumes(); saveSettings();
+      });
 
-    // ========= Snake =========
-    const snakeOverlay = $("snakeOverlay");
-    const snakeCanvas = $("snakeCanvas");
-    const sctx = snakeCanvas.getContext("2d");
-    const snakeStatus = $("snakeStatus");
+      document.addEventListener("keydown", (e)=>{
+        if(e.key!=="Escape") return;
+        closeOverlay(linksOverlay);
+        closeOverlay(settingsOverlay);
+        closeOverlay(trophyOverlay);
+        clearFakeTimer();
+        closeOverlay(winnerOverlay);
+      });
 
-    let snakeBest = 0;
-    try{ snakeBest = Number(localStorage.getItem("snakeBest") || 0) || 0; }catch(e){}
-
-    let snake = null, dir = {x:1,y:0}, food = null, score=0, snakeTimer=null, snakeOver=true;
-    const cells = 20;
-    const cellSize = snakeCanvas.width / cells;
-
-    function randCell(){ return {x: randInt(0,cells-1), y: randInt(0,cells-1)}; }
-    function snakeReset(){
-      snake = [{x:10,y:10},{x:9,y:10},{x:8,y:10}];
-      dir = {x:1,y:0};
-      food = randCell();
-      score = 0;
-      snakeOver = false;
-      snakeStatus.textContent = `Score: 0 | Best: ${snakeBest}`;
-      snakeDraw();
-    }
-    function snakeStop(){
-      if(snakeTimer){ clearInterval(snakeTimer); snakeTimer=null; }
-    }
-    function snakeGameOver(){
-      snakeOver = true;
-      snakeStop();
-      if(score > snakeBest){
-        snakeBest = score;
-        try{ localStorage.setItem("snakeBest", String(snakeBest)); }catch(e){}
-      }
-      if(snakeBest >= 10) unlockTrophy("snake_best10");
-      snakeStatus.textContent = `Game Over. Score: ${score} | Best: ${snakeBest}`;
-    }
-    function snakeDraw(){
-      sctx.clearRect(0,0,snakeCanvas.width,snakeCanvas.height);
-      sctx.fillStyle = "rgba(255,45,214,.85)";
-      sctx.fillRect(food.x*cellSize, food.y*cellSize, cellSize, cellSize);
-      for(let i=0;i<snake.length;i++){
-        sctx.fillStyle = i===0 ? "rgba(0,195,255,.95)" : "rgba(255,255,255,.65)";
-        sctx.fillRect(snake[i].x*cellSize, snake[i].y*cellSize, cellSize-1, cellSize-1);
-      }
-    }
-    function snakeStep(){
-      if(snakeOver) return;
-      const head = snake[0];
-      const next = { x: head.x + dir.x, y: head.y + dir.y };
-      if(next.x < 0 || next.y < 0 || next.x >= cells || next.y >= cells){ snakeGameOver(); return; }
-      if(snake.some(p => p.x === next.x && p.y === next.y)){ snakeGameOver(); return; }
-      snake.unshift(next);
-      if(next.x === food.x && next.y === food.y){
-        score++;
-        snakeStatus.textContent = `Score: ${score} | Best: ${snakeBest}`;
-        food = randCell();
-      }else{
-        snake.pop();
-      }
-      snakeDraw();
-    }
-    function setDir(nx, ny){
-      if(!snake || snakeOver) return;
-      if(nx === -dir.x && ny === -dir.y) return;
-      dir = {x:nx,y:ny};
-    }
-    document.addEventListener("keydown", (e) => {
-      if(snakeOverlay.style.display === "grid"){
-        if(e.key === "ArrowUp" || e.key === "w") setDir(0,-1);
-        if(e.key === "ArrowDown" || e.key === "s") setDir(0,1);
-        if(e.key === "ArrowLeft" || e.key === "a") setDir(-1,0);
-        if(e.key === "ArrowRight" || e.key === "d") setDir(1,0);
-      }
-    });
-
-    $("snUp").addEventListener("click", () => setDir(0,-1));
-    $("snDown").addEventListener("click", () => setDir(0,1));
-    $("snLeft").addEventListener("click", () => setDir(-1,0));
-    $("snRight").addEventListener("click", () => setDir(1,0));
-
-    $("miniSnake").addEventListener("click", () => { openOverlay(snakeOverlay); snakeReset(); });
-    $("snakeStart").addEventListener("click", () => {
-      if(!snake || snakeOver) snakeReset();
-      if(snakeTimer) return;
-      snakeTimer = setInterval(snakeStep, 120);
-    });
-    $("snakeRestart").addEventListener("click", () => {
-      snakeReset();
-      snakeStop();
-      snakeTimer = setInterval(snakeStep, 120);
-    });
-    $("snakeStop").addEventListener("click", snakeStop);
-    $("snakeX").addEventListener("click", () => { snakeStop(); closeOverlay(snakeOverlay); });
-    snakeOverlay.addEventListener("click", (e) => { if(e.target === snakeOverlay){ snakeStop(); closeOverlay(snakeOverlay); } });
-
-    // ========= Guess open =========
-    $("miniGuess").addEventListener("click", () => { guessStart(); openOverlay($("guessOverlay")); });
-
-    // ========= Top buttons =========
-    $("linksBtn").addEventListener("click", () => openOverlay($("linksOverlay")));
-    $("chanceBtn").addEventListener("click", () => openOverlay($("chanceOverlay")));
-    $("settingsBtn").addEventListener("click", () => { syncSettingsUi(); openOverlay($("settingsOverlay")); });
-    $("trophyBtn").addEventListener("click", () => { renderTrophies(); openOverlay($("trophyOverlay")); });
-
-    // ========= Close wiring =========
-    $("linksX").addEventListener("click", () => closeOverlay($("linksOverlay")));
-    $("linksClose").addEventListener("click", () => closeOverlay($("linksOverlay")));
-    $("settingsX").addEventListener("click", () => closeOverlay($("settingsOverlay")));
-    $("settingsClose").addEventListener("click", () => closeOverlay($("settingsOverlay")));
-    $("trophyX").addEventListener("click", () => closeOverlay($("trophyOverlay")));
-    $("trophyClose").addEventListener("click", () => closeOverlay($("trophyOverlay")));
-    $("chanceX").addEventListener("click", () => closeOverlay($("chanceOverlay")));
-    $("chanceClose").addEventListener("click", () => closeOverlay($("chanceOverlay")));
-
-    // ========= Links buttons =========
-    $("openTikTok").addEventListener("click", () => window.open(LINKS.tiktok, "_blank"));
-    $("openInsta").addEventListener("click", () => window.open(LINKS.insta, "_blank"));
-    $("openTwitch").addEventListener("click", () => window.open(LINKS.twitch, "_blank"));
-
-    // ========= Settings UI sync =========
-    const spinVol = $("spinVol"), sadVol = $("sadVol"), muteAll = $("muteAll");
-    const spinDur = $("spinDur"), coinDur = $("coinDur");
-    const spinVolLabel = $("spinVolLabel"), sadVolLabel = $("sadVolLabel");
-    const spinDurLabel = $("spinDurLabel"), coinDurLabel = $("coinDurLabel");
-
-    function syncSettingsUi(){
-      spinVol.value = String(Math.round(clamp(settings.spinVol,0,1) * 100));
-      sadVol.value  = String(Math.round(clamp(settings.sadVol,0,1) * 100));
-      spinDur.value = String(clamp(Math.round(settings.spinDur || 3), 1, 60));
-      coinDur.value = String(clamp(Math.round(settings.coinDur || 6), 1, 60));
-      muteAll.checked = !!settings.muted;
-      spinVolLabel.textContent = spinVol.value + "%";
-      sadVolLabel.textContent  = sadVol.value + "%";
-      spinDurLabel.textContent = spinDur.value + "s";
-      coinDurLabel.textContent = coinDur.value + "s";
-    }
-
-    spinVol.addEventListener("input", () => {
-      settings.spinVol = Number(spinVol.value) / 100;
-      settings.muted = false;
-      muteAll.checked = false;
-      spinVolLabel.textContent = spinVol.value + "%";
-      applyVolumes(); saveSettings();
-    });
-    sadVol.addEventListener("input", () => {
-      settings.sadVol = Number(sadVol.value) / 100;
-      settings.muted = false;
-      muteAll.checked = false;
-      sadVolLabel.textContent = sadVol.value + "%";
-      applyVolumes(); saveSettings();
-    });
-    spinDur.addEventListener("input", () => {
-      settings.spinDur = clamp(Number(spinDur.value), 1, 60);
-      spinDurLabel.textContent = spinDur.value + "s";
-      saveSettings();
-    });
-    coinDur.addEventListener("input", () => {
-      settings.coinDur = clamp(Number(coinDur.value), 1, 60);
-      coinDurLabel.textContent = coinDur.value + "s";
-      saveSettings();
-    });
-    muteAll.addEventListener("change", () => {
-      settings.muted = muteAll.checked;
-      applyVolumes(); saveSettings();
-    });
-
-    // ========= Chance confirm =========
-    $("chanceConfirm").addEventListener("click", () => {
-      const sel = $("chanceSelect");
-      const name = sel.value;
-      if(!name) return;
-      const now = parseItems(input.value);
-      now.push(name);
-      input.value = now.join("\n");
-      showToast("Doppelte Chance: " + name);
-      closeOverlay($("chanceOverlay"));
-      items = parseItems(input.value);
-      syncCoinVisibility();
+      // Init
+      items=parseItems(input.value);
       renderNameChips();
+      syncSettingsUi();
+      saveSettings();
       draw();
-    });
-
-    // Fill chance select on open
-    $("chanceBtn").addEventListener("click", () => {
-      const now = parseItems(input.value);
-      const uniq = [];
-      const seen = new Set();
-      for(const n of now){ if(!seen.has(n)){ seen.add(n); uniq.push(n); } }
-      const sel = $("chanceSelect");
-      sel.innerHTML = "";
-      for(const n of uniq){
-        const opt = document.createElement("option");
-        opt.value = n;
-        opt.textContent = n;
-        sel.appendChild(opt);
-      }
-    });
-
-    // ========= Guess logic =========
-    const guessGrid = $("guessGrid");
-    const guessStatus = $("guessStatus");
-    let guessSecret = 0;
-    let guessActive = false;
-
-    function guessStart(){
-      guessSecret = randInt(1, 20);
-      guessActive = true;
-      guessStatus.textContent = "Wähle eine Zahl";
-      guessGrid.innerHTML = "";
-      for(let i=1;i<=20;i++){
-        const b = document.createElement("button");
-        b.textContent = String(i);
-        b.addEventListener("click", () => {
-          if(!guessActive) return;
-          guessActive = false;
-          if(i === guessSecret){
-            guessStatus.textContent = `Richtig – es war ${guessSecret}`;
-            showToast("Richtig: " + i);
-          }else{
-            guessStatus.textContent = `Falsch – es war ${guessSecret}`;
-            showToast("Falsch: " + i);
-          }
-          Array.from(guessGrid.querySelectorAll("button")).forEach(x => x.disabled = true);
-        });
-        guessGrid.appendChild(b);
-      }
-    }
-    $("guessNew").addEventListener("click", guessStart);
-    $("guessX").addEventListener("click", () => closeOverlay($("guessOverlay")));
-    $("guessOverlay").addEventListener("click", (e) => { if(e.target === $("guessOverlay")) closeOverlay($("guessOverlay")); });
-
-    // ========= overlays close =========
-    $("coinX").addEventListener("click", () => { coinBusy=false; stopCoinAnim(); closeOverlay(coinOverlay); });
-    $("coinClose").addEventListener("click", () => { coinBusy=false; stopCoinAnim(); closeOverlay(coinOverlay); });
-
-    $("tttX").addEventListener("click", () => closeOverlay(tttOverlay));
-
-    // ========= ESC close =========
-    document.addEventListener("keydown", (e) => {
-      if(e.key !== "Escape") return;
-      closeOverlay($("linksOverlay"));
-      closeOverlay($("settingsOverlay"));
-      closeOverlay($("trophyOverlay"));
-      closeOverlay($("chanceOverlay"));
-      closeOverlay($("winnerOverlay"));
-      closeOverlay($("coinOverlay"));
-      closeOverlay($("guessOverlay"));
-      closeOverlay($("tttOverlay"));
-      snakeStop();
-      closeOverlay($("snakeOverlay"));
-      stopCoinAnim();
-      coinBusy = false;
-      clearFakeTimer();
-    });
-
-    // ========= Init =========
-    items = parseItems(input.value);
-    syncCoinVisibility();
-    updateRemoveButton();
-    syncSettingsUi();
-    saveSettings();
-    renderNameChips();
-    draw();
+    })();
   </script>
 </body>
 </html>
