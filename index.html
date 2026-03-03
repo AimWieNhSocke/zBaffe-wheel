@@ -8,15 +8,15 @@
   <style>
     :root{
       --bgBase:#080612;
-      --bgGlow1:#6A5CFF;
-      --bgGlow2:#00C3FF;
-
+      --glow1:#6A5CFF;
+      --glow2:#00C3FF;
       --text:#FFFFFF;
+
       --btn1:#6A5CFF;
       --btn2:#00C3FF;
 
-      --panelBg: rgba(0,0,0,.20);
-      --panelBorder: rgba(255,255,255,.12);
+      --card: rgba(0,0,0,.22);
+      --border: rgba(255,255,255,.12);
 
       --nameBox: rgba(110,80,255,.30);
       --nameBoxBorder: rgba(110,80,255,.55);
@@ -28,13 +28,15 @@
     html,body{height:100%;margin:0}
     body{
       color:var(--text);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
       overflow-x:hidden;
       background:
         radial-gradient(1100px 680px at 50% 18%, rgba(106,92,255,.18), transparent 58%),
         radial-gradient(900px 600px at 18% 70%, rgba(0,195,255,.14), transparent 58%),
         var(--bgBase);
     }
+    body.obs-mode{ background: transparent !important; }
+    body.obs-mode .overlay{ background: rgba(0,0,0,.62); }
 
     #confetti{
       position:fixed; inset:0;
@@ -117,7 +119,6 @@
       border-color: rgba(0,195,255,.26);
       background: rgba(0,0,0,.22);
     }
-    select:hover, .chipBtn:hover{ background: rgba(0,0,0,.34); }
 
     .leftCol{
       grid-column:1/2; grid-row:2/3;
@@ -129,8 +130,8 @@
 
     .card{
       border-radius: 18px;
-      border: 1px solid var(--panelBorder);
-      background: var(--panelBg);
+      border: 1px solid var(--border);
+      background: var(--card);
       box-shadow: var(--shadowSoft);
       overflow:hidden;
     }
@@ -144,11 +145,7 @@
       text-align:center;
       user-select:none;
     }
-    .cardBody{
-      padding: 12px;
-      display:grid;
-      gap: 10px;
-    }
+    .cardBody{ padding: 12px; display:grid; gap:10px; }
 
     .miniBtn{
       padding: 12px 14px;
@@ -178,7 +175,6 @@
       filter: drop-shadow(0 18px 40px rgba(0,0,0,.38));
     }
     canvas#wheel{ width:100%; height:100%; border-radius: 50%; }
-
     .pin{
       position:absolute;
       top:-8px; left:50%;
@@ -207,11 +203,10 @@
       align-content:stretch;
       padding-top: 10px;
     }
-
     .panel{
       border-radius: 18px;
-      border: 1px solid var(--panelBorder);
-      background: var(--panelBg);
+      border: 1px solid var(--border);
+      background: var(--card);
       box-shadow: var(--shadowSoft);
       overflow:hidden;
     }
@@ -224,11 +219,7 @@
       border-bottom: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
     }
-    .panelHead .t{
-      font-weight: 1300;
-      font-size: 15px;
-      letter-spacing: .2px;
-    }
+    .panelHead .t{ font-weight: 1300; font-size: 15px; letter-spacing: .2px; }
     .panelHead .btnTiny{
       padding: 8px 10px;
       border-radius: 12px;
@@ -238,26 +229,28 @@
       cursor:pointer;
       font-weight: 1100;
     }
-    .panelHead .btnTiny:hover{ background: rgba(255,255,255,.10); }
 
-    .panelBody{
-      padding: 12px;
-      display:grid;
-      gap: 10px;
+    .panelBody{ padding: 12px; display:grid; gap: 10px; }
+
+    .small{ font-size: 12px; opacity: .88; font-weight: 1000; }
+
+    .tabs{ display:flex; gap:8px; flex-wrap:wrap; }
+    .tabBtn{
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      cursor:pointer;
+      font-weight: 1100;
+    }
+    .tabBtn.active{
+      border-color: rgba(0,195,255,.35);
+      box-shadow: 0 0 14px rgba(0,195,255,.10);
+      background: rgba(0,0,0,.18);
     }
 
-    .small{
-      font-size: 12px;
-      opacity: .88;
-      font-weight: 1000;
-    }
-
-    .list{
-      display:grid;
-      gap: 8px;
-      max-height: 240px;
-      overflow:auto;
-    }
+    .list{ display:grid; gap: 8px; max-height: 260px; overflow:auto; }
     .listItem{
       padding: 8px 10px;
       border-radius: 12px;
@@ -281,26 +274,6 @@
       white-space:nowrap;
     }
 
-    .tabs{
-      display:flex;
-      gap: 8px;
-      flex-wrap:wrap;
-    }
-    .tabBtn{
-      padding: 8px 10px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.06);
-      color:#fff;
-      cursor:pointer;
-      font-weight: 1100;
-    }
-    .tabBtn.active{
-      border-color: rgba(0,195,255,.35);
-      box-shadow: 0 0 14px rgba(0,195,255,.10);
-      background: rgba(0,0,0,.18);
-    }
-
     .btnRow{
       grid-column:2/3; grid-row:3/4;
       display:flex;
@@ -309,7 +282,6 @@
       flex-wrap:wrap;
       padding-top: 4px;
     }
-
     button.action{
       appearance:none;
       border:0;
@@ -364,16 +336,9 @@
       box-sizing: border-box;
     }
 
-    .nameChips{
-      margin-top: 10px;
-      display:flex;
-      flex-wrap:wrap;
-      gap: 8px;
-    }
+    .nameChips{ margin-top: 10px; display:flex; flex-wrap:wrap; gap: 8px; }
     .chip{
-      display:flex;
-      align-items:center;
-      gap: 8px;
+      display:flex; align-items:center; gap: 8px;
       padding: 8px 10px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.14);
@@ -388,8 +353,7 @@
       white-space: nowrap;
     }
     .chip .x{
-      width: 24px;
-      height: 24px;
+      width: 24px; height: 24px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.18);
       background: rgba(255,255,255,.08);
@@ -400,7 +364,6 @@
       place-items:center;
       line-height: 1;
     }
-    .chip .x:hover{ background: rgba(255,255,255,.14); }
 
     .overlay{
       position: fixed;
@@ -423,10 +386,8 @@
     .box h2{ margin: 0 0 10px 0; font-size: 20px; font-weight: 1300; }
     .closeX{
       position:absolute;
-      top: 10px;
-      right: 10px;
-      width: 40px;
-      height: 40px;
+      top: 10px; right: 10px;
+      width: 40px; height: 40px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.18);
       background: rgba(255,255,255,.10);
@@ -435,8 +396,7 @@
       color:#fff;
     }
     .boxActions{
-      display:flex;
-      gap:10px;
+      display:flex; gap:10px;
       justify-content:center;
       flex-wrap:wrap;
       margin-top: 12px;
@@ -458,99 +418,15 @@
       text-shadow: 0 0 14px rgba(0,195,255,.24), 0 0 22px rgba(106,92,255,.16);
     }
     .winnerPulse{ animation: pulseGlow 1.05s ease-in-out infinite; }
-    @keyframes pulseGlow{
-      0%{ transform: scale(1); }
-      50%{ transform: scale(1.03); }
-      100%{ transform: scale(1); }
-    }
-    .winnerSub{
-      opacity:.88;
-      font-weight: 1000;
-      font-size: 13px;
-      margin-top: 6px;
-      min-height: 18px;
-    }
+    @keyframes pulseGlow{ 0%{transform:scale(1)} 50%{transform:scale(1.03)} 100%{transform:scale(1)} }
 
     .rangeRow{
-      display:grid;
-      gap:6px;
+      display:grid; gap:6px;
       text-align:left;
       width:min(560px, 92vw);
       margin: 0 auto;
     }
     input[type="range"]{ width:100%; }
-
-    .grid2{
-      display:grid;
-      gap: 10px;
-      grid-template-columns: 1fr 1fr;
-      max-width: 760px;
-      margin: 0 auto;
-      text-align:left;
-    }
-    .row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.12);
-    }
-    .row .lbl{ font-weight: 1200; opacity:.92; }
-    .picker{
-      display:flex;
-      align-items:center;
-      gap: 8px;
-    }
-    input[type="color"]{
-      width: 56px;
-      height: 34px;
-      border: 0;
-      background: transparent;
-      padding: 0;
-      cursor: pointer;
-    }
-    input.hex{
-      width: 110px;
-      padding: 8px 10px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
-      color:#fff;
-      font-weight: 1200;
-      outline:none;
-    }
-
-    .paletteGrid{
-      display:grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 10px;
-      margin-top: 10px;
-    }
-    .swatch{
-      height: 44px;
-      border-radius: 14px;
-      border: 2px solid rgba(255,255,255,.12);
-      background: #000;
-      cursor:pointer;
-      position: relative;
-      overflow:hidden;
-    }
-    .swatch.active{
-      border-color: rgba(255,255,255,.90);
-      box-shadow: 0 0 0 3px rgba(0,195,255,.14);
-    }
-    .swatch span{
-      position:absolute;
-      left: 10px;
-      bottom: 8px;
-      font-size: 11px;
-      font-weight: 1300;
-      opacity:.92;
-      text-shadow: 0 2px 8px rgba(0,0,0,.55);
-    }
 
     .coinWrap{ display:grid; place-items:center; gap: 12px; margin-top: 8px; }
     .coinStage{ perspective: 1000px; width: 240px; height: 240px; }
@@ -608,7 +484,6 @@
       cursor:pointer;
       box-shadow: 0 0 14px rgba(0,195,255,.08);
     }
-    .guessGrid button:hover{ background: rgba(255,255,255,.10); }
 
     .ttt{
       width: min(360px, 92vw);
@@ -639,20 +514,10 @@
       background: rgba(0,0,0,.25);
       box-shadow: 0 0 18px rgba(0,195,255,.10);
     }
-    .snakeControls{
-      display:grid;
-      gap: 8px;
-      justify-items:center;
-      margin-top: 4px;
-    }
-    .snakeRow{
-      display:flex;
-      gap: 8px;
-      justify-content:center;
-    }
+    .snakeControls{ display:grid; gap:8px; justify-items:center; margin-top:4px; }
+    .snakeRow{ display:flex; gap:8px; justify-content:center; }
     .snakeBtn{
-      width: 54px;
-      height: 46px;
+      width: 54px; height: 46px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.16);
       background: rgba(255,255,255,.08);
@@ -705,8 +570,6 @@
       .rightCol{ grid-column:1; grid-row:5; }
       .btnRow{ grid-column:1; grid-row:6; }
       .namesBlock{ grid-column:1; grid-row:7; }
-      .paletteGrid{ grid-template-columns: repeat(3, 1fr); }
-      .grid2{ grid-template-columns: 1fr; }
       .trophyGrid{ grid-template-columns: 1fr; }
     }
   </style>
@@ -715,21 +578,6 @@
 <body>
   <canvas id="confetti"></canvas>
   <div class="toast" id="toast">—</div>
-
-  <div class="overlay" id="linksOverlay">
-    <div class="box">
-      <button class="closeX" id="linksX">×</button>
-      <h2>Links</h2>
-      <div class="boxActions">
-        <button class="action" id="openTikTok">TikTok</button>
-        <button class="action secondary" id="openInsta">Instagram</button>
-        <button class="action secondary" id="openTwitch">Twitch</button>
-      </div>
-      <div class="boxActions">
-        <button class="action secondary" id="linksClose">Schließen</button>
-      </div>
-    </div>
-  </div>
 
   <div class="overlay" id="settingsOverlay">
     <div class="box">
@@ -773,119 +621,6 @@
     </div>
   </div>
 
-  <div class="overlay" id="designOverlay">
-    <div class="box">
-      <button class="closeX" id="designX">×</button>
-      <h2>Design</h2>
-
-      <div style="max-width:860px;margin:0 auto;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;">
-        <select id="presetSelect">
-          <option value="default">Preset: Lila/Blau</option>
-          <option value="neon">Preset: Neon Pink</option>
-          <option value="emerald">Preset: Emerald</option>
-          <option value="sunset">Preset: Sunset</option>
-          <option value="mono">Preset: Mono Dark</option>
-        </select>
-        <button class="action secondary" id="presetApply">Preset anwenden</button>
-        <button class="action secondary" id="designReset">Zurücksetzen</button>
-      </div>
-
-      <div style="margin-top:14px;opacity:.88;font-weight:1100;">
-        Du kannst alles per Picker ändern oder Hex eingeben. Fürs Rad kannst du im Grid Slots anklicken oder unten eine Hex-Liste einfügen.
-      </div>
-
-      <div class="grid2" style="margin-top:12px;">
-        <div class="row">
-          <div class="lbl">Hintergrund</div>
-          <div class="picker">
-            <input id="bgPick" type="color">
-            <input id="bgHex" class="hex" type="text" spellcheck="false">
-          </div>
-        </div>
-        <div class="row">
-          <div class="lbl">Text</div>
-          <div class="picker">
-            <input id="textPick" type="color">
-            <input id="textHex" class="hex" type="text" spellcheck="false">
-          </div>
-        </div>
-        <div class="row">
-          <div class="lbl">Glow 1</div>
-          <div class="picker">
-            <input id="g1Pick" type="color">
-            <input id="g1Hex" class="hex" type="text" spellcheck="false">
-          </div>
-        </div>
-        <div class="row">
-          <div class="lbl">Glow 2</div>
-          <div class="picker">
-            <input id="g2Pick" type="color">
-            <input id="g2Hex" class="hex" type="text" spellcheck="false">
-          </div>
-        </div>
-        <div class="row">
-          <div class="lbl">Button 1</div>
-          <div class="picker">
-            <input id="b1Pick" type="color">
-            <input id="b1Hex" class="hex" type="text" spellcheck="false">
-          </div>
-        </div>
-        <div class="row">
-          <div class="lbl">Button 2</div>
-          <div class="picker">
-            <input id="b2Pick" type="color">
-            <input id="b2Hex" class="hex" type="text" spellcheck="false">
-          </div>
-        </div>
-        <div class="row">
-          <div class="lbl">Name Box Base</div>
-          <div class="picker">
-            <input id="nbPick" type="color">
-            <input id="nbHex" class="hex" type="text" spellcheck="false">
-          </div>
-        </div>
-        <div class="row">
-          <div class="lbl">Name Box Border</div>
-          <div class="picker">
-            <input id="nboPick" type="color">
-            <input id="nboHex" class="hex" type="text" spellcheck="false">
-          </div>
-        </div>
-      </div>
-
-      <div style="max-width:860px;margin:16px auto 0 auto;text-align:left;">
-        <div style="font-weight:1300;opacity:.95;">Rad Palette (Slots anklicken)</div>
-        <div class="paletteGrid" id="paletteGrid"></div>
-
-        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:12px;">
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-            <div style="font-weight:1200;opacity:.92;">Auswahl</div>
-            <input id="palPick" type="color">
-            <input id="palHex" class="hex" type="text" spellcheck="false" style="width:140px;">
-            <button class="action secondary" id="palDelete">Slot zurücksetzen</button>
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-            <button class="action secondary" id="pal5">5 Slots</button>
-            <button class="action secondary" id="pal8">8 Slots</button>
-            <button class="action secondary" id="pal12">12 Slots</button>
-          </div>
-        </div>
-
-        <div style="margin-top:14px;">
-          <div style="font-weight:1200;opacity:.92;margin-bottom:6px;">Hex-Liste einfügen (Komma/Leerzeichen/Zeilenumbruch)</div>
-          <textarea id="palBulk" placeholder="#00C3FF #6A5CFF #FF2BD6 ..."></textarea>
-          <div class="boxActions" style="justify-content:flex-start;margin-top:10px;">
-            <button class="action secondary" id="palBulkApply">Palette übernehmen</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="boxActions">
-        <button class="action secondary" id="designClose">Schließen</button>
-      </div>
-    </div>
-  </div>
-
   <div class="overlay" id="trophiesOverlay">
     <div class="box">
       <button class="closeX" id="trophiesX">×</button>
@@ -900,15 +635,47 @@
     </div>
   </div>
 
+  <div class="overlay" id="linksOverlay">
+    <div class="box">
+      <button class="closeX" id="linksX">×</button>
+      <h2>Links</h2>
+      <div class="boxActions">
+        <button class="action" id="openTikTok">TikTok</button>
+        <button class="action secondary" id="openInsta">Instagram</button>
+        <button class="action secondary" id="openTwitch">Twitch</button>
+      </div>
+      <div class="boxActions">
+        <button class="action secondary" id="linksClose">Schließen</button>
+      </div>
+    </div>
+  </div>
+
   <div class="overlay" id="winnerOverlay">
     <div class="box">
       <button class="closeX" id="winnerX">×</button>
       <h2>Gewinner</h2>
       <div class="winnerName" id="winnerName">—</div>
-      <div class="winnerSub" id="winnerSub"></div>
+      <div class="small" id="winnerSub" style="min-height:18px;opacity:.9;font-weight:1100;"></div>
       <div class="boxActions" style="margin-top:14px;">
         <button class="action secondary" id="winnerKeep">Nudel lassen</button>
         <button class="action" id="winnerRemove">Nudel entfernen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="chanceOverlay">
+    <div class="box">
+      <button class="closeX" id="chanceX">×</button>
+      <h2>Doppelte Chance</h2>
+      <div style="opacity:.86;font-weight:1100;margin-bottom:10px;">
+        Wähle einen Namen. Der Name wird 1x extra hinzugefügt.
+      </div>
+      <div class="boxActions" style="gap:12px;">
+        <select id="chanceSelect" style="min-width:min(520px, 90vw)"></select>
+      </div>
+      <div class="boxActions">
+        <button class="action" id="chanceConfirm">Bestätigen</button>
+        <button class="action secondary" id="chanceClose">Schließen</button>
       </div>
     </div>
   </div>
@@ -1010,9 +777,9 @@
       </select>
       <button class="chipBtn" id="chanceBtn">Doppelte Chance</button>
       <button class="chipBtn" id="linksBtn">Links</button>
-      <button class="chipBtn" id="designBtn">Design</button>
       <button class="chipBtn" id="trophiesBtn">Trophys</button>
       <button class="chipBtn" id="settingsBtn">Einstellungen</button>
+      <button class="chipBtn" id="obsBtn">OBS Transparent</button>
     </div>
 
     <div class="leftCol">
@@ -1070,7 +837,7 @@
     <div class="namesBlock">
       <div class="namesHead">
         <div>Teilnehmer</div>
-        <div class="namesHint">eine Zeile = ein Name</div>
+        <div class="namesHint">eine Zeile = ein Name | Smart: Name x2</div>
       </div>
       <textarea id="items">NicoRU/AimWieNhSOcke
 Test1
@@ -1082,27 +849,27 @@ test3</textarea>
 
   <script>
     (() => {
-      const $ = (id) => document.getElementById(id);
-      const TAU = Math.PI * 2;
+      const $ = (id)=>document.getElementById(id);
+      const TAU = Math.PI*2;
 
       const toast = $("toast");
-      const showToast = (text) => {
-        toast.textContent = text;
+      const showToast = (t)=>{
+        toast.textContent=t;
         toast.classList.add("show");
         clearTimeout(showToast._t);
-        showToast._t = setTimeout(() => toast.classList.remove("show"), 2300);
+        showToast._t=setTimeout(()=>toast.classList.remove("show"),2300);
       };
 
-      const clamp = (n,a,b)=>Math.max(a,Math.min(b,n));
-      const rand01 = () => {
-        const a = new Uint32Array(1);
+      const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+      const rand01=()=>{
+        const a=new Uint32Array(1);
         crypto.getRandomValues(a);
-        return a[0] / 4294967296;
+        return a[0]/4294967296;
       };
-      const randInt = (min,maxInc)=> min + Math.floor(rand01()*(maxInc-min+1));
+      const randInt=(a,b)=>a+Math.floor(rand01()*(b-a+1));
 
-      const openOverlay = (el)=> el.style.display="grid";
-      const closeOverlay = (el)=> el.style.display="none";
+      const openOverlay=(el)=>el.style.display="grid";
+      const closeOverlay=(el)=>el.style.display="none";
 
       const LINKS = {
         twitch: "https://www.twitch.tv/zbaffe",
@@ -1110,610 +877,339 @@ test3</textarea>
         insta:  "https://www.instagram.com/zbaffe/"
       };
 
-      function normalizeName(s){
-        return String(s || "")
-          .replace(/\s+/g, " ")
-          .trim();
+      const LS_ITEMS="wheel_items_v3";
+      const STREAM_KEY="wheel_stream_v3";
+      const ALLTIME_KEY="wheel_alltime_v3";
+      const SETTINGS_KEY="wheel_settings_v3";
+      const OBS_KEY="wheel_obs_v3";
+      const TROPHY_KEY="wheel_trophies_v3";
+
+      function safeJsonParse(s, fb){ try{return JSON.parse(s);}catch{return fb;} }
+      function normalizeName(s){ return String(s||"").replace(/\s+/g," ").trim(); }
+      function nameKey(s){ return normalizeName(s).toLowerCase(); }
+      function objEntriesSortedDesc(o){ return Object.entries(o||{}).sort((a,b)=>(b[1]||0)-(a[1]||0)); }
+
+      // Smart Paste: "Name x2" / "Name 2x" / "Name ×3"
+      function expandLineSmart(line){
+        const raw = normalizeName(line);
+        if(!raw) return [];
+        const m = raw.match(/^(.*?)(?:\s*(?:x|×|\*)\s*(\d+)|\s+(\d+)\s*(?:x|×))$/i);
+        if(!m) return [raw];
+        const base = normalizeName(m[1]);
+        const num = Number(m[2]||m[3]||1);
+        const n = Math.max(1, Math.min(50, isFinite(num)?num:1));
+        if(!base) return [raw];
+        return Array.from({length:n}, ()=>base);
       }
-      function nameKey(display){
-        return normalizeName(display).toLowerCase();
-      }
-
-      function normalizeHex(v){
-        if(!v) return null;
-        let s = String(v).trim();
-        if(!s) return null;
-        if(!s.startsWith("#")) s = "#" + s;
-        s = s.toUpperCase();
-        if(/^#[0-9A-F]{6}$/.test(s)) return s;
-        return null;
-      }
-      function hexToRgb(hex){
-        const h = hex.replace("#","").trim();
-        const r = parseInt(h.slice(0,2),16);
-        const g = parseInt(h.slice(2,4),16);
-        const b = parseInt(h.slice(4,6),16);
-        return {r,g,b};
-      }
-      function rgba(hex, a){
-        const {r,g,b} = hexToRgb(hex);
-        return `rgba(${r},${g},${b},${a})`;
-      }
-      function setRootVar(name, value){
-        document.documentElement.style.setProperty(name, value);
-      }
-
-      function fitCanvasText(ctx, text, maxPx, minPx, maxWidth){
-        let size = maxPx;
-        while(size > minPx){
-          ctx.font = `900 ${size}px system-ui`;
-          if(ctx.measureText(text).width <= maxWidth) break;
-          size -= 2;
-        }
-        return size;
-      }
-
-      function safeJsonParse(s, fallback){
-        try{ return JSON.parse(s); }catch(e){ return fallback; }
-      }
-
-      function objEntriesSortedDesc(obj){
-        return Object.entries(obj || {}).sort((a,b)=> (b[1]||0) - (a[1]||0));
-      }
-
-      // ---------------- Theme ----------------
-      const PRESETS = {
-        default: {
-          bgBase:"#080612", bgGlow1:"#6A5CFF", bgGlow2:"#00C3FF", text:"#FFFFFF",
-          btn1:"#6A5CFF", btn2:"#00C3FF",
-          nameBox:"#6A5CFF", nameBorder:"#6A5CFF",
-          wheel:["#00C3FF","#6A5CFF","#FF2BD6","#4D9FFF","#8A5CFF"]
-        },
-        neon: {
-          bgBase:"#08040A", bgGlow1:"#FF2BD6", bgGlow2:"#00C3FF", text:"#FFFFFF",
-          btn1:"#FF2BD6", btn2:"#00C3FF",
-          nameBox:"#FF2BD6", nameBorder:"#00C3FF",
-          wheel:["#FF2BD6","#00C3FF","#FFFFFF","#6A5CFF","#FF7BDC"]
-        },
-        emerald: {
-          bgBase:"#06110D", bgGlow1:"#20E3B2", bgGlow2:"#00C3FF", text:"#EAFFF7",
-          btn1:"#20E3B2", btn2:"#00C3FF",
-          nameBox:"#20E3B2", nameBorder:"#00C3FF",
-          wheel:["#20E3B2","#00C3FF","#6A5CFF","#A8FF78","#3DD6D0"]
-        },
-        sunset: {
-          bgBase:"#14060A", bgGlow1:"#FF7A18", bgGlow2:"#AF002D", text:"#FFF2E8",
-          btn1:"#FF7A18", btn2:"#AF002D",
-          nameBox:"#FF7A18", nameBorder:"#AF002D",
-          wheel:["#FF7A18","#AF002D","#F9D423","#00C3FF","#6A5CFF"]
-        },
-        mono: {
-          bgBase:"#07080B", bgGlow1:"#3A3F55", bgGlow2:"#00C3FF", text:"#FFFFFF",
-          btn1:"#3A3F55", btn2:"#00C3FF",
-          nameBox:"#3A3F55", nameBorder:"#00C3FF",
-          wheel:["#00C3FF","#3A3F55","#FFFFFF","#6A5CFF","#4D9FFF"]
-        }
-      };
-
-      const THEME_KEY = "wheelTheme_final_v1";
-      let theme = safeJsonParse(localStorage.getItem(THEME_KEY), null) || PRESETS.default;
-      theme = {
-        bgBase: normalizeHex(theme.bgBase) || PRESETS.default.bgBase,
-        bgGlow1: normalizeHex(theme.bgGlow1) || PRESETS.default.bgGlow1,
-        bgGlow2: normalizeHex(theme.bgGlow2) || PRESETS.default.bgGlow2,
-        text: normalizeHex(theme.text) || PRESETS.default.text,
-        btn1: normalizeHex(theme.btn1) || PRESETS.default.btn1,
-        btn2: normalizeHex(theme.btn2) || PRESETS.default.btn2,
-        nameBox: normalizeHex(theme.nameBox) || PRESETS.default.nameBox,
-        nameBorder: normalizeHex(theme.nameBorder) || PRESETS.default.nameBorder,
-        wheel: Array.isArray(theme.wheel) ? theme.wheel.map(normalizeHex).filter(Boolean) : PRESETS.default.wheel.slice()
-      };
-      if(theme.wheel.length < 2) theme.wheel = PRESETS.default.wheel.slice();
-
-      let wheelColors = theme.wheel.slice();
-      let paletteSize = Math.max(2, Math.min(12, wheelColors.length));
-      let paletteActive = 0;
-
-      function saveTheme(){
-        try{ localStorage.setItem(THEME_KEY, JSON.stringify(theme)); }catch(e){}
-      }
-
-      function applyTheme(){
-        setRootVar("--bgBase", theme.bgBase);
-        setRootVar("--bgGlow1", theme.bgGlow1);
-        setRootVar("--bgGlow2", theme.bgGlow2);
-        setRootVar("--text", theme.text);
-        setRootVar("--btn1", theme.btn1);
-        setRootVar("--btn2", theme.btn2);
-
-        setRootVar("--nameBox", rgba(theme.nameBox, 0.30));
-        setRootVar("--nameBoxBorder", rgba(theme.nameBorder, 0.55));
-
-        document.body.style.background =
-          `radial-gradient(1100px 680px at 50% 18%, ${rgba(theme.bgGlow1,0.18)}, transparent 58%),
-           radial-gradient(900px 600px at 18% 70%, ${rgba(theme.bgGlow2,0.14)}, transparent 58%),
-           ${theme.bgBase}`;
-
-        wheelColors = theme.wheel.slice();
-        drawWheel();
-      }
-
-      function bindPickHex(pickId, hexId, getFn, setFn){
-        const pick = $(pickId);
-        const hex = $(hexId);
-
-        function setUI(val){
-          const v = normalizeHex(val) || getFn();
-          pick.value = v;
-          hex.value = v;
-        }
-
-        pick.addEventListener("input", ()=>{
-          const v = normalizeHex(pick.value);
-          if(!v) return;
-          hex.value = v;
-          setFn(v);
-        });
-
-        hex.addEventListener("input", ()=>{
-          const v = normalizeHex(hex.value);
-          if(!v) return;
-          pick.value = v;
-          setFn(v);
-        });
-
-        return { setUI };
-      }
-
-      const binds = {
-        bg:  bindPickHex("bgPick","bgHex",   ()=>theme.bgBase,   (v)=>{ theme.bgBase=v; saveTheme(); applyTheme(); }),
-        txt: bindPickHex("textPick","textHex",()=>theme.text,   (v)=>{ theme.text=v; saveTheme(); applyTheme(); }),
-        g1:  bindPickHex("g1Pick","g1Hex",   ()=>theme.bgGlow1, (v)=>{ theme.bgGlow1=v; saveTheme(); applyTheme(); }),
-        g2:  bindPickHex("g2Pick","g2Hex",   ()=>theme.bgGlow2, (v)=>{ theme.bgGlow2=v; saveTheme(); applyTheme(); }),
-        b1:  bindPickHex("b1Pick","b1Hex",   ()=>theme.btn1,    (v)=>{ theme.btn1=v; saveTheme(); applyTheme(); }),
-        b2:  bindPickHex("b2Pick","b2Hex",   ()=>theme.btn2,    (v)=>{ theme.btn2=v; saveTheme(); applyTheme(); }),
-        nb:  bindPickHex("nbPick","nbHex",   ()=>theme.nameBox, (v)=>{ theme.nameBox=v; saveTheme(); applyTheme(); }),
-        nbo: bindPickHex("nboPick","nboHex", ()=>theme.nameBorder,(v)=>{ theme.nameBorder=v; saveTheme(); applyTheme(); })
-      };
-
-      function ensurePaletteSize(n){
-        paletteSize = clamp(n, 2, 12);
-        const arr = theme.wheel.slice();
-        while(arr.length < paletteSize){
-          arr.push(PRESETS.default.wheel[arr.length % PRESETS.default.wheel.length]);
-        }
-        if(arr.length > paletteSize) arr.length = paletteSize;
-        theme.wheel = arr.map(normalizeHex).filter(Boolean);
-        if(theme.wheel.length < 2) theme.wheel = PRESETS.default.wheel.slice();
-        paletteActive = 0;
-        saveTheme();
-        applyTheme();
-        renderPalette();
-      }
-
-      function renderPalette(){
-        const grid = $("paletteGrid");
-        grid.innerHTML = "";
-
-        const arr = theme.wheel.slice();
-        while(arr.length < paletteSize){
-          arr.push(PRESETS.default.wheel[arr.length % PRESETS.default.wheel.length]);
-        }
-        for(let i=0;i<paletteSize;i++){
-          const c = normalizeHex(arr[i]) || "#000000";
-          const sw = document.createElement("div");
-          sw.className = "swatch" + (i===paletteActive ? " active" : "");
-          sw.style.background = c;
-          sw.innerHTML = `<span>${i+1}</span>`;
-          sw.addEventListener("click", ()=>{
-            paletteActive = i;
-            renderPalette();
-            $("palPick").value = c;
-            $("palHex").value = c;
-          });
-          grid.appendChild(sw);
-        }
-        const cur = normalizeHex(arr[paletteActive]) || PRESETS.default.wheel[0];
-        $("palPick").value = cur;
-        $("palHex").value = cur;
-
-        $("palBulk").value = theme.wheel.join(" ");
-      }
-
-      function setPaletteColor(index, val){
-        const v = normalizeHex(val);
-        if(!v) return;
-        const arr = theme.wheel.slice();
-        while(arr.length < paletteSize){
-          arr.push(PRESETS.default.wheel[arr.length % PRESETS.default.wheel.length]);
-        }
-        arr[index] = v;
-        theme.wheel = arr.slice(0, paletteSize);
-        saveTheme();
-        applyTheme();
-        renderPalette();
-      }
-
-      function parseHexList(text){
-        const raw = String(text||"")
-          .replace(/\r/g," ")
-          .replace(/\n/g," ")
-          .split(/[\s,;]+/)
-          .filter(Boolean);
-        const out = [];
-        for(const t of raw){
-          const v = normalizeHex(t);
-          if(v) out.push(v);
+      function parseItems(text){
+        const lines=String(text||"").split(/\r?\n/);
+        const out=[];
+        for(const ln of lines){
+          for(const e of expandLineSmart(ln)){
+            const v=normalizeName(e);
+            if(v) out.push(v);
+          }
         }
         return out;
       }
 
-      // ---------------- Confetti ----------------
-      const conf = $("confetti");
-      const cctx = conf.getContext("2d");
-      let confettiParts = [];
-      let confettiEndAt = 0;
+      // Confetti
+      const conf=$("confetti");
+      const cctx=conf.getContext("2d");
+      let confettiParts=[], confettiEndAt=0;
 
       function resizeConf(){
-        conf.width = Math.floor(window.innerWidth * devicePixelRatio);
-        conf.height = Math.floor(window.innerHeight * devicePixelRatio);
+        conf.width=Math.floor(innerWidth*devicePixelRatio);
+        conf.height=Math.floor(innerHeight*devicePixelRatio);
       }
-      window.addEventListener("resize", resizeConf);
+      addEventListener("resize", resizeConf);
       resizeConf();
 
-      function startConfetti(ms=1400){
-        confettiEndAt = performance.now() + ms;
-        const count = 140;
-        const w = conf.width, h = conf.height;
-        const colors = wheelColors.length ? wheelColors : PRESETS.default.wheel;
+      const wheelColors=["#00C3FF","#6A5CFF","#FF2BD6","#4D9FFF","#8A5CFF"];
 
+      function startConfetti(ms=1400, intensity=1){
+        confettiEndAt=performance.now()+ms;
+        const count=Math.floor(140*clamp(intensity,0.6,4));
+        const w=conf.width,h=conf.height;
         for(let i=0;i<count;i++){
           confettiParts.push({
-            x: rand01()*w,
-            y: -rand01()*h*0.2,
-            vx: (rand01()-0.5)*3*devicePixelRatio,
-            vy: (2+rand01()*6)*devicePixelRatio,
-            rot: rand01()*TAU,
-            vr: (rand01()-0.5)*0.2,
-            s: (4+rand01()*8)*devicePixelRatio,
-            c: colors[i%colors.length],
-            a: 1
+            x:rand01()*w, y:-rand01()*h*0.2,
+            vx:(rand01()-0.5)*3*devicePixelRatio,
+            vy:(2+rand01()*6)*devicePixelRatio,
+            rot:rand01()*TAU, vr:(rand01()-0.5)*0.2,
+            s:(4+rand01()*8)*devicePixelRatio,
+            c:wheelColors[i%wheelColors.length],
+            a:1
           });
         }
-        if(!startConfetti._raf) startConfetti._raf = requestAnimationFrame(confettiFrame);
+        if(!startConfetti._raf) startConfetti._raf=requestAnimationFrame(confettiFrame);
       }
-
       function confettiFrame(t){
-        const w = conf.width, h = conf.height;
+        const w=conf.width,h=conf.height;
         cctx.clearRect(0,0,w,h);
         for(const p of confettiParts){
-          p.x += p.vx;
-          p.y += p.vy;
-          p.rot += p.vr;
-          p.vy += 0.04*devicePixelRatio;
-          if(p.y > h + 60*devicePixelRatio) p.a = 0;
-
+          p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; p.vy+=0.04*devicePixelRatio;
+          if(p.y>h+60*devicePixelRatio) p.a=0;
           cctx.save();
-          cctx.globalAlpha = Math.max(0, p.a);
-          cctx.translate(p.x, p.y);
+          cctx.globalAlpha=Math.max(0,p.a);
+          cctx.translate(p.x,p.y);
           cctx.rotate(p.rot);
-          cctx.fillStyle = p.c;
-          cctx.fillRect(-p.s/2, -p.s/2, p.s, p.s*0.55);
+          cctx.fillStyle=p.c;
+          cctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*0.55);
           cctx.restore();
         }
-        confettiParts = confettiParts.filter(p => p.a > 0);
-
-        if(t < confettiEndAt || confettiParts.length){
-          startConfetti._raf = requestAnimationFrame(confettiFrame);
+        confettiParts=confettiParts.filter(p=>p.a>0);
+        if(t<confettiEndAt || confettiParts.length){
+          startConfetti._raf=requestAnimationFrame(confettiFrame);
         }else{
-          startConfetti._raf = null;
+          startConfetti._raf=null;
           cctx.clearRect(0,0,w,h);
         }
       }
 
-      // ---------------- Sounds + Settings ----------------
-      const SOUND_FILES = { spin:"spin.mp3", sad:"sad.mp3", lk:"lk.mp3" };
+      // Sounds (MP3 or silence ONLY)
+      const SOUND_FILES={ spin:"spin.mp3", sad:"sad.mp3", lk:"lk.mp3" };
       let spinSfx=null, sadSfx=null, lkSfx=null;
+      let spinOk=false, sadOk=false, lkOk=false;
+      let soundInit=false;
 
-      const SETTINGS_KEY = "wheelSettings_final_v1";
       let settings = safeJsonParse(localStorage.getItem(SETTINGS_KEY), null) || { spinVol:0.08, sadVol:0.40, spinDur:3, muted:false };
       settings.spinVol = (typeof settings.spinVol==="number") ? clamp(settings.spinVol,0,1) : 0.08;
       settings.sadVol  = (typeof settings.sadVol==="number")  ? clamp(settings.sadVol,0,1)  : 0.40;
       settings.spinDur = (typeof settings.spinDur==="number") ? clamp(settings.spinDur,1,60) : 3;
       settings.muted   = !!settings.muted;
 
-      function saveSettings(){
-        try{ localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); }catch(e){}
-      }
-
-      function initSounds(){
-        try{
-          if(!spinSfx) spinSfx = new Audio(SOUND_FILES.spin);
-          if(!sadSfx)  sadSfx  = new Audio(SOUND_FILES.sad);
-          if(!lkSfx)   lkSfx   = new Audio(SOUND_FILES.lk);
-          spinSfx.preload = "auto";
-          sadSfx.preload  = "auto";
-          lkSfx.preload   = "auto";
-          applyVolumes();
-        }catch(e){}
-      }
+      function saveSettings(){ try{ localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); }catch{} }
 
       function applyVolumes(){
         const spinV = settings.muted ? 0 : clamp(settings.spinVol,0,1);
         const sadV  = settings.muted ? 0 : clamp(settings.sadVol,0,1);
-        if(spinSfx) spinSfx.volume = spinV;
-        if(sadSfx)  sadSfx.volume  = sadV;
-        if(lkSfx)   lkSfx.volume   = sadV;
+        if(spinSfx) spinSfx.volume=spinV;
+        if(sadSfx) sadSfx.volume=sadV;
+        if(lkSfx) lkSfx.volume=sadV;
+      }
+
+      function tryLoadAudio(url){
+        return new Promise((resolve)=>{
+          const a=new Audio();
+          let done=false;
+          const ok=()=>{ if(done) return; done=true; cleanup(); resolve(a); };
+          const no=()=>{ if(done) return; done=true; cleanup(); resolve(null); };
+          const cleanup=()=>{
+            a.removeEventListener("canplaythrough", ok);
+            a.removeEventListener("error", no);
+          };
+          a.preload="auto";
+          a.addEventListener("canplaythrough", ok, {once:true});
+          a.addEventListener("error", no, {once:true});
+          a.src=url;
+        });
+      }
+
+      async function initSounds(){
+        if(soundInit) return;
+        soundInit=true;
+
+        spinSfx = await tryLoadAudio(SOUND_FILES.spin);
+        spinOk = !!spinSfx;
+
+        sadSfx = await tryLoadAudio(SOUND_FILES.sad);
+        sadOk = !!sadSfx;
+
+        lkSfx = await tryLoadAudio(SOUND_FILES.lk);
+        lkOk = !!lkSfx;
+
+        applyVolumes();
       }
 
       function safePlay(a){
         try{
-          const p = a.play();
+          const p=a.play();
           if(p && p.catch) p.catch(()=>{});
-        }catch(e){}
+        }catch{}
       }
 
       function playSpinLoop(){
         initSounds();
         applyVolumes();
-        try{
-          if(!spinSfx) return;
-          spinSfx.pause();
-          spinSfx.currentTime = 0;
-          spinSfx.loop = true;
-          safePlay(spinSfx);
-        }catch(e){}
+        if(spinOk && spinSfx){
+          try{
+            spinSfx.pause();
+            spinSfx.currentTime=0;
+            spinSfx.loop=true;
+            safePlay(spinSfx);
+          }catch{}
+        }
       }
-
       function stopSpinLoop(){
-        try{
-          if(!spinSfx) return;
-          spinSfx.pause();
-          spinSfx.currentTime = 0;
-        }catch(e){}
+        if(spinOk && spinSfx){
+          try{ spinSfx.pause(); spinSfx.currentTime=0; }catch{}
+        }
       }
-
       function playSad(){
         initSounds();
         applyVolumes();
-        try{
-          if(!sadSfx) return;
-          sadSfx.pause();
-          sadSfx.currentTime = 0;
-          safePlay(sadSfx);
-        }catch(e){}
+        if(sadOk && sadSfx){
+          try{ sadSfx.pause(); sadSfx.currentTime=0; safePlay(sadSfx); }catch{}
+        }
       }
-
       function playLK(){
         initSounds();
         applyVolumes();
-        try{
-          if(!lkSfx) return;
-          lkSfx.pause();
-          lkSfx.currentTime = 0;
-          safePlay(lkSfx);
-        }catch(e){}
+        if(lkOk && lkSfx){
+          try{ lkSfx.pause(); lkSfx.currentTime=0; safePlay(lkSfx); }catch{}
+        }
       }
 
-      document.addEventListener("pointerdown", ()=>{ initSounds(); }, { once:true });
+      // Stream + AllTime
+      let stream = safeJsonParse(localStorage.getItem(STREAM_KEY), null) || { wins:{}, history:[], currentStreakName:"", currentStreakCount:0, spins:0, removes:0 };
+      let alltime = safeJsonParse(localStorage.getItem(ALLTIME_KEY), null) || { bestStreak:{}, displayNames:{} };
 
-      function syncSettingsUI(){
-        $("spinVol").value = String(Math.round(settings.spinVol*100));
-        $("sadVol").value  = String(Math.round(settings.sadVol*100));
-        $("spinDur").value = String(Math.round(settings.spinDur));
-        $("muteAll").checked = settings.muted;
-
-        $("spinVolLabel").textContent = `${$("spinVol").value}%`;
-        $("sadVolLabel").textContent  = `${$("sadVol").value}%`;
-        $("spinDurLabel").textContent = `${$("spinDur").value}s`;
-      }
-
-      // ---------------- Data: Stream + AllTime ----------------
-      const STREAM_KEY = "wheel_stream_state_v1";
-      const ALLTIME_KEY = "wheel_alltime_state_v1";
-
-      let stream = safeJsonParse(localStorage.getItem(STREAM_KEY), null) || {
-        wins: {}, history: [], currentStreakName: "", currentStreakCount: 0, spins: 0, removes: 0
-      };
-
-      let alltime = safeJsonParse(localStorage.getItem(ALLTIME_KEY), null) || {
-        bestStreak: {}, displayNames: {}
-      };
-
-      function saveStream(){
-        try{ localStorage.setItem(STREAM_KEY, JSON.stringify(stream)); }catch(e){}
-      }
-      function saveAlltime(){
-        try{ localStorage.setItem(ALLTIME_KEY, JSON.stringify(alltime)); }catch(e){}
-      }
+      function saveStream(){ try{ localStorage.setItem(STREAM_KEY, JSON.stringify(stream)); }catch{} }
+      function saveAlltime(){ try{ localStorage.setItem(ALLTIME_KEY, JSON.stringify(alltime)); }catch{} }
 
       function setDisplayName(name){
-        const d = normalizeName(name);
-        const k = nameKey(d);
+        const d=normalizeName(name);
+        const k=nameKey(d);
         if(!k) return;
-        if(!alltime.displayNames[k]) alltime.displayNames[k] = d;
+        if(!alltime.displayNames[k]) alltime.displayNames[k]=d;
       }
-
-      function incStreamWin(winnerName){
-        const d = normalizeName(winnerName);
-        const k = nameKey(d);
+      function incStreamWin(name){
+        const d=normalizeName(name);
+        const k=nameKey(d);
+        if(!k) return;
+        setDisplayName(d);
+        stream.wins[k]=(stream.wins[k]||0)+1;
+        saveStream();
+      }
+      function updateStreamStreak(name){
+        const d=normalizeName(name);
+        const k=nameKey(d);
         if(!k) return;
         setDisplayName(d);
 
-        stream.wins[k] = (stream.wins[k] || 0) + 1;
-        saveStream();
-      }
-
-      function updateStreamStreak(winnerName){
-        const d = normalizeName(winnerName);
-        const k = nameKey(d);
-        if(!k) return;
-        setDisplayName(d);
-
-        if(stream.currentStreakName === k){
-          stream.currentStreakCount = (stream.currentStreakCount || 0) + 1;
-        }else{
-          stream.currentStreakName = k;
-          stream.currentStreakCount = 1;
-        }
+        if(stream.currentStreakName===k) stream.currentStreakCount=(stream.currentStreakCount||0)+1;
+        else{ stream.currentStreakName=k; stream.currentStreakCount=1; }
         saveStream();
 
-        const best = alltime.bestStreak[k] || 0;
-        if(stream.currentStreakCount > best){
-          alltime.bestStreak[k] = stream.currentStreakCount;
+        const best=alltime.bestStreak[k]||0;
+        if(stream.currentStreakCount>best){
+          alltime.bestStreak[k]=stream.currentStreakCount;
           saveAlltime();
-          showToast(`Neuer Streak-Rekord: ${alltime.displayNames[k]} ${stream.currentStreakCount}x`);
+          showToast(`Neuer Rekord: ${alltime.displayNames[k]} ${stream.currentStreakCount}x`);
+          startConfetti(1400, 2.0);
         }
       }
-
       function addHistoryLine(text){
         stream.history.unshift(text);
-        if(stream.history.length > 20) stream.history.length = 20;
+        if(stream.history.length>20) stream.history.length=20;
         saveStream();
       }
-
       function resetStream(){
-        stream = { wins:{}, history:[], currentStreakName:"", currentStreakCount:0, spins:0, removes:0 };
+        stream={ wins:{}, history:[], currentStreakName:"", currentStreakCount:0, spins:0, removes:0 };
         saveStream();
         renderRightPanel();
+        renderStreakTop();
         showToast("Stream zurückgesetzt");
       }
 
-      // ---------------- Trophies ----------------
-      const TROPHY_KEY = "wheel_trophies_v1";
-      let trophiesState = safeJsonParse(localStorage.getItem(TROPHY_KEY), null) || {
-        progress: { spins:0, removes:0, finals:0, runs:0, doubleChance:0, shuffles:0 },
-        unlocked: {} // trophyId -> tierIndex (0..3) or "special"
-      };
-
-      function saveTrophies(){
-        try{ localStorage.setItem(TROPHY_KEY, JSON.stringify(trophiesState)); }catch(e){}
-      }
-
-      const TIERS = ["Bronze","Silber","Gold","Platin"];
-      const tierBadge = (t) => `<span class="badge">${t}</span>`;
-
-      const TROPHIES = [
-        { id:"spins", title:"Spins", desc:"Drehe das Rad.", thresholds:[1,50,100,500], key:"spins" },
-        { id:"removes", title:"Nudel entfernen", desc:"Entferne Gewinner.", thresholds:[1,25,75,250], key:"removes" },
-        { id:"finals", title:"Finale", desc:"Auf 2 Teilnehmer runter.", thresholds:[1,10,25,100], key:"finals" },
-        { id:"runs", title:"Der Letzte bleibt", desc:"Auf 1 Teilnehmer runter.", thresholds:[1,5,15,50], key:"runs" },
-        { id:"double", title:"Doppelte Chance", desc:"Doppelte Chance nutzen.", thresholds:[1,10,25,100], key:"doubleChance" },
-        { id:"shuffle", title:"Mischen", desc:"Shuffle nutzen.", thresholds:[1,10,25,100], key:"shuffles" },
-        { id:"plot", title:"Plot Twist Survivor", desc:"Fake-Winner ist passiert.", special:true }
+      // Trophies (basic tiers)
+      const TIERS=["Bronze","Silber","Gold","Platin"];
+      const TROPHIES=[
+        {id:"spins", title:"Spins", desc:"Drehe das Rad.", thresholds:[1,50,100,500], key:"spins"},
+        {id:"removes", title:"Nudel entfernen", desc:"Entferne Gewinner.", thresholds:[1,25,75,250], key:"removes"},
+        {id:"finals", title:"Finale", desc:"Auf 2 Teilnehmer runter.", thresholds:[1,10,25,100], key:"finals"},
+        {id:"runs", title:"Der Letzte bleibt", desc:"Auf 1 Teilnehmer runter.", thresholds:[1,5,15,50], key:"runs"},
+        {id:"double", title:"Doppelte Chance", desc:"Doppelte Chance nutzen.", thresholds:[1,10,25,100], key:"doubleChance"},
+        {id:"shuffle", title:"Mischen", desc:"Shuffle nutzen.", thresholds:[1,10,25,100], key:"shuffles"},
+        {id:"plot", title:"Plot Twist Survivor", desc:"Fake-Winner ist passiert.", special:true}
       ];
 
-      function trophyTierFor(trophy){
-        if(trophy.special){
-          return trophiesState.unlocked[trophy.id] ? "Freigeschaltet" : "Locked";
-        }
-        const val = trophiesState.progress[trophy.key] || 0;
-        let tier = -1;
-        for(let i=0;i<trophy.thresholds.length;i++){
-          if(val >= trophy.thresholds[i]) tier = i;
-        }
+      let trophies = safeJsonParse(localStorage.getItem(TROPHY_KEY), null) || {
+        progress:{ spins:0, removes:0, finals:0, runs:0, doubleChance:0, shuffles:0 },
+        unlocked:{}
+      };
+      function saveTrophies(){ try{ localStorage.setItem(TROPHY_KEY, JSON.stringify(trophies)); }catch{} }
+
+      function tierFor(t){
+        if(t.special) return trophies.unlocked[t.id] ? "Legendär" : "Locked";
+        const v=trophies.progress[t.key]||0;
+        let tier=-1;
+        for(let i=0;i<t.thresholds.length;i++) if(v>=t.thresholds[i]) tier=i;
         return tier;
       }
+      function checkTierUnlock(t){
+        if(t.special) return;
+        const v=trophies.progress[t.key]||0;
+        let tier=-1;
+        for(let i=0;i<t.thresholds.length;i++) if(v>=t.thresholds[i]) tier=i;
+        if(tier<0) return;
 
-      function checkTierUnlock(trophy){
-        if(trophy.special) return;
-
-        const val = trophiesState.progress[trophy.key] || 0;
-        let tier = -1;
-        for(let i=0;i<trophy.thresholds.length;i++){
-          if(val >= trophy.thresholds[i]) tier = i;
-        }
-        if(tier < 0) return;
-
-        const prev = trophiesState.unlocked[trophy.id];
-        if(prev === undefined || prev === null){
-          trophiesState.unlocked[trophy.id] = tier;
+        const prev=trophies.unlocked[t.id];
+        if(prev===undefined || (typeof prev==="number" && tier>prev)){
+          trophies.unlocked[t.id]=tier;
           saveTrophies();
-          showToast(`Trophy: ${trophy.title} ${TIERS[tier]}`);
-          return;
-        }
-        if(typeof prev === "number" && tier > prev){
-          trophiesState.unlocked[trophy.id] = tier;
-          saveTrophies();
-          showToast(`Trophy: ${trophy.title} ${TIERS[tier]}`);
+          showToast(`Trophy: ${t.title} ${TIERS[tier]}`);
         }
       }
-
-      function unlockSpecial(id, text){
-        if(trophiesState.unlocked[id]) return;
-        trophiesState.unlocked[id] = "special";
+      function unlockSpecial(id, msg){
+        if(trophies.unlocked[id]) return;
+        trophies.unlocked[id]="special";
         saveTrophies();
-        showToast(text);
+        showToast(msg);
       }
-
       function renderTrophies(){
-        const grid = $("trophyGrid");
-        grid.innerHTML = "";
-
+        const grid=$("trophyGrid");
+        grid.innerHTML="";
         for(const t of TROPHIES){
-          const div = document.createElement("div");
-          let locked = true;
-
+          const div=document.createElement("div");
           if(t.special){
-            locked = !trophiesState.unlocked[t.id];
-            div.className = "trophy" + (locked ? " locked" : "");
-            div.innerHTML = `
-              <div class="h">
-                <div>${t.title}</div>
-                ${locked ? `<span class="badge">Locked</span>` : `<span class="badge">Legendär</span>`}
-              </div>
-              <div class="small">${t.desc}</div>
-            `;
+            const locked=!trophies.unlocked[t.id];
+            div.className="trophy"+(locked?" locked":"");
+            div.innerHTML=`<div class="h"><div>${t.title}</div><span class="badge">${locked?"Locked":"Legendär"}</span></div><div class="small">${t.desc}</div>`;
           }else{
-            const tier = trophyTierFor(t);
-            const maxTier = trophiesState.unlocked[t.id];
-            const val = trophiesState.progress[t.key] || 0;
-
-            locked = (maxTier === undefined);
-            const tierLabel = (tier >= 0) ? TIERS[tier] : "Locked";
-            div.className = "trophy" + (tier < 0 ? " locked" : "");
-            div.innerHTML = `
-              <div class="h">
-                <div>${t.title}</div>
-                ${tierBadge(tierLabel)}
-              </div>
-              <div class="small">${t.desc}</div>
-              <div class="small">Fortschritt: ${val} / ${t.thresholds[0]} / ${t.thresholds[1]} / ${t.thresholds[2]} / ${t.thresholds[3]}</div>
-            `;
+            const tier=tierFor(t);
+            const v=trophies.progress[t.key]||0;
+            div.className="trophy"+(tier<0?" locked":"");
+            div.innerHTML=`<div class="h"><div>${t.title}</div><span class="badge">${tier>=0?TIERS[tier]:"Locked"}</span></div><div class="small">${t.desc}</div><div class="small">Fortschritt: ${v} / ${t.thresholds.join(" / ")}</div>`;
           }
-
           grid.appendChild(div);
         }
       }
 
-      // ---------------- Wheel ----------------
-      const canvas = $("wheel");
-      const ctx = canvas.getContext("2d");
+      // Wheel core
+      const canvas=$("wheel");
+      const ctx=$("wheel").getContext("2d");
+      const input=$("items");
 
-      const input = $("items");
-      let items = [];
-      let angle = 0;
-      let spinning = false;
-      let lastWinner = null;
+      const savedItems=localStorage.getItem(LS_ITEMS);
+      if(savedItems && savedItems.trim()) input.value=savedItems;
 
-      function parseItems(text){
-        return String(text||"")
-          .split(/\r?\n/)
-          .map(s => normalizeName(s))
-          .filter(Boolean);
-      }
+      let items=[];
+      let angle=0;
+      let spinning=false;
+      let lastWinner=null;
 
       function syncCoinVisibility(){
-        const now = parseItems(input.value);
-        if(now.length === 2) $("miniCoin").classList.remove("hidden");
+        const now=parseItems(input.value);
+        if(now.length===2) $("miniCoin").classList.remove("hidden");
         else $("miniCoin").classList.add("hidden");
       }
 
-      function drawWheel(){
-        const w=canvas.width, h=canvas.height;
-        const cx=w/2, cy=h/2;
-        const r=Math.min(w,h)*0.48;
+      function fitCanvasText(text,maxPx,minPx,maxWidth){
+        let size=maxPx;
+        while(size>minPx){
+          ctx.font=`900 ${size}px system-ui`;
+          if(ctx.measureText(text).width<=maxWidth) break;
+          size-=2;
+        }
+        return size;
+      }
 
+      function drawWheel(){
+        const w=canvas.width,h=canvas.height;
+        const cx=w/2,cy=h/2;
+        const r=Math.min(w,h)*0.48;
         ctx.clearRect(0,0,w,h);
 
         if(items.length===0){
@@ -1739,33 +1235,31 @@ test3</textarea>
         ctx.rotate(angle);
 
         for(let i=0;i<n;i++){
-          const start=i*slice;
-          const end=start+slice;
+          const start=i*slice, end=start+slice;
 
           ctx.beginPath();
           ctx.moveTo(0,0);
           ctx.arc(0,0,r,start,end);
           ctx.closePath();
-          ctx.fillStyle = wheelColors[i % wheelColors.length];
+          ctx.fillStyle=wheelColors[i%wheelColors.length];
           ctx.fill();
 
           ctx.strokeStyle="rgba(0,0,0,.18)";
           ctx.lineWidth=6;
           ctx.stroke();
 
-          const label = items[i] || "—";
-
+          const label=items[i]||"—";
           ctx.save();
-          ctx.rotate(start + slice/2);
+          ctx.rotate(start+slice/2);
           ctx.textAlign="right";
           ctx.fillStyle="rgba(0,0,0,.78)";
           ctx.shadowColor="rgba(255,255,255,.45)";
           ctx.shadowBlur=5;
 
-          const maxWidth = r - 34;
-          const size = fitCanvasText(ctx, label, 44, 16, maxWidth);
-          ctx.font = `900 ${size}px system-ui`;
-          ctx.fillText(label, r - 24, 14);
+          const maxWidth=r-34;
+          const size=fitCanvasText(label,44,16,maxWidth);
+          ctx.font=`900 ${size}px system-ui`;
+          ctx.fillText(label, r-24, 14);
           ctx.restore();
         }
 
@@ -1789,246 +1283,269 @@ test3</textarea>
         return { idx, label: items[idx] ?? "—" };
       }
 
-      function updateRemoveButton(){
-        const can = ($("mode").value==="remove") && items.length>1 && !!lastWinner;
-        $("removeWinner").disabled = !can;
-      }
-
       function renderNameChips(){
-        const now = parseItems(input.value);
-        const wrap = $("nameChips");
-        wrap.innerHTML = "";
-
+        const now=parseItems(input.value);
+        const wrap=$("nameChips");
+        wrap.innerHTML="";
         for(const name of now){
-          const chip = document.createElement("div");
-          chip.className = "chip";
-          chip.innerHTML = `<div class="t"></div><button class="x" title="Löschen">×</button>`;
-          chip.querySelector(".t").textContent = name;
-
+          const chip=document.createElement("div");
+          chip.className="chip";
+          chip.innerHTML=`<div class="t"></div><button class="x" title="Löschen">×</button>`;
+          chip.querySelector(".t").textContent=name;
           chip.querySelector(".x").addEventListener("click", ()=>{
-            const next = parseItems(input.value).filter(n => nameKey(n) !== nameKey(name));
-            input.value = next.join("\n");
-            items = next;
-            lastWinner = null;
-            $("removeWinner").disabled = true;
+            const next=parseItems(input.value).filter(n=>nameKey(n)!==nameKey(name));
+            input.value=next.join("\n");
+            localStorage.setItem(LS_ITEMS, input.value);
+            items=next;
+            lastWinner=null;
+            $("removeWinner").disabled=true;
             syncCoinVisibility();
             renderNameChips();
             drawWheel();
           });
-
           wrap.appendChild(chip);
         }
       }
 
       function removeByName(name){
-        const k = nameKey(name);
-        const idx = items.findIndex(x => nameKey(x) === k);
-        if(idx === -1) return false;
-        items.splice(idx, 1);
-        input.value = items.join("\n");
+        const k=nameKey(name);
+        const idx=items.findIndex(x=>nameKey(x)===k);
+        if(idx===-1) return false;
+        items.splice(idx,1);
+        input.value=items.join("\n");
+        localStorage.setItem(LS_ITEMS, input.value);
         syncCoinVisibility();
         renderNameChips();
         drawWheel();
         return true;
       }
 
-      // ---------------- Right Panel ----------------
-      let rightTab = "history";
+      function updateRemoveButton(){
+        const can=($("mode").value==="remove") && items.length>1 && !!lastWinner;
+        $("removeWinner").disabled=!can;
+      }
 
+      // Winner overlay: NEVER deletes automatically
+      const winnerOverlay=$("winnerOverlay");
+      const winnerNameEl=$("winnerName");
+      const winnerSubEl=$("winnerSub");
+
+      function openWinnerOverlay(name, sub){
+        winnerNameEl.textContent=name;
+        winnerSubEl.textContent=sub||"";
+        winnerNameEl.classList.add("winnerPulse");
+        openOverlay(winnerOverlay);
+      }
+      function closeWinnerOverlay(){
+        winnerNameEl.classList.remove("winnerPulse");
+        closeOverlay(winnerOverlay);
+      }
+
+      // Right panel
+      let rightTab="history";
       function renderRightPanel(){
-        const info = $("streamInfo");
-        const list = $("streamList");
+        const info=$("streamInfo");
+        const list=$("streamList");
 
         const curName = stream.currentStreakName ? (alltime.displayNames[stream.currentStreakName] || stream.currentStreakName) : "—";
         const curSt = stream.currentStreakCount || 0;
-        info.textContent = `Spins: ${stream.spins || 0}  | Entfernt: ${stream.removes || 0}  | Streak: ${curName} ${curSt ? (curSt+"x") : ""}`;
+        info.textContent = `Spins: ${stream.spins||0} | Entfernt: ${stream.removes||0} | Streak: ${curSt ? (curName+" "+curSt+"x") : "—"}`;
 
-        list.innerHTML = "";
-
-        if(rightTab === "history"){
-          const arr = stream.history || [];
-          for(const line of arr){
-            const div = document.createElement("div");
-            div.className = "listItem";
-            div.innerHTML = `<div class="name"></div><div class="val"></div>`;
-            div.querySelector(".name").textContent = line;
-            div.querySelector(".val").textContent = "";
-            list.appendChild(div);
+        list.innerHTML="";
+        if(rightTab==="history"){
+          const arr=stream.history||[];
+          if(!arr.length){
+            const d=document.createElement("div");
+            d.className="small";
+            d.textContent="Noch kein Verlauf im Stream.";
+            list.appendChild(d);
+            return;
           }
-          if(arr.length === 0){
-            const div = document.createElement("div");
-            div.className = "small";
-            div.textContent = "Noch kein Verlauf im Stream.";
+          for(const line of arr){
+            const div=document.createElement("div");
+            div.className="listItem";
+            div.innerHTML=`<div class="name"></div><div class="val"></div>`;
+            div.querySelector(".name").textContent=line;
+            div.querySelector(".val").textContent="";
             list.appendChild(div);
           }
         }else{
-          const entries = objEntriesSortedDesc(stream.wins);
-          for(const [k,v] of entries.slice(0,10)){
-            const div = document.createElement("div");
-            div.className = "listItem";
-            div.innerHTML = `<div class="name"></div><div class="val"></div>`;
-            div.querySelector(".name").textContent = alltime.displayNames[k] || k;
-            div.querySelector(".val").textContent = `${v}`;
-            list.appendChild(div);
+          const entries=objEntriesSortedDesc(stream.wins);
+          if(!entries.length){
+            const d=document.createElement("div");
+            d.className="small";
+            d.textContent="Noch keine Wins im Stream.";
+            list.appendChild(d);
+            return;
           }
-          if(entries.length === 0){
-            const div = document.createElement("div");
-            div.className = "small";
-            div.textContent = "Noch keine Wins im Stream.";
+          for(const [k,v] of entries.slice(0,10)){
+            const div=document.createElement("div");
+            div.className="listItem";
+            div.innerHTML=`<div class="name"></div><div class="val"></div>`;
+            div.querySelector(".name").textContent=alltime.displayNames[k]||k;
+            div.querySelector(".val").textContent=String(v);
             list.appendChild(div);
           }
         }
       }
 
       function renderStreakTop(){
-        const wrap = $("streakTopList");
-        wrap.innerHTML = "";
-
-        const entries = objEntriesSortedDesc(alltime.bestStreak);
-        const top = entries.slice(0,5);
+        const wrap=$("streakTopList");
+        wrap.innerHTML="";
+        const entries=objEntriesSortedDesc(alltime.bestStreak);
+        const top=entries.slice(0,5);
 
         const cur = stream.currentStreakName ? (alltime.displayNames[stream.currentStreakName] || stream.currentStreakName) : "—";
         const curSt = stream.currentStreakCount || 0;
         $("currentStreakLabel").textContent = curSt ? `Aktuell: ${cur} ${curSt}x` : "Aktuell: —";
 
-        for(const [k,v] of top){
-          const div = document.createElement("div");
-          div.className = "listItem";
-          div.innerHTML = `<div class="name"></div><div class="val"></div>`;
-          div.querySelector(".name").textContent = alltime.displayNames[k] || k;
-          div.querySelector(".val").textContent = `${v}x`;
-          wrap.appendChild(div);
-        }
-
-        if(top.length === 0){
-          const div = document.createElement("div");
-          div.className = "small";
-          div.textContent = "Noch keine Streak-Rekorde.";
-          wrap.appendChild(div);
-        }
-      }
-
-      // ---------------- Winner Overlay + Fake Winner ----------------
-      const winnerOverlay = $("winnerOverlay");
-      const winnerNameEl = $("winnerName");
-      const winnerSubEl = $("winnerSub");
-
-      const FAKE_WIN_CHANCE = 0.002;
-      const FAKE_WIN_COOLDOWN_SPINS = 30;
-      let spinsSinceFake = 999;
-      let pendingRealWinner = null;
-      let fakeTimer = null;
-
-      function clearFake(){
-        if(fakeTimer){ clearTimeout(fakeTimer); fakeTimer = null; }
-        pendingRealWinner = null;
-      }
-
-      function setWinnerText(name, sub){
-        winnerNameEl.textContent = name;
-        winnerSubEl.textContent = sub || "";
-      }
-
-      function celebrate(){
-        winnerNameEl.classList.add("winnerPulse");
-        startConfetti(1400);
-        setTimeout(()=>winnerNameEl.classList.remove("winnerPulse"), 1800);
-      }
-
-      function showWinner(realName){
-        clearFake();
-        spinsSinceFake++;
-
-        const canFake = spinsSinceFake >= FAKE_WIN_COOLDOWN_SPINS;
-        const doFake = canFake && items.length >= 4 && (rand01() < FAKE_WIN_CHANCE);
-
-        if(doFake){
-          spinsSinceFake = 0;
-          pendingRealWinner = realName;
-
-          const other = items.filter(x => nameKey(x) !== nameKey(realName));
-          const fake = other.length ? other[randInt(0, other.length-1)] : realName;
-
-          setWinnerText(fake, "…");
-          openOverlay(winnerOverlay);
-          playLK();
-          unlockSpecial("plot", "Legendary Trophy: Plot Twist Survivor");
-
-          fakeTimer = setTimeout(()=>{
-            setWinnerText(pendingRealWinner, "Plot Twist");
-            pendingRealWinner = null;
-            fakeTimer = null;
-            celebrate();
-          }, 700);
-
+        if(!top.length){
+          const d=document.createElement("div");
+          d.className="small";
+          d.textContent="Noch keine Streak-Rekorde.";
+          wrap.appendChild(d);
           return;
         }
-
-        setWinnerText(realName, "");
-        openOverlay(winnerOverlay);
-        celebrate();
+        for(const [k,v] of top){
+          const div=document.createElement("div");
+          div.className="listItem";
+          div.innerHTML=`<div class="name"></div><div class="val"></div>`;
+          div.querySelector(".name").textContent=alltime.displayNames[k]||k;
+          div.querySelector(".val").textContent=v+"x";
+          wrap.appendChild(div);
+        }
       }
 
-      // ---------------- Spin / Remove / Shuffle / Reset ----------------
-      function spin(){
-        if(spinning) return;
+      function removeLastWinner(){
+        if(!lastWinner) return;
+        if($("mode").value!=="remove"){
+          $("removeWinner").disabled=true;
+          showToast("Modus: Nudel lassen");
+          return;
+        }
+        playSad();
+        const ok=removeByName(lastWinner.label);
+        if(ok){
+          stream.removes=(stream.removes||0)+1;
+          saveStream();
 
-        items = parseItems(input.value);
+          trophies.progress.removes=(trophies.progress.removes||0)+1;
+          checkTierUnlock(TROPHIES[1]);
+          saveTrophies();
+
+          addHistoryLine(`❌ entfernt: ${lastWinner.label}`);
+          renderRightPanel();
+
+          lastWinner=null;
+          $("removeWinner").disabled=true;
+
+          if(items.length===2){
+            trophies.progress.finals=(trophies.progress.finals||0)+1;
+            checkTierUnlock(TROPHIES[2]);
+            saveTrophies();
+          }
+          if(items.length===1){
+            trophies.progress.runs=(trophies.progress.runs||0)+1;
+            checkTierUnlock(TROPHIES[3]);
+            saveTrophies();
+          }
+        }
+      }
+
+      function shuffle(){
+        items=parseItems(input.value);
+        for(let i=items.length-1;i>0;i--){
+          const j=randInt(0,i);
+          [items[i],items[j]]=[items[j],items[i]];
+        }
+        input.value=items.join("\n");
+        localStorage.setItem(LS_ITEMS, input.value);
+
+        trophies.progress.shuffles=(trophies.progress.shuffles||0)+1;
+        checkTierUnlock(TROPHIES[5]);
+        saveTrophies();
+
+        addHistoryLine("🔀 Shuffle");
+        renderRightPanel();
+
+        lastWinner=null;
+        $("removeWinner").disabled=true;
         syncCoinVisibility();
         renderNameChips();
         drawWheel();
+        showToast("Gemischt");
+      }
 
-        if(items.length < 2){
+      function resetWheel(){
+        angle=0;
+        lastWinner=null;
+        $("removeWinner").disabled=true;
+        drawWheel();
+        showToast("Reset");
+      }
+
+      // Spin: NO delete here, only overlay
+      function spin(){
+        if(spinning) return;
+
+        items=parseItems(input.value);
+        localStorage.setItem(LS_ITEMS, input.value);
+
+        if(items.length<2){
           showToast("Mindestens 2 Teilnehmer");
+          lastWinner=null;
+          $("removeWinner").disabled=true;
+          drawWheel();
           return;
         }
 
-        spinning = true;
-        $("spin").disabled = true;
-        $("removeWinner").disabled = true;
+        spinning=true;
+        $("spin").disabled=true;
+        $("removeWinner").disabled=true;
+
+        trophies.progress.spins=(trophies.progress.spins||0)+1;
+        checkTierUnlock(TROPHIES[0]);
+        saveTrophies();
+
+        stream.spins=(stream.spins||0)+1;
+        saveStream();
 
         playSpinLoop();
 
-        const duration = clamp((settings.spinDur||3) * 1000, 1000, 60000);
-        const extraSpins = 8;
+        const duration=clamp((settings.spinDur||3)*1000, 1000, 60000);
+        const extraSpins=8;
 
-        const n = items.length;
-        const slice = TAU / n;
+        const n=items.length;
+        const slice=TAU/n;
 
-        const targetIndex = randInt(0, n-1);
-        const inside = (rand01()*0.6 + 0.2) * slice;
+        const targetIndex=randInt(0,n-1);
+        const inside=(rand01()*0.6+0.2)*slice;
 
-        const pointer = -Math.PI/2;
-        const targetAngle = pointer - (targetIndex*slice + inside);
+        const pointer=-Math.PI/2;
+        const targetAngle=pointer-(targetIndex*slice+inside);
 
-        const startAngle = angle;
-        const endAngle = targetAngle - extraSpins*TAU;
+        const startAngle=angle;
+        const endAngle=targetAngle-extraSpins*TAU;
 
-        const start = performance.now();
-        const easeOut = (t)=> 1 - Math.pow(1-t, 3);
+        const start=performance.now();
+        const easeOut=t=>1-Math.pow(1-t,3);
 
         function frame(now){
-          const t = Math.min(1, (now - start) / duration);
-          const e = easeOut(t);
-          angle = startAngle + (endAngle - startAngle) * e;
+          const t=Math.min(1,(now-start)/duration);
+          const e=easeOut(t);
+          angle=startAngle+(endAngle-startAngle)*e;
           drawWheel();
 
-          if(t < 1){
+          if(t<1){
             requestAnimationFrame(frame);
           }else{
             stopSpinLoop();
-            spinning = false;
-            $("spin").disabled = false;
+            angle=((angle%TAU)+TAU)%TAU;
 
-            angle = ((angle % TAU) + TAU) % TAU;
+            lastWinner=currentWinner();
 
-            lastWinner = currentWinner();
-            updateRemoveButton();
-
-            stream.spins = (stream.spins || 0) + 1;
-            trophiesState.progress.spins = (trophiesState.progress.spins || 0) + 1;
-            checkTierUnlock(TROPHIES[0]);
-            saveTrophies();
+            const prevStreakName=stream.currentStreakName;
+            const prevStreakCount=stream.currentStreakCount||0;
 
             incStreamWin(lastWinner.label);
             updateStreamStreak(lastWinner.label);
@@ -2037,113 +1554,48 @@ test3</textarea>
             renderRightPanel();
             renderStreakTop();
 
-            showWinner(lastWinner.label);
+            const streakEnded = prevStreakName && prevStreakName !== nameKey(lastWinner.label) && prevStreakCount>=3;
+            startConfetti(1400, streakEnded?3.0:1.3);
+
+            openWinnerOverlay(lastWinner.label, streakEnded?"Streak beendet":"");
+
+            spinning=false;
+            $("spin").disabled=false;
+            updateRemoveButton();
           }
         }
+
         requestAnimationFrame(frame);
       }
 
-      function removeLastWinner(){
-        if(!lastWinner) return;
-        if($("mode").value !== "remove"){
-          $("removeWinner").disabled = true;
-          showToast("Modus: Nudel lassen");
-          return;
-        }
-        playSad();
-        const ok = removeByName(lastWinner.label);
-        if(ok){
-          stream.removes = (stream.removes || 0) + 1;
-          trophiesState.progress.removes = (trophiesState.progress.removes || 0) + 1;
-          checkTierUnlock(TROPHIES[1]);
-          saveTrophies();
-
-          addHistoryLine(`❌ entfernt: ${lastWinner.label}`);
-          renderRightPanel();
-
-          lastWinner = null;
-          $("removeWinner").disabled = true;
-
-          if(items.length === 2){
-            trophiesState.progress.finals = (trophiesState.progress.finals || 0) + 1;
-            checkTierUnlock(TROPHIES[2]);
-            saveTrophies();
-            addHistoryLine(`⚔️ Finale (2 übrig)`);
-            renderRightPanel();
-          }
-          if(items.length === 1){
-            trophiesState.progress.runs = (trophiesState.progress.runs || 0) + 1;
-            checkTierUnlock(TROPHIES[3]);
-            saveTrophies();
-            addHistoryLine(`🏁 Letzter bleibt: ${items[0]}`);
-            renderRightPanel();
-          }
-        }
-      }
-
-      function shuffle(){
-        items = parseItems(input.value);
-        for(let i=items.length-1;i>0;i--){
-          const j = randInt(0,i);
-          [items[i],items[j]] = [items[j],items[i]];
-        }
-        input.value = items.join("\n");
-        lastWinner = null;
-        $("removeWinner").disabled = true;
-        showToast("Gemischt");
-
-        trophiesState.progress.shuffles = (trophiesState.progress.shuffles || 0) + 1;
-        checkTierUnlock(TROPHIES[5]);
-        saveTrophies();
-
-        addHistoryLine("🔀 Shuffle");
-        renderRightPanel();
-
-        syncCoinVisibility();
-        renderNameChips();
-        drawWheel();
-      }
-
-      function resetWheel(){
-        angle = 0;
-        lastWinner = null;
-        $("removeWinner").disabled = true;
-        drawWheel();
-        showToast("Reset");
-      }
-
-      // ---------------- Double chance ----------------
+      // Double chance
       function openDoubleChance(){
-        const now = parseItems(input.value);
-        const uniq = [];
-        const seen = new Set();
+        const now=parseItems(input.value);
+        const uniq=[];
+        const seen=new Set();
         for(const n of now){
-          const k = nameKey(n);
-          if(!seen.has(k)){
-            seen.add(k);
-            uniq.push(n);
-          }
+          const k=nameKey(n);
+          if(!seen.has(k)){ seen.add(k); uniq.push(n); }
         }
-        const sel = $("chanceSelect");
-        sel.innerHTML = "";
+        const sel=$("chanceSelect");
+        sel.innerHTML="";
         for(const n of uniq){
-          const opt = document.createElement("option");
-          opt.value = n;
-          opt.textContent = n;
-          sel.appendChild(opt);
+          const o=document.createElement("option");
+          o.value=n; o.textContent=n;
+          sel.appendChild(o);
         }
         openOverlay($("chanceOverlay"));
       }
-
       function confirmDoubleChance(){
-        const name = normalizeName($("chanceSelect").value);
+        const name=normalizeName($("chanceSelect").value);
         if(!name) return;
-        const now = parseItems(input.value);
+        const now=parseItems(input.value);
         now.push(name);
-        input.value = now.join("\n");
-        items = now;
+        input.value=now.join("\n");
+        localStorage.setItem(LS_ITEMS, input.value);
+        items=now;
 
-        trophiesState.progress.doubleChance = (trophiesState.progress.doubleChance || 0) + 1;
+        trophies.progress.doubleChance=(trophies.progress.doubleChance||0)+1;
         checkTierUnlock(TROPHIES[4]);
         saveTrophies();
 
@@ -2158,533 +1610,418 @@ test3</textarea>
         showToast("Doppelte Chance gesetzt");
       }
 
-      // ---------------- Minigames ----------------
-      // Coinflip (nur wenn 2)
-      const coinOverlay = $("coinOverlay");
-      const coinEl = $("coin");
-      const coinNameA = $("coinNameA");
-      const coinNameB = $("coinNameB");
-      const coinInfo = $("coinInfo");
-      const coinResult = $("coinResult");
+      // Coinflip
+      const coinOverlay=$("coinOverlay");
+      const coinEl=$("coin");
+      const coinNameA=$("coinNameA");
+      const coinNameB=$("coinNameB");
+      const coinInfo=$("coinInfo");
+      const coinResult=$("coinResult");
       let coinBusy=false, coinRAF=null;
 
       function stopCoinAnim(){
         if(coinRAF){ cancelAnimationFrame(coinRAF); coinRAF=null; }
       }
-
       function openCoinflip(){
-        const now = parseItems(input.value);
-        if(now.length !== 2){
-          showToast("Coinflip nur bei 2 Teilnehmern");
-          return;
-        }
-        coinNameA.textContent = now[0];
-        coinNameB.textContent = now[1];
-        coinInfo.textContent = `Kopf = ${now[0]} | Zahl = ${now[1]}`;
-        coinResult.textContent = "";
-        coinEl.style.transform = "rotateY(0deg)";
+        const now=parseItems(input.value);
+        if(now.length!==2){ showToast("Coinflip nur bei 2 Teilnehmern"); return; }
+        coinNameA.textContent=now[0];
+        coinNameB.textContent=now[1];
+        coinInfo.textContent=`Kopf = ${now[0]} | Zahl = ${now[1]}`;
+        coinResult.textContent="";
+        coinEl.style.transform="rotateY(0deg)";
         coinBusy=false;
         stopCoinAnim();
         openOverlay(coinOverlay);
       }
-
       function coinFlip(){
         if(coinBusy) return;
+        const now=parseItems(input.value);
+        if(now.length!==2){ showToast("Coinflip nur bei 2 Teilnehmern"); return; }
+        const a=now[0], b=now[1];
+        const heads=rand01()<0.5;
+        const duration=6000+Math.floor(rand01()*1500);
 
-        const now = parseItems(input.value);
-        if(now.length !== 2){
-          showToast("Coinflip nur bei 2 Teilnehmern");
-          return;
-        }
+        coinBusy=true;
+        coinResult.textContent="…";
 
-        const a = now[0], b = now[1];
-        const heads = rand01() < 0.5;
-        const duration = 6000 + Math.floor(rand01()*1500);
+        const finalDeg=heads?0:180;
+        const extraTurns=8+randInt(0,6);
+        const endTarget=extraTurns*360+finalDeg;
 
-        coinBusy = true;
-        coinResult.textContent = "…";
-
-        const finalDeg = heads ? 0 : 180;
-        const extraTurns = 8 + randInt(0,6);
-        const endTarget = extraTurns*360 + finalDeg;
-
-        const start = performance.now();
-        const easeOut = (t)=> 1 - Math.pow(1-t, 3);
+        const start=performance.now();
+        const easeOut=t=>1-Math.pow(1-t,3);
 
         stopCoinAnim();
         function frame(nowT){
-          const t = Math.min(1, (nowT - start) / duration);
-          const e = easeOut(t);
-          coinEl.style.transform = `rotateY(${endTarget*e}deg)`;
-          if(t < 1){
-            coinRAF = requestAnimationFrame(frame);
-          }else{
-            coinEl.style.transform = `rotateY(${finalDeg}deg)`;
-            const winner = heads ? a : b;
-            coinResult.textContent = `Ergebnis: ${winner}`;
+          const t=Math.min(1,(nowT-start)/duration);
+          const e=easeOut(t);
+          coinEl.style.transform=`rotateY(${endTarget*e}deg)`;
+          if(t<1) coinRAF=requestAnimationFrame(frame);
+          else{
+            coinEl.style.transform=`rotateY(${finalDeg}deg)`;
+            const winner=heads?a:b;
+            coinResult.textContent=`Ergebnis: ${winner}`;
             addHistoryLine(`🪙 Coinflip: ${winner}`);
             renderRightPanel();
-            coinBusy = false;
+            coinBusy=false;
             stopCoinAnim();
           }
         }
-        coinRAF = requestAnimationFrame(frame);
+        coinRAF=requestAnimationFrame(frame);
       }
-
       function closeCoin(){
         coinBusy=false;
         stopCoinAnim();
         closeOverlay(coinOverlay);
       }
 
-      // Zahl raten 1-20
-      const guessOverlay = $("guessOverlay");
-      const guessGrid = $("guessGrid");
-      const guessStatus = $("guessStatus");
-      let guessSecret = 0;
-      let guessActive = false;
+      // Guess
+      const guessOverlay=$("guessOverlay");
+      const guessGrid=$("guessGrid");
+      const guessStatus=$("guessStatus");
+      let guessSecret=0, guessActive=false;
 
       function startGuess(){
-        guessSecret = randInt(1,20);
-        guessActive = true;
-        guessStatus.textContent = "Wähle eine Zahl";
-        guessGrid.innerHTML = "";
+        guessSecret=randInt(1,20);
+        guessActive=true;
+        guessStatus.textContent="Wähle eine Zahl";
+        guessGrid.innerHTML="";
         for(let i=1;i<=20;i++){
-          const b = document.createElement("button");
-          b.textContent = String(i);
+          const b=document.createElement("button");
+          b.textContent=String(i);
           b.addEventListener("click", ()=>{
             if(!guessActive) return;
-            guessActive = false;
-            guessStatus.textContent = (i===guessSecret) ? `Richtig – ${guessSecret}` : `Falsch – ${guessSecret}`;
+            guessActive=false;
+            guessStatus.textContent=(i===guessSecret)?`Richtig – ${guessSecret}`:`Falsch – ${guessSecret}`;
             Array.from(guessGrid.querySelectorAll("button")).forEach(x=>x.disabled=true);
           });
           guessGrid.appendChild(b);
         }
       }
 
-      // TicTacToe (KI = minimax, mit kleiner Randomness)
-      const tttOverlay = $("tttOverlay");
-      const tttGrid = $("tttGrid");
-      const tttStatus = $("tttStatus");
-      let ttt = Array(9).fill("");
-      let tttOver = false;
+      // TicTacToe
+      const tttOverlay=$("tttOverlay");
+      const tttGrid=$("tttGrid");
+      const tttStatus=$("tttStatus");
+      let ttt=Array(9).fill("");
+      let tttOver=false;
 
       function tttWinner(board){
-        const L = [
-          [0,1,2],[3,4,5],[6,7,8],
-          [0,3,6],[1,4,7],[2,5,8],
-          [0,4,8],[2,4,6]
-        ];
-        for(const [a,b,c] of L){
-          if(board[a] && board[a]===board[b] && board[a]===board[c]) return board[a];
-        }
+        const L=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        for(const [a,b,c] of L) if(board[a] && board[a]===board[b] && board[a]===board[c]) return board[a];
         if(board.every(x=>x)) return "draw";
         return null;
       }
-
-      function tttMin(board, isMax){
-        const w = tttWinner(board);
+      function tttMin(board,isMax){
+        const w=tttWinner(board);
         if(w==="O") return {score:10};
         if(w==="X") return {score:-10};
         if(w==="draw") return {score:0};
-
         if(isMax){
-          let best = {score:-999, idx:-1};
+          let best={score:-999,idx:-1};
           for(let i=0;i<9;i++){
             if(board[i]) continue;
-            board[i] = "O";
-            const r = tttMin(board,false);
-            board[i] = "";
-            if(r.score > best.score) best = {score:r.score, idx:i};
+            board[i]="O";
+            const r=tttMin(board,false);
+            board[i]="";
+            if(r.score>best.score) best={score:r.score,idx:i};
           }
           return best;
         }else{
-          let best = {score:999, idx:-1};
+          let best={score:999,idx:-1};
           for(let i=0;i<9;i++){
             if(board[i]) continue;
-            board[i] = "X";
-            const r = tttMin(board,true);
-            board[i] = "";
-            if(r.score < best.score) best = {score:r.score, idx:i};
+            board[i]="X";
+            const r=tttMin(board,true);
+            board[i]="";
+            if(r.score<best.score) best={score:r.score,idx:i};
           }
           return best;
         }
       }
-
       function tttAiMove(){
         if(tttOver) return;
-        const empty = ttt.map((v,i)=>v?null:i).filter(v=>v!==null);
-        if(empty.length === 0) return;
-
+        const empty=ttt.map((v,i)=>v?null:i).filter(v=>v!==null);
+        if(!empty.length) return;
         let idx;
-        if(rand01() < 0.16){
-          idx = empty[randInt(0, empty.length-1)];
-        }else{
-          const copy = ttt.slice();
-          idx = tttMin(copy, true).idx;
-        }
-        if(idx>=0 && !ttt[idx]) ttt[idx] = "O";
+        if(rand01()<0.16) idx=empty[randInt(0,empty.length-1)];
+        else idx=tttMin(ttt.slice(),true).idx;
+        if(idx>=0 && !ttt[idx]) ttt[idx]="O";
       }
-
       function tttRender(){
-        tttGrid.innerHTML = "";
+        tttGrid.innerHTML="";
         for(let i=0;i<9;i++){
-          const b = document.createElement("button");
-          b.textContent = ttt[i];
-          b.disabled = tttOver || !!ttt[i];
+          const b=document.createElement("button");
+          b.textContent=ttt[i];
+          b.disabled=tttOver || !!ttt[i];
           b.addEventListener("click", ()=>{
             if(tttOver || ttt[i]) return;
-            ttt[i] = "X";
-            let w = tttWinner(ttt);
+            ttt[i]="X";
+            let w=tttWinner(ttt);
             if(w){
-              tttOver = true;
-              tttStatus.textContent = (w==="draw") ? "Unentschieden" : (w==="X" ? "Du hast gewonnen" : "KI gewinnt");
-              tttRender();
-              return;
+              tttOver=true;
+              tttStatus.textContent=(w==="draw")?"Unentschieden":(w==="X"?"Du hast gewonnen":"KI gewinnt");
+              tttRender(); return;
             }
-
             tttAiMove();
-            w = tttWinner(ttt);
+            w=tttWinner(ttt);
             if(w){
-              tttOver = true;
-              tttStatus.textContent = (w==="draw") ? "Unentschieden" : (w==="X" ? "Du hast gewonnen" : "KI gewinnt");
-            }else{
-              tttStatus.textContent = "";
-            }
+              tttOver=true;
+              tttStatus.textContent=(w==="draw")?"Unentschieden":(w==="X"?"Du hast gewonnen":"KI gewinnt");
+            }else tttStatus.textContent="";
             tttRender();
           });
           tttGrid.appendChild(b);
         }
       }
-
       function tttReset(){
-        ttt = Array(9).fill("");
-        tttOver = false;
-        tttStatus.textContent = "";
+        ttt=Array(9).fill("");
+        tttOver=false;
+        tttStatus.textContent="";
         tttRender();
       }
 
       // Snake
-      const snakeOverlay = $("snakeOverlay");
-      const snakeCanvas = $("snakeCanvas");
-      const sctx = snakeCanvas.getContext("2d");
-      const snakeStatus = $("snakeStatus");
-      const cells = 20;
-      const cellSize = snakeCanvas.width / cells;
-      let snake = null;
-      let dir = {x:1,y:0};
-      let food = null;
-      let score = 0;
-      let snakeTimer = null;
-      let snakeOver = true;
+      const snakeOverlay=$("snakeOverlay");
+      const snakeCanvas=$("snakeCanvas");
+      const sctx=snakeCanvas.getContext("2d");
+      const snakeStatus=$("snakeStatus");
+      const cells=20;
+      const cellSize=snakeCanvas.width/cells;
 
-      function randCell(){
-        return {x: randInt(0,cells-1), y: randInt(0,cells-1)};
-      }
+      let snake=null;
+      let dir={x:1,y:0};
+      let food=null;
+      let score=0;
+      let snakeTimer=null;
+      let snakeOver=true;
 
+      function randCell(){ return {x:randInt(0,cells-1), y:randInt(0,cells-1)}; }
       function snakeDraw(){
         sctx.clearRect(0,0,snakeCanvas.width,snakeCanvas.height);
-        sctx.fillStyle = wheelColors[2] || "#FF2BD6";
-        sctx.fillRect(food.x*cellSize, food.y*cellSize, cellSize, cellSize);
+        sctx.fillStyle=wheelColors[2]||"#FF2BD6";
+        sctx.fillRect(food.x*cellSize,food.y*cellSize,cellSize,cellSize);
         for(let i=0;i<snake.length;i++){
-          sctx.fillStyle = (i===0) ? (wheelColors[0] || "#00C3FF") : "rgba(255,255,255,.65)";
-          sctx.fillRect(snake[i].x*cellSize, snake[i].y*cellSize, cellSize-1, cellSize-1);
+          sctx.fillStyle=i===0?(wheelColors[0]||"#00C3FF"):"rgba(255,255,255,.65)";
+          sctx.fillRect(snake[i].x*cellSize,snake[i].y*cellSize,cellSize-1,cellSize-1);
         }
       }
-
       function snakeStop(){
         if(snakeTimer){ clearInterval(snakeTimer); snakeTimer=null; }
       }
-
       function snakeGameOver(){
-        snakeOver = true;
+        snakeOver=true;
         snakeStop();
-        snakeStatus.textContent = `Game Over. Score: ${score}`;
+        snakeStatus.textContent=`Game Over. Score: ${score} (Restart)`;
       }
-
       function snakeReset(){
-        snake = [{x:10,y:10},{x:9,y:10},{x:8,y:10}];
-        dir = {x:1,y:0};
-        food = randCell();
-        score = 0;
-        snakeOver = false;
-        snakeStatus.textContent = `Score: 0`;
+        snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];
+        dir={x:1,y:0};
+        food=randCell();
+        score=0;
+        snakeOver=false;
+        snakeStatus.textContent="Score: 0";
         snakeDraw();
       }
-
-      function setDir(nx, ny){
+      function setDir(nx,ny){
         if(!snake || snakeOver) return;
-        if(nx === -dir.x && ny === -dir.y) return;
-        dir = {x:nx,y:ny};
+        if(nx===-dir.x && ny===-dir.y) return;
+        dir={x:nx,y:ny};
       }
-
       function snakeStep(){
         if(snakeOver) return;
-        const head = snake[0];
-        const next = {x: head.x + dir.x, y: head.y + dir.y};
-        if(next.x < 0 || next.y < 0 || next.x >= cells || next.y >= cells){ snakeGameOver(); return; }
-        for(const p of snake){
-          if(p.x === next.x && p.y === next.y){ snakeGameOver(); return; }
-        }
+        const head=snake[0];
+        const next={x:head.x+dir.x,y:head.y+dir.y};
+        if(next.x<0||next.y<0||next.x>=cells||next.y>=cells){ snakeGameOver(); return; }
+        for(const p of snake){ if(p.x===next.x&&p.y===next.y){ snakeGameOver(); return; } }
         snake.unshift(next);
-        if(next.x === food.x && next.y === food.y){
+        if(next.x===food.x && next.y===food.y){
           score++;
-          snakeStatus.textContent = `Score: ${score}`;
-          food = randCell();
+          snakeStatus.textContent=`Score: ${score}`;
+          food=randCell();
         }else{
           snake.pop();
         }
         snakeDraw();
       }
 
-      // ---------------- Buttons / overlays wiring ----------------
-      $("spin").addEventListener("click", spin);
-      $("removeWinner").addEventListener("click", removeLastWinner);
-      $("shuffle").addEventListener("click", shuffle);
-      $("resetWheel").addEventListener("click", resetWheel);
+      // Settings UI
+      function syncSettingsUI(){
+        $("spinVol").value=String(Math.round(settings.spinVol*100));
+        $("sadVol").value=String(Math.round(settings.sadVol*100));
+        $("spinDur").value=String(Math.round(settings.spinDur));
+        $("muteAll").checked=!!settings.muted;
+        $("spinVolLabel").textContent=`${$("spinVol").value}%`;
+        $("sadVolLabel").textContent=`${$("sadVol").value}%`;
+        $("spinDurLabel").textContent=`${$("spinDur").value}s`;
+      }
 
-      input.addEventListener("input", ()=>{
-        items = parseItems(input.value);
-        lastWinner = null;
-        $("removeWinner").disabled = true;
+      // Overlay handlers
+      const closeAll=()=>{
+        ["settingsOverlay","trophiesOverlay","linksOverlay","winnerOverlay","coinOverlay","guessOverlay","tttOverlay","snakeOverlay","chanceOverlay"]
+          .forEach(id=>closeOverlay($(id)));
+        snakeStop();
+        stopCoinAnim();
+        stopSpinLoop();
+      };
+
+      $("winnerX").onclick=closeWinnerOverlay;
+      $("winnerOverlay").onclick=(e)=>{ if(e.target===$("winnerOverlay")) closeWinnerOverlay(); };
+
+      $("settingsBtn").onclick=()=>{ syncSettingsUI(); openOverlay($("settingsOverlay")); };
+      $("settingsX").onclick=()=>closeOverlay($("settingsOverlay"));
+      $("settingsClose").onclick=()=>closeOverlay($("settingsOverlay"));
+      $("settingsOverlay").onclick=(e)=>{ if(e.target===$("settingsOverlay")) closeOverlay($("settingsOverlay")); };
+
+      $("trophiesBtn").onclick=()=>{ renderTrophies(); openOverlay($("trophiesOverlay")); };
+      $("trophiesX").onclick=()=>closeOverlay($("trophiesOverlay"));
+      $("trophiesClose").onclick=()=>closeOverlay($("trophiesOverlay"));
+      $("trophiesOverlay").onclick=(e)=>{ if(e.target===$("trophiesOverlay")) closeOverlay($("trophiesOverlay")); };
+
+      $("linksBtn").onclick=()=>openOverlay($("linksOverlay"));
+      $("linksX").onclick=()=>closeOverlay($("linksOverlay"));
+      $("linksClose").onclick=()=>closeOverlay($("linksOverlay"));
+      $("linksOverlay").onclick=(e)=>{ if(e.target===$("linksOverlay")) closeOverlay($("linksOverlay")); };
+      $("openTikTok").onclick=()=>window.open(LINKS.tiktok,"_blank","noopener,noreferrer");
+      $("openInsta").onclick=()=>window.open(LINKS.insta,"_blank","noopener,noreferrer");
+      $("openTwitch").onclick=()=>window.open(LINKS.twitch,"_blank","noopener,noreferrer");
+
+      $("chanceBtn").onclick=openDoubleChance;
+      $("chanceX").onclick=()=>closeOverlay($("chanceOverlay"));
+      $("chanceClose").onclick=()=>closeOverlay($("chanceOverlay"));
+      $("chanceOverlay").onclick=(e)=>{ if(e.target===$("chanceOverlay")) closeOverlay($("chanceOverlay")); };
+      $("chanceConfirm").onclick=confirmDoubleChance;
+
+      $("miniCoin").onclick=openCoinflip;
+      $("coinX").onclick=closeCoin;
+      $("coinClose").onclick=closeCoin;
+      $("coinOverlay").onclick=(e)=>{ if(e.target===$("coinOverlay")) closeCoin(); };
+      $("coinStart").onclick=coinFlip;
+
+      $("miniGuess").onclick=()=>{ startGuess(); openOverlay(guessOverlay); };
+      $("guessX").onclick=()=>closeOverlay(guessOverlay);
+      $("guessClose").onclick=()=>closeOverlay(guessOverlay);
+      guessOverlay.onclick=(e)=>{ if(e.target===guessOverlay) closeOverlay(guessOverlay); };
+      $("guessNew").onclick=startGuess;
+
+      $("miniTtt").onclick=()=>{ tttReset(); openOverlay(tttOverlay); };
+      $("tttX").onclick=()=>closeOverlay(tttOverlay);
+      $("tttClose").onclick=()=>closeOverlay(tttOverlay);
+      tttOverlay.onclick=(e)=>{ if(e.target===tttOverlay) closeOverlay(tttOverlay); };
+      $("tttReset").onclick=tttReset;
+
+      $("miniSnake").onclick=()=>{ snakeReset(); openOverlay(snakeOverlay); };
+      $("snakeX").onclick=()=>{ snakeStop(); closeOverlay(snakeOverlay); };
+      $("snakeClose").onclick=()=>{ snakeStop(); closeOverlay(snakeOverlay); };
+      snakeOverlay.onclick=(e)=>{ if(e.target===snakeOverlay){ snakeStop(); closeOverlay(snakeOverlay); } };
+      $("snakeStart").onclick=()=>{
+        if(!snake || snakeOver) snakeReset();
+        if(snakeTimer) return;
+        snakeTimer=setInterval(snakeStep,120);
+      };
+      $("snakeRestart").onclick=()=>{
+        snakeReset();
+        snakeStop();
+        snakeTimer=setInterval(snakeStep,120);
+      };
+      $("snakeStop").onclick=snakeStop;
+
+      $("snUp").onclick=()=>setDir(0,-1);
+      $("snDown").onclick=()=>setDir(0,1);
+      $("snLeft").onclick=()=>setDir(-1,0);
+      $("snRight").onclick=()=>setDir(1,0);
+
+      $("tabHistory").onclick=()=>{
+        rightTab="history";
+        $("tabHistory").classList.add("active");
+        $("tabWins").classList.remove("active");
+        renderRightPanel();
+      };
+      $("tabWins").onclick=()=>{
+        rightTab="wins";
+        $("tabWins").classList.add("active");
+        $("tabHistory").classList.remove("active");
+        renderRightPanel();
+      };
+
+      $("streamResetBtn").onclick=resetStream;
+
+      $("spin").onclick=spin;
+      $("removeWinner").onclick=removeLastWinner;
+      $("shuffle").onclick=shuffle;
+      $("resetWheel").onclick=resetWheel;
+
+      $("winnerKeep").onclick=()=>{ closeWinnerOverlay(); showToast("Nudel bleibt"); };
+      $("winnerRemove").onclick=()=>{
+        if($("mode").value!=="remove"){ closeWinnerOverlay(); showToast("Modus: Nudel lassen"); return; }
+        removeLastWinner();
+        closeWinnerOverlay();
+      };
+
+      $("spinVol").oninput=()=>{
+        settings.spinVol=clamp(Number($("spinVol").value)/100,0,1);
+        settings.muted=false;
+        $("muteAll").checked=false;
+        $("spinVolLabel").textContent=`${$("spinVol").value}%`;
+        applyVolumes(); saveSettings();
+      };
+      $("sadVol").oninput=()=>{
+        settings.sadVol=clamp(Number($("sadVol").value)/100,0,1);
+        settings.muted=false;
+        $("muteAll").checked=false;
+        $("sadVolLabel").textContent=`${$("sadVol").value}%`;
+        applyVolumes(); saveSettings();
+      };
+      $("spinDur").oninput=()=>{
+        settings.spinDur=clamp(Number($("spinDur").value),1,60);
+        $("spinDurLabel").textContent=`${$("spinDur").value}s`;
+        saveSettings();
+      };
+      $("muteAll").onchange=()=>{
+        settings.muted=!!$("muteAll").checked;
+        applyVolumes(); saveSettings();
+      };
+
+      $("obsBtn").onclick=()=>{
+        const on=!document.body.classList.contains("obs-mode");
+        if(on) document.body.classList.add("obs-mode");
+        else document.body.classList.remove("obs-mode");
+        localStorage.setItem(OBS_KEY, on?"1":"0");
+        showToast(on?"OBS Transparent: AN":"OBS Transparent: AUS");
+      };
+      const obsSaved=localStorage.getItem(OBS_KEY)==="1";
+      if(obsSaved) document.body.classList.add("obs-mode");
+
+      $("items").addEventListener("input", ()=>{
+        localStorage.setItem(LS_ITEMS, input.value);
+        items=parseItems(input.value);
+        lastWinner=null;
+        $("removeWinner").disabled=true;
         syncCoinVisibility();
         renderNameChips();
         drawWheel();
       });
 
-      $("tabHistory").addEventListener("click", ()=>{
-        rightTab = "history";
-        $("tabHistory").classList.add("active");
-        $("tabWins").classList.remove("active");
-        renderRightPanel();
-      });
-      $("tabWins").addEventListener("click", ()=>{
-        rightTab = "wins";
-        $("tabWins").classList.add("active");
-        $("tabHistory").classList.remove("active");
-        renderRightPanel();
-      });
-      $("streamResetBtn").addEventListener("click", resetStream);
-
-      // Winner overlay buttons
-      $("winnerX").addEventListener("click", ()=>{ clearFake(); closeOverlay(winnerOverlay); });
-      winnerOverlay.addEventListener("click",(e)=>{ if(e.target===winnerOverlay){ clearFake(); closeOverlay(winnerOverlay); } });
-
-      $("winnerKeep").addEventListener("click", ()=>{
-        clearFake();
-        closeOverlay(winnerOverlay);
-        showToast("Nudel bleibt");
-      });
-
-      $("winnerRemove").addEventListener("click", ()=>{
-        if(pendingRealWinner){ showToast("Warte…"); return; }
-        const name = normalizeName(winnerNameEl.textContent || "");
-        if(!name) return;
-        if($("mode").value !== "remove"){
-          showToast("Modus: Nudel lassen");
-          closeOverlay(winnerOverlay);
-          return;
-        }
-        playSad();
-        const ok = removeByName(name);
-        if(ok){
-          stream.removes = (stream.removes || 0) + 1;
-          trophiesState.progress.removes = (trophiesState.progress.removes || 0) + 1;
-          checkTierUnlock(TROPHIES[1]);
-          saveTrophies();
-
-          addHistoryLine(`❌ entfernt: ${name}`);
-          renderRightPanel();
-
-          lastWinner = null;
-          $("removeWinner").disabled = true;
-          closeOverlay(winnerOverlay);
-
-          if(items.length === 2){
-            trophiesState.progress.finals = (trophiesState.progress.finals || 0) + 1;
-            checkTierUnlock(TROPHIES[2]);
-            saveTrophies();
-            addHistoryLine(`⚔️ Finale (2 übrig)`);
-            renderRightPanel();
-          }
-          if(items.length === 1){
-            trophiesState.progress.runs = (trophiesState.progress.runs || 0) + 1;
-            checkTierUnlock(TROPHIES[3]);
-            saveTrophies();
-            addHistoryLine(`🏁 Letzter bleibt: ${items[0]}`);
-            renderRightPanel();
-          }
-        }
-      });
-
-      // Links overlay
-      $("linksBtn").addEventListener("click", ()=>openOverlay($("linksOverlay")));
-      $("linksX").addEventListener("click", ()=>closeOverlay($("linksOverlay")));
-      $("linksClose").addEventListener("click", ()=>closeOverlay($("linksOverlay")));
-      $("linksOverlay").addEventListener("click",(e)=>{ if(e.target===$("linksOverlay")) closeOverlay($("linksOverlay")); });
-      $("openTikTok").addEventListener("click", ()=>window.open(LINKS.tiktok,"_blank"));
-      $("openInsta").addEventListener("click", ()=>window.open(LINKS.insta,"_blank"));
-      $("openTwitch").addEventListener("click", ()=>window.open(LINKS.twitch,"_blank"));
-
-      // Settings overlay
-      $("settingsBtn").addEventListener("click", ()=>{ syncSettingsUI(); openOverlay($("settingsOverlay")); });
-      $("settingsX").addEventListener("click", ()=>closeOverlay($("settingsOverlay")));
-      $("settingsClose").addEventListener("click", ()=>closeOverlay($("settingsOverlay")));
-      $("settingsOverlay").addEventListener("click",(e)=>{ if(e.target===$("settingsOverlay")) closeOverlay($("settingsOverlay")); });
-
-      $("spinVol").addEventListener("input", ()=>{
-        settings.spinVol = clamp(Number($("spinVol").value)/100, 0, 1);
-        settings.muted = false;
-        $("muteAll").checked = false;
-        $("spinVolLabel").textContent = `${$("spinVol").value}%`;
-        applyVolumes(); saveSettings();
-      });
-      $("sadVol").addEventListener("input", ()=>{
-        settings.sadVol = clamp(Number($("sadVol").value)/100, 0, 1);
-        settings.muted = false;
-        $("muteAll").checked = false;
-        $("sadVolLabel").textContent = `${$("sadVol").value}%`;
-        applyVolumes(); saveSettings();
-      });
-      $("spinDur").addEventListener("input", ()=>{
-        settings.spinDur = clamp(Number($("spinDur").value), 1, 60);
-        $("spinDurLabel").textContent = `${$("spinDur").value}s`;
-        saveSettings();
-      });
-      $("muteAll").addEventListener("change", ()=>{
-        settings.muted = $("muteAll").checked;
-        applyVolumes(); saveSettings();
-      });
-
-      // Design overlay
-      $("designBtn").addEventListener("click", ()=>{
-        binds.bg.setUI(theme.bgBase);
-        binds.txt.setUI(theme.text);
-        binds.g1.setUI(theme.bgGlow1);
-        binds.g2.setUI(theme.bgGlow2);
-        binds.b1.setUI(theme.btn1);
-        binds.b2.setUI(theme.btn2);
-        binds.nb.setUI(theme.nameBox);
-        binds.nbo.setUI(theme.nameBorder);
-
-        paletteSize = clamp(theme.wheel.length, 2, 12);
-        paletteActive = 0;
-        renderPalette();
-        openOverlay($("designOverlay"));
-      });
-      $("designX").addEventListener("click", ()=>closeOverlay($("designOverlay")));
-      $("designClose").addEventListener("click", ()=>closeOverlay($("designOverlay")));
-      $("designOverlay").addEventListener("click",(e)=>{ if(e.target===$("designOverlay")) closeOverlay($("designOverlay")); });
-
-      $("presetApply").addEventListener("click", ()=>{
-        const key = $("presetSelect").value;
-        const p = PRESETS[key] || PRESETS.default;
-        theme = {
-          bgBase:p.bgBase, bgGlow1:p.bgGlow1, bgGlow2:p.bgGlow2, text:p.text,
-          btn1:p.btn1, btn2:p.btn2,
-          nameBox:p.nameBox, nameBorder:p.nameBorder,
-          wheel:p.wheel.slice()
-        };
-        saveTheme();
-        applyTheme();
-        renderPalette();
-        showToast("Preset angewendet");
-      });
-
-      $("designReset").addEventListener("click", ()=>{
-        theme = JSON.parse(JSON.stringify(PRESETS.default));
-        saveTheme();
-        applyTheme();
-        renderPalette();
-        showToast("Design zurückgesetzt");
-      });
-
-      $("palPick").addEventListener("input", ()=> setPaletteColor(paletteActive, $("palPick").value));
-      $("palHex").addEventListener("input", ()=> setPaletteColor(paletteActive, $("palHex").value));
-      $("palDelete").addEventListener("click", ()=>{
-        const fallback = PRESETS.default.wheel[paletteActive % PRESETS.default.wheel.length];
-        setPaletteColor(paletteActive, fallback);
-      });
-
-      $("pal5").addEventListener("click", ()=>ensurePaletteSize(5));
-      $("pal8").addEventListener("click", ()=>ensurePaletteSize(8));
-      $("pal12").addEventListener("click", ()=>ensurePaletteSize(12));
-
-      $("palBulkApply").addEventListener("click", ()=>{
-        const list = parseHexList($("palBulk").value);
-        if(list.length < 2){
-          showToast("Mindestens 2 gültige Hex-Codes");
-          return;
-        }
-        theme.wheel = list.slice(0,12);
-        saveTheme();
-        applyTheme();
-        paletteSize = clamp(theme.wheel.length, 2, 12);
-        paletteActive = 0;
-        renderPalette();
-        showToast("Palette übernommen");
-      });
-
-      // Trophies overlay
-      $("trophiesBtn").addEventListener("click", ()=>{
-        renderTrophies();
-        openOverlay($("trophiesOverlay"));
-      });
-      $("trophiesX").addEventListener("click", ()=>closeOverlay($("trophiesOverlay")));
-      $("trophiesClose").addEventListener("click", ()=>closeOverlay($("trophiesOverlay")));
-      $("trophiesOverlay").addEventListener("click",(e)=>{ if(e.target===$("trophiesOverlay")) closeOverlay($("trophiesOverlay")); });
-
-      // Minigames
-      $("miniCoin").addEventListener("click", openCoinflip);
-      $("coinX").addEventListener("click", closeCoin);
-      $("coinClose").addEventListener("click", closeCoin);
-      $("coinOverlay").addEventListener("click",(e)=>{ if(e.target===$("coinOverlay")) closeCoin(); });
-      $("coinStart").addEventListener("click", coinFlip);
-
-      $("miniGuess").addEventListener("click", ()=>{ startGuess(); openOverlay(guessOverlay); });
-      $("guessX").addEventListener("click", ()=>closeOverlay(guessOverlay));
-      $("guessClose").addEventListener("click", ()=>closeOverlay(guessOverlay));
-      guessOverlay.addEventListener("click",(e)=>{ if(e.target===guessOverlay) closeOverlay(guessOverlay); });
-      $("guessNew").addEventListener("click", startGuess);
-
-      $("miniTtt").addEventListener("click", ()=>{ tttReset(); openOverlay(tttOverlay); });
-      $("tttX").addEventListener("click", ()=>closeOverlay(tttOverlay));
-      $("tttClose").addEventListener("click", ()=>closeOverlay(tttOverlay));
-      tttOverlay.addEventListener("click",(e)=>{ if(e.target===tttOverlay) closeOverlay(tttOverlay); });
-      $("tttReset").addEventListener("click", tttReset);
-
-      $("miniSnake").addEventListener("click", ()=>{ snakeReset(); openOverlay(snakeOverlay); });
-      $("snakeX").addEventListener("click", ()=>{ snakeStop(); closeOverlay(snakeOverlay); });
-      $("snakeClose").addEventListener("click", ()=>{ snakeStop(); closeOverlay(snakeOverlay); });
-      snakeOverlay.addEventListener("click",(e)=>{ if(e.target===snakeOverlay){ snakeStop(); closeOverlay(snakeOverlay); } });
-
-      $("snakeStart").addEventListener("click", ()=>{
-        if(!snake || snakeOver) snakeReset();
-        if(snakeTimer) return;
-        snakeTimer = setInterval(snakeStep, 120);
-      });
-      $("snakeRestart").addEventListener("click", ()=>{
-        snakeReset();
-        snakeStop();
-        snakeTimer = setInterval(snakeStep, 120);
-      });
-      $("snakeStop").addEventListener("click", snakeStop);
-
-      $("snUp").addEventListener("click", ()=>setDir(0,-1));
-      $("snDown").addEventListener("click", ()=>setDir(0,1));
-      $("snLeft").addEventListener("click", ()=>setDir(-1,0));
-      $("snRight").addEventListener("click", ()=>setDir(1,0));
-
       document.addEventListener("keydown",(e)=>{
-        if(e.key === "Escape"){
-          ["linksOverlay","settingsOverlay","designOverlay","trophiesOverlay","winnerOverlay","coinOverlay","guessOverlay","tttOverlay","snakeOverlay","chanceOverlay"]
-            .forEach(id => closeOverlay($(id)));
-          snakeStop();
-          stopCoinAnim();
-          clearFake();
+        if(e.key==="Escape") closeAll();
+
+        if(e.code==="Space"){
+          const el=document.activeElement;
+          const typing=el && (el.tagName==="TEXTAREA" || el.tagName==="INPUT");
+          if(!typing){
+            e.preventDefault();
+            $("spin").click();
+          }
         }
 
-        if($("snakeOverlay").style.display === "grid"){
+        if(e.key==="Enter" && winnerOverlay.style.display==="grid"){
+          e.preventDefault();
+          if($("mode").value==="remove") $("winnerRemove").click();
+          else $("winnerKeep").click();
+        }
+
+        if(snakeOverlay.style.display==="grid"){
           if(e.key==="ArrowUp"||e.key==="w") setDir(0,-1);
           if(e.key==="ArrowDown"||e.key==="s") setDir(0,1);
           if(e.key==="ArrowLeft"||e.key==="a") setDir(-1,0);
@@ -2692,44 +2029,18 @@ test3</textarea>
         }
       });
 
-      // Chance overlay (simple)
-      $("chanceBtn").addEventListener("click", openDoubleChance);
-      $("chanceX").addEventListener("click", ()=>closeOverlay($("chanceOverlay")));
-      $("chanceClose").addEventListener("click", ()=>closeOverlay($("chanceOverlay")));
-      $("chanceOverlay").addEventListener("click",(e)=>{ if(e.target===$("chanceOverlay")) closeOverlay($("chanceOverlay")); });
-      $("chanceConfirm").addEventListener("click", confirmDoubleChance);
-
-      // ---------------- Init ----------------
-      applyTheme();
-
-      items = parseItems(input.value);
+      // Init
+      items=parseItems(input.value);
       syncCoinVisibility();
       renderNameChips();
       drawWheel();
-
-      syncSettingsUI();
-      saveSettings();
-
       renderRightPanel();
       renderStreakTop();
-
+      syncSettingsUI();
+      applyVolumes();
+      saveSettings();
       renderTrophies();
       saveTrophies();
-
-      // Buttons in UI
-      function removeLastWinner(){
-        removeLastWinner(); // placeholder to avoid accidental redeclare
-      }
-
-      // Fix for naming collision: above we used removeLastWinner name for button binding; keep actual handler:
-      function removeLastWinnerHandler(){
-        removeLastWinnerReal();
-      }
-      // But we already bound removeLastWinner earlier, so we keep the real function name:
-      function removeLastWinnerReal(){}
-
-      // The actual handler we used is removeLastWinner() defined earlier, so we are done.
-
     })();
   </script>
 </body>
