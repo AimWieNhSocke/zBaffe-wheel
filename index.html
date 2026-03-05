@@ -35,8 +35,6 @@
         radial-gradient(900px 600px at 18% 70%, rgba(0,195,255,.14), transparent 58%),
         var(--bgBase);
     }
-    body.obs-mode{ background: transparent !important; }
-    body.obs-mode .overlay{ background: rgba(0,0,0,.62); }
 
     #confetti{
       position:fixed; inset:0;
@@ -420,48 +418,36 @@
     .winnerPulse{ animation: pulseGlow 1.05s ease-in-out infinite; }
     @keyframes pulseGlow{ 0%{transform:scale(1)} 50%{transform:scale(1.03)} 100%{transform:scale(1)} }
 
-    .rangeRow{
-      display:grid; gap:6px;
-      text-align:left;
-      width:min(560px, 92vw);
-      margin: 0 auto;
-    }
-    input[type="range"]{ width:100%; }
-
-    .coinWrap{ display:grid; place-items:center; gap: 12px; margin-top: 8px; }
+    .coinWrap{ display:grid; gap: 14px; place-items:center; }
     .coinStage{ perspective: 1000px; width: 240px; height: 240px; }
     .coin{
       width: 240px; height: 240px;
-      position: relative;
       transform-style: preserve-3d;
       border-radius: 999px;
       transform: rotateY(0deg);
+      position: relative;
     }
     .coinFace{
-      position:absolute; inset:0;
+      position:absolute;
+      inset:0;
       border-radius: 999px;
-      display:grid; place-items:center;
+      display:grid;
+      place-items:center;
       padding: 18px;
-      box-sizing: border-box;
-      border: 1px solid rgba(255,255,255,.18);
+      box-sizing:border-box;
+      border:1px solid rgba(255,255,255,.18);
       background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.22), rgba(255,255,255,.06));
-      box-shadow: 0 0 18px rgba(0,195,255,.14), 0 0 24px rgba(106,92,255,.12);
-      backface-visibility: hidden;
-      overflow:hidden;
+      box-shadow:0 0 18px rgba(0,195,255,.14), 0 0 24px rgba(106,92,255,.12);
+      backface-visibility:hidden;
       text-align:center;
     }
-    .coinFace strong{ font-size: 14px; letter-spacing: .3px; opacity:.9; }
     .coinFace .name{
       margin-top: 8px;
       line-height: 1.05;
-      width: 200px;
-      max-height: 110px;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
       word-break: break-word;
-      overflow-wrap: anywhere;
+      overflow-wrap:anywhere;
+      font-weight: 1200;
+      opacity:.95;
     }
     .coinFace.tails{ transform: rotateY(180deg); }
     .coinResult{ font-weight: 1300; font-size: 18px; opacity:.95; min-height: 22px; }
@@ -514,10 +500,20 @@
       background: rgba(0,0,0,.25);
       box-shadow: 0 0 18px rgba(0,195,255,.10);
     }
-    .snakeControls{ display:grid; gap:8px; justify-items:center; margin-top:4px; }
-    .snakeRow{ display:flex; gap:8px; justify-content:center; }
+    .snakeControls{
+      display:grid;
+      gap: 8px;
+      justify-items:center;
+      margin-top: 4px;
+    }
+    .snakeRow{
+      display:flex;
+      gap: 8px;
+      justify-content:center;
+    }
     .snakeBtn{
-      width: 54px; height: 46px;
+      width: 54px;
+      height: 46px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.16);
       background: rgba(255,255,255,.08);
@@ -561,8 +557,80 @@
       white-space:nowrap;
     }
 
+    /* Design (ersetzt OBS) */
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      max-width: 860px;
+      margin: 12px auto 0 auto;
+      text-align:left;
+    }
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+    }
+    .row .lbl{ font-weight: 1200; opacity:.92; }
+    .picker{ display:flex; align-items:center; gap: 10px; }
+    input[type="color"]{
+      width: 56px;
+      height: 34px;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+    }
+    input.hex{
+      width: 120px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.20);
+      color:#fff;
+      font-weight: 1100;
+      outline:none;
+    }
+    .paletteGrid{
+      display:grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+      max-width: 860px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+    .swatch{
+      height: 48px;
+      border-radius: 14px;
+      border: 2px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      cursor:pointer;
+      box-shadow: 0 0 14px rgba(0,195,255,.06);
+      position: relative;
+      overflow:hidden;
+    }
+    .swatch.active{
+      border-color: rgba(0,195,255,.55);
+      box-shadow: 0 0 18px rgba(0,195,255,.16);
+    }
+    .swatch span{
+      position:absolute;
+      left: 10px;
+      bottom: 8px;
+      font-size: 11px;
+      font-weight: 1300;
+      opacity:.92;
+      text-shadow: 0 2px 8px rgba(0,0,0,.55);
+    }
+
     @media (max-width: 1040px){
-      .page{ grid-template-columns: 1fr; grid-template-rows: auto auto auto auto auto auto; }
+      .page{ grid-template-columns: 1fr; grid-template-rows: auto auto auto auto auto auto auto; }
       .titleBlock{ grid-column:1; grid-row:1; }
       .controlsTop{ grid-column:1; grid-row:2; }
       .leftCol{ grid-column:1; grid-row:3; }
@@ -571,6 +639,8 @@
       .btnRow{ grid-column:1; grid-row:6; }
       .namesBlock{ grid-column:1; grid-row:7; }
       .trophyGrid{ grid-template-columns: 1fr; }
+      .paletteGrid{ grid-template-columns: repeat(3, 1fr); }
+      .grid2{ grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -617,6 +687,67 @@
 
       <div class="boxActions">
         <button class="action secondary" id="settingsClose">Schließen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="designOverlay">
+    <div class="box">
+      <button class="closeX" id="designX">×</button>
+      <h2>Design</h2>
+
+      <div style="max-width:860px;margin:0 auto;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;">
+        <select id="presetSelect">
+          <option value="default">Preset: Lila/Blau</option>
+          <option value="neon">Preset: Neon Pink</option>
+          <option value="emerald">Preset: Emerald</option>
+          <option value="sunset">Preset: Sunset</option>
+          <option value="mono">Preset: Mono Dark</option>
+        </select>
+        <button class="action secondary" id="presetApply">Preset anwenden</button>
+        <button class="action secondary" id="designReset">Zurücksetzen</button>
+      </div>
+
+      <div class="grid2">
+        <div class="row"><div class="lbl">Background</div><div class="picker"><input id="bgPick" type="color"><input id="bgHex" class="hex" type="text" spellcheck="false"></div></div>
+        <div class="row"><div class="lbl">Text</div><div class="picker"><input id="txtPick" type="color"><input id="txtHex" class="hex" type="text" spellcheck="false"></div></div>
+        <div class="row"><div class="lbl">Glow 1</div><div class="picker"><input id="g1Pick" type="color"><input id="g1Hex" class="hex" type="text" spellcheck="false"></div></div>
+        <div class="row"><div class="lbl">Glow 2</div><div class="picker"><input id="g2Pick" type="color"><input id="g2Hex" class="hex" type="text" spellcheck="false"></div></div>
+        <div class="row"><div class="lbl">Button 1</div><div class="picker"><input id="b1Pick" type="color"><input id="b1Hex" class="hex" type="text" spellcheck="false"></div></div>
+        <div class="row"><div class="lbl">Button 2</div><div class="picker"><input id="b2Pick" type="color"><input id="b2Hex" class="hex" type="text" spellcheck="false"></div></div>
+        <div class="row"><div class="lbl">Name Box</div><div class="picker"><input id="nbPick" type="color"><input id="nbHex" class="hex" type="text" spellcheck="false"></div></div>
+        <div class="row"><div class="lbl">Name Border</div><div class="picker"><input id="nboPick" type="color"><input id="nboHex" class="hex" type="text" spellcheck="false"></div></div>
+      </div>
+
+      <div style="max-width:860px;margin:16px auto 0 auto;text-align:left;">
+        <div style="font-weight:1300;opacity:.95;">Rad Palette (Slots anklicken)</div>
+        <div class="paletteGrid" id="paletteGrid"></div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:12px;">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <div style="font-weight:1200;opacity:.92;">Auswahl</div>
+            <input id="palPick" type="color">
+            <input id="palHex" class="hex" type="text" spellcheck="false" style="width:140px;">
+            <button class="action secondary" id="palDelete">Slot zurücksetzen</button>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <button class="action secondary" id="pal5">5 Slots</button>
+            <button class="action secondary" id="pal8">8 Slots</button>
+            <button class="action secondary" id="pal12">12 Slots</button>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <div style="font-weight:1200;opacity:.92;margin-bottom:6px;">Hex-Liste einfügen (Komma/Leerzeichen/Zeilenumbruch)</div>
+          <textarea id="palBulk" placeholder="#00C3FF #6A5CFF #FF2BD6 ..."></textarea>
+          <div class="boxActions" style="justify-content:flex-start;margin-top:10px;">
+            <button class="action secondary" id="palBulkApply">Palette übernehmen</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="boxActions">
+        <button class="action secondary" id="designClose">Schließen</button>
       </div>
     </div>
   </div>
@@ -779,7 +910,7 @@
       <button class="chipBtn" id="linksBtn">Links</button>
       <button class="chipBtn" id="trophiesBtn">Trophys</button>
       <button class="chipBtn" id="settingsBtn">Einstellungen</button>
-      <button class="chipBtn" id="obsBtn">OBS Transparent</button>
+      <button class="chipBtn" id="designBtn">Design</button>
     </div>
 
     <div class="leftCol">
@@ -881,36 +1012,44 @@ test3</textarea>
       const STREAM_KEY="wheel_stream_v3";
       const ALLTIME_KEY="wheel_alltime_v3";
       const SETTINGS_KEY="wheel_settings_v3";
-      const OBS_KEY="wheel_obs_v3";
       const TROPHY_KEY="wheel_trophies_v3";
 
       function safeJsonParse(s, fb){ try{return JSON.parse(s);}catch{return fb;} }
       function normalizeName(s){ return String(s||"").replace(/\s+/g," ").trim(); }
-      function nameKey(s){ return normalizeName(s).toLowerCase(); }
+      function expandLineSmart(line){
+  const raw = normalizeName(line);
+  if(!raw) return [];
+  const m = raw.match(/^(.*?)(?:\s*(?:x|×|\*)\s*(\d+)|\s+(\d+)\s*(?:x|×))$/i);
+  if(!m) return [raw];
+  const base = normalizeName(m[1]);
+  const num = Number(m[2]||m[3]||1);
+  const n = Math.max(1, Math.min(50, isFinite(num)?num:1));
+  if(!base) return [raw];
+  return Array.from({length:n}, ()=>base);
+}
+
+function parseItems(text){
+  const lines = String(text||"").split(/\r?\n/);
+  const out = [];
+  for(const ln of lines){
+    for(const e of expandLineSmart(ln)){
+      const v = normalizeName(e);
+      if(v) out.push(v);
+    }
+  }
+  return out;
+}
+	function nameKey(s){ return normalizeName(s).toLowerCase(); }
       function objEntriesSortedDesc(o){ return Object.entries(o||{}).sort((a,b)=>(b[1]||0)-(a[1]||0)); }
 
-      // Smart Paste: "Name x2" / "Name 2x" / "Name ×3"
-      function expandLineSmart(line){
-        const raw = normalizeName(line);
-        if(!raw) return [];
-        const m = raw.match(/^(.*?)(?:\s*(?:x|×|\*)\s*(\d+)|\s+(\d+)\s*(?:x|×))$/i);
-        if(!m) return [raw];
-        const base = normalizeName(m[1]);
-        const num = Number(m[2]||m[3]||1);
-        const n = Math.max(1, Math.min(50, isFinite(num)?num:1));
-        if(!base) return [raw];
-        return Array.from({length:n}, ()=>base);
-      }
-      function parseItems(text){
-        const lines=String(text||"").split(/\r?\n/);
-        const out=[];
-        for(const ln of lines){
-          for(const e of expandLineSmart(ln)){
-            const v=normalizeName(e);
-            if(v) out.push(v);
-          }
-        }
-        return out;
+      function closeAll(){
+        [
+          "settingsOverlay","designOverlay","trophiesOverlay","linksOverlay","winnerOverlay",
+          "chanceOverlay","coinOverlay","guessOverlay","tttOverlay","snakeOverlay"
+        ].forEach(id=>closeOverlay($(id)));
+        snakeStop();
+        stopCoinAnim();
+        stopSpinLoop();
       }
 
       // Confetti
@@ -986,7 +1125,7 @@ test3</textarea>
         const sadV  = settings.muted ? 0 : clamp(settings.sadVol,0,1);
         if(spinSfx) spinSfx.volume=spinV;
         if(sadSfx) sadSfx.volume=sadV;
-        if(lkSfx) lkSfx.volume=sadV;
+        if(lkSfx)  lkSfx.volume=clamp(Math.max(spinV, sadV),0,1);
       }
 
       function tryLoadAudio(url){
@@ -1009,16 +1148,9 @@ test3</textarea>
       async function initSounds(){
         if(soundInit) return;
         soundInit=true;
-
-        spinSfx = await tryLoadAudio(SOUND_FILES.spin);
-        spinOk = !!spinSfx;
-
-        sadSfx = await tryLoadAudio(SOUND_FILES.sad);
-        sadOk = !!sadSfx;
-
-        lkSfx = await tryLoadAudio(SOUND_FILES.lk);
-        lkOk = !!lkSfx;
-
+        spinSfx = await tryLoadAudio(SOUND_FILES.spin); spinOk = !!spinSfx;
+        sadSfx  = await tryLoadAudio(SOUND_FILES.sad);  sadOk  = !!sadSfx;
+        lkSfx   = await tryLoadAudio(SOUND_FILES.lk);   lkOk   = !!lkSfx;
         applyVolumes();
       }
 
@@ -1030,15 +1162,9 @@ test3</textarea>
       }
 
       function playSpinLoop(){
-        initSounds();
-        applyVolumes();
+        initSounds(); applyVolumes();
         if(spinOk && spinSfx){
-          try{
-            spinSfx.pause();
-            spinSfx.currentTime=0;
-            spinSfx.loop=true;
-            safePlay(spinSfx);
-          }catch{}
+          try{ spinSfx.pause(); spinSfx.currentTime=0; spinSfx.loop=true; safePlay(spinSfx); }catch{}
         }
       }
       function stopSpinLoop(){
@@ -1047,154 +1173,169 @@ test3</textarea>
         }
       }
       function playSad(){
-        initSounds();
-        applyVolumes();
+        initSounds(); applyVolumes();
         if(sadOk && sadSfx){
           try{ sadSfx.pause(); sadSfx.currentTime=0; safePlay(sadSfx); }catch{}
         }
       }
-      function playLK(){
-        initSounds();
-        applyVolumes();
+      function playLk(){
+        initSounds(); applyVolumes();
         if(lkOk && lkSfx){
           try{ lkSfx.pause(); lkSfx.currentTime=0; safePlay(lkSfx); }catch{}
         }
       }
 
-      // Stream + AllTime
-      let stream = safeJsonParse(localStorage.getItem(STREAM_KEY), null) || { wins:{}, history:[], currentStreakName:"", currentStreakCount:0, spins:0, removes:0 };
-      let alltime = safeJsonParse(localStorage.getItem(ALLTIME_KEY), null) || { bestStreak:{}, displayNames:{} };
-
+      // ---------------- Stream data ----------------
+      let stream = safeJsonParse(localStorage.getItem(STREAM_KEY), null) || { wins:{}, history:[], spins:0, removes:0 };
       function saveStream(){ try{ localStorage.setItem(STREAM_KEY, JSON.stringify(stream)); }catch{} }
-      function saveAlltime(){ try{ localStorage.setItem(ALLTIME_KEY, JSON.stringify(alltime)); }catch{} }
-
-      function setDisplayName(name){
-        const d=normalizeName(name);
-        const k=nameKey(d);
-        if(!k) return;
-        if(!alltime.displayNames[k]) alltime.displayNames[k]=d;
-      }
-      function incStreamWin(name){
-        const d=normalizeName(name);
-        const k=nameKey(d);
-        if(!k) return;
-        setDisplayName(d);
-        stream.wins[k]=(stream.wins[k]||0)+1;
-        saveStream();
-      }
-      function updateStreamStreak(name){
-        const d=normalizeName(name);
-        const k=nameKey(d);
-        if(!k) return;
-        setDisplayName(d);
-
-        if(stream.currentStreakName===k) stream.currentStreakCount=(stream.currentStreakCount||0)+1;
-        else{ stream.currentStreakName=k; stream.currentStreakCount=1; }
-        saveStream();
-
-        const best=alltime.bestStreak[k]||0;
-        if(stream.currentStreakCount>best){
-          alltime.bestStreak[k]=stream.currentStreakCount;
-          saveAlltime();
-          showToast(`Neuer Rekord: ${alltime.displayNames[k]} ${stream.currentStreakCount}x`);
-          startConfetti(1400, 2.0);
-        }
-      }
       function addHistoryLine(text){
         stream.history.unshift(text);
-        if(stream.history.length>20) stream.history.length=20;
+        if(stream.history.length>30) stream.history.length=30;
         saveStream();
       }
       function resetStream(){
-        stream={ wins:{}, history:[], currentStreakName:"", currentStreakCount:0, spins:0, removes:0 };
+        stream={ wins:{}, history:[], spins:0, removes:0 };
         saveStream();
         renderRightPanel();
-        renderStreakTop();
-        showToast("Stream zurückgesetzt");
+        showToast("Stream reset");
+      }
+      function incWin(name){
+        const k=nameKey(name);
+        stream.wins[k]=(stream.wins[k]||0)+1;
+        saveStream();
       }
 
-      // Trophies (basic tiers)
-      const TIERS=["Bronze","Silber","Gold","Platin"];
-      const TROPHIES=[
-        {id:"spins", title:"Spins", desc:"Drehe das Rad.", thresholds:[1,50,100,500], key:"spins"},
-        {id:"removes", title:"Nudel entfernen", desc:"Entferne Gewinner.", thresholds:[1,25,75,250], key:"removes"},
-        {id:"finals", title:"Finale", desc:"Auf 2 Teilnehmer runter.", thresholds:[1,10,25,100], key:"finals"},
-        {id:"runs", title:"Der Letzte bleibt", desc:"Auf 1 Teilnehmer runter.", thresholds:[1,5,15,50], key:"runs"},
-        {id:"double", title:"Doppelte Chance", desc:"Doppelte Chance nutzen.", thresholds:[1,10,25,100], key:"doubleChance"},
-        {id:"shuffle", title:"Mischen", desc:"Shuffle nutzen.", thresholds:[1,10,25,100], key:"shuffles"},
-        {id:"plot", title:"Plot Twist Survivor", desc:"Fake-Winner ist passiert.", special:true}
+      // ---------------- Streak system ----------------
+      let alltime = safeJsonParse(localStorage.getItem(ALLTIME_KEY), null) || { top:{}, current:{name:"", len:0} };
+      function saveAlltime(){ try{ localStorage.setItem(ALLTIME_KEY, JSON.stringify(alltime)); }catch{} }
+
+      function updateStreak(winner){
+        const w = normalizeName(winner);
+        if(!w) return;
+
+        if(alltime.current.name && nameKey(alltime.current.name)===nameKey(w)){
+          alltime.current.len = (alltime.current.len||0)+1;
+        }else{
+          if(alltime.current.name){
+            const key = nameKey(alltime.current.name);
+            alltime.top[key] = Math.max(alltime.top[key]||0, alltime.current.len||0);
+          }
+          alltime.current.name = w;
+          alltime.current.len = 1;
+        }
+        saveAlltime();
+      }
+
+      function renderStreakTop(){
+      alltime = alltime || {};
+alltime.current = alltime.current || { name:"", len:0 };
+alltime.top = alltime.top || {};
+	  const list = $("streakTopList");
+        list.innerHTML = "";
+        const entries = objEntriesSortedDesc(alltime.top).slice(0,5);
+
+        $("currentStreakLabel").textContent = alltime.current.name
+          ? `Aktuell: ${alltime.current.name} (${alltime.current.len})`
+          : "Aktuell: —";
+
+        if(!entries.length){
+          const d=document.createElement("div");
+          d.className="small";
+          d.textContent="Noch keine Streaks.";
+          list.appendChild(d);
+          return;
+        }
+
+        for(const [k,v] of entries){
+          const row=document.createElement("div");
+          row.className="listItem";
+          row.innerHTML=`<div class="name"></div><div class="val"></div>`;
+          row.querySelector(".name").textContent=k;
+          row.querySelector(".val").textContent=String(v);
+          list.appendChild(row);
+        }
+      }
+
+      // ---------------- Trophies ----------------
+      const TROPHIES_DEF = [
+        { id:"spin_1",    title:"Erster Dreh",        desc:"Drehe das Rad 1x",        kind:"spin",   target:1,   tier:"Bronze" },
+        { id:"spin_50",   title:"Dreh-Junkie",        desc:"Drehe das Rad 50x",       kind:"spin",   target:50,  tier:"Silber" },
+        { id:"spin_100",  title:"Drehmaschine",      desc:"Drehe das Rad 100x",      kind:"spin",   target:100, tier:"Gold" },
+        { id:"spin_500",  title:"Rad-Legende",       desc:"Drehe das Rad 500x",      kind:"spin",   target:500, tier:"Platin" },
+
+        { id:"rm_1",      title:"Erstes Entfernen",  desc:"Entferne 1 Name",         kind:"remove", target:1,   tier:"Bronze" },
+        { id:"rm_25",     title:"Aussortierer",      desc:"Entferne 25 Namen",       kind:"remove", target:25,  tier:"Silber" },
+        { id:"rm_60",     title:"Cleaner",           desc:"Entferne 60 Namen",       kind:"remove", target:60,  tier:"Gold" },
+
+        { id:"snake_10",  title:"Snake 10",          desc:"Erreiche 10 Punkte",      kind:"snake",  target:10,  tier:"Silber" },
+        { id:"ttt_win",   title:"TicTacToe Win",     desc:"Schlage die KI",          kind:"tttwin", target:1,   tier:"Gold" },
+        { id:"fake_surv", title:"Plot Twist",        desc:"Fake-Winner erlebt",      kind:"fake",   target:1,   tier:"Gold" }
       ];
 
       let trophies = safeJsonParse(localStorage.getItem(TROPHY_KEY), null) || {
-        progress:{ spins:0, removes:0, finals:0, runs:0, doubleChance:0, shuffles:0 },
+        prog:{ spin:0, remove:0, snake:0, tttwin:0, fake:0 },
         unlocked:{}
       };
+
       function saveTrophies(){ try{ localStorage.setItem(TROPHY_KEY, JSON.stringify(trophies)); }catch{} }
 
-      function tierFor(t){
-        if(t.special) return trophies.unlocked[t.id] ? "Legendär" : "Locked";
-        const v=trophies.progress[t.key]||0;
-        let tier=-1;
-        for(let i=0;i<t.thresholds.length;i++) if(v>=t.thresholds[i]) tier=i;
-        return tier;
-      }
-      function checkTierUnlock(t){
-        if(t.special) return;
-        const v=trophies.progress[t.key]||0;
-        let tier=-1;
-        for(let i=0;i<t.thresholds.length;i++) if(v>=t.thresholds[i]) tier=i;
-        if(tier<0) return;
-
-        const prev=trophies.unlocked[t.id];
-        if(prev===undefined || (typeof prev==="number" && tier>prev)){
-          trophies.unlocked[t.id]=tier;
-          saveTrophies();
-          showToast(`Trophy: ${t.title} ${TIERS[tier]}`);
-        }
-      }
-      function unlockSpecial(id, msg){
-        if(trophies.unlocked[id]) return;
-        trophies.unlocked[id]="special";
-        saveTrophies();
-        showToast(msg);
-      }
-      function renderTrophies(){
-        const grid=$("trophyGrid");
-        grid.innerHTML="";
-        for(const t of TROPHIES){
-          const div=document.createElement("div");
-          if(t.special){
-            const locked=!trophies.unlocked[t.id];
-            div.className="trophy"+(locked?" locked":"");
-            div.innerHTML=`<div class="h"><div>${t.title}</div><span class="badge">${locked?"Locked":"Legendär"}</span></div><div class="small">${t.desc}</div>`;
-          }else{
-            const tier=tierFor(t);
-            const v=trophies.progress[t.key]||0;
-            div.className="trophy"+(tier<0?" locked":"");
-            div.innerHTML=`<div class="h"><div>${t.title}</div><span class="badge">${tier>=0?TIERS[tier]:"Locked"}</span></div><div class="small">${t.desc}</div><div class="small">Fortschritt: ${v} / ${t.thresholds.join(" / ")}</div>`;
+      function bump(kind, n=1){
+     trophies = trophies || {};
+trophies.prog = trophies.prog || {};
+trophies.unlocked = trophies.unlocked || {};
+trophies.prog.spin = trophies.prog.spin || 0;
+trophies.prog.remove = trophies.prog.remove || 0;
+trophies.prog.snake = trophies.prog.snake || 0;
+trophies.prog.tttwin = trophies.prog.tttwin || 0;
+trophies.prog.fake = trophies.prog.fake || 0;
+	  trophies.prog[kind] = (trophies.prog[kind]||0) + n;
+        let gotAny=false;
+        for(const t of TROPHIES_DEF){
+          if(t.kind!==kind) continue;
+          if(trophies.unlocked[t.id]) continue;
+          if((trophies.prog[kind]||0) >= t.target){
+            trophies.unlocked[t.id] = Date.now();
+            gotAny=true;
+            showToast(`Trophäe: ${t.title}`);
           }
-          grid.appendChild(div);
+        }
+        saveTrophies();
+        return gotAny;
+      }
+
+      function renderTrophies(){
+        const grid = $("trophyGrid");
+        if(!grid) return;
+        grid.innerHTML="";
+        for(const t of TROPHIES_DEF){
+          const unlocked = !!trophies.unlocked[t.id];
+          const d=document.createElement("div");
+          d.className = "trophy" + (unlocked ? "" : " locked");
+          d.innerHTML = `
+            <div class="h">
+              <div>${t.title}</div>
+              <div class="badge">${t.tier}</div>
+            </div>
+            <div style="opacity:.9;font-weight:1100;">${t.desc}</div>
+            <div style="opacity:.8;font-size:12px;font-weight:1000;">
+              Fortschritt: ${(trophies.prog[t.kind]||0)}/${t.target}
+            </div>
+          `;
+          grid.appendChild(d);
         }
       }
 
-      // Wheel core
-      const canvas=$("wheel");
-      const ctx=$("wheel").getContext("2d");
-      const input=$("items");
+      // ---------------- Wheel core ----------------
+      const canvas = $("wheel");
+      const ctx = canvas.getContext("2d");
 
-      const savedItems=localStorage.getItem(LS_ITEMS);
-      if(savedItems && savedItems.trim()) input.value=savedItems;
+      const savedItems = localStorage.getItem(LS_ITEMS);
+      if(savedItems && savedItems.trim()) $("items").value = savedItems;
 
-      let items=[];
-      let angle=0;
-      let spinning=false;
-      let lastWinner=null;
-
-      function syncCoinVisibility(){
-        const now=parseItems(input.value);
-        if(now.length===2) $("miniCoin").classList.remove("hidden");
-        else $("miniCoin").classList.add("hidden");
-      }
+      let items = [];
+      let angle = 0;
+      let spinning = false;
+      let lastWinner = null;
 
       function fitCanvasText(text,maxPx,minPx,maxWidth){
         let size=maxPx;
@@ -1235,7 +1376,8 @@ test3</textarea>
         ctx.rotate(angle);
 
         for(let i=0;i<n;i++){
-          const start=i*slice, end=start+slice;
+          const start=i*slice;
+          const end=start+slice;
 
           ctx.beginPath();
           ctx.moveTo(0,0);
@@ -1283,8 +1425,14 @@ test3</textarea>
         return { idx, label: items[idx] ?? "—" };
       }
 
+      function syncCoinVisibility(){
+        const now=parseItems($("items").value);
+        if(now.length===2) $("miniCoin").classList.remove("hidden");
+        else $("miniCoin").classList.add("hidden");
+      }
+
       function renderNameChips(){
-        const now=parseItems(input.value);
+        const now=parseItems($("items").value);
         const wrap=$("nameChips");
         wrap.innerHTML="";
         for(const name of now){
@@ -1292,17 +1440,17 @@ test3</textarea>
           chip.className="chip";
           chip.innerHTML=`<div class="t"></div><button class="x" title="Löschen">×</button>`;
           chip.querySelector(".t").textContent=name;
-          chip.querySelector(".x").addEventListener("click", ()=>{
-            const next=parseItems(input.value).filter(n=>nameKey(n)!==nameKey(name));
-            input.value=next.join("\n");
-            localStorage.setItem(LS_ITEMS, input.value);
+          chip.querySelector(".x").onclick=()=>{
+            const next=parseItems($("items").value).filter(n=>nameKey(n)!==nameKey(name));
+            $("items").value=next.join("\n");
+            localStorage.setItem(LS_ITEMS, $("items").value);
             items=next;
             lastWinner=null;
             $("removeWinner").disabled=true;
             syncCoinVisibility();
             renderNameChips();
             drawWheel();
-          });
+          };
           wrap.appendChild(chip);
         }
       }
@@ -1312,8 +1460,8 @@ test3</textarea>
         const idx=items.findIndex(x=>nameKey(x)===k);
         if(idx===-1) return false;
         items.splice(idx,1);
-        input.value=items.join("\n");
-        localStorage.setItem(LS_ITEMS, input.value);
+        $("items").value=items.join("\n");
+        localStorage.setItem(LS_ITEMS, $("items").value);
         syncCoinVisibility();
         renderNameChips();
         drawWheel();
@@ -1325,43 +1473,47 @@ test3</textarea>
         $("removeWinner").disabled=!can;
       }
 
-      // Winner overlay: NEVER deletes automatically
+      // Winner overlay
       const winnerOverlay=$("winnerOverlay");
-      const winnerNameEl=$("winnerName");
-      const winnerSubEl=$("winnerSub");
-
       function openWinnerOverlay(name, sub){
-        winnerNameEl.textContent=name;
-        winnerSubEl.textContent=sub||"";
-        winnerNameEl.classList.add("winnerPulse");
+        $("winnerName").textContent=name;
+        $("winnerSub").textContent=sub||"";
+        $("winnerName").classList.add("winnerPulse");
         openOverlay(winnerOverlay);
       }
       function closeWinnerOverlay(){
-        winnerNameEl.classList.remove("winnerPulse");
+        $("winnerName").classList.remove("winnerPulse");
         closeOverlay(winnerOverlay);
       }
 
       // Right panel
       let rightTab="history";
+      $("tabHistory").onclick=()=>{
+        rightTab="history";
+        $("tabHistory").classList.add("active");
+        $("tabWins").classList.remove("active");
+        renderRightPanel();
+      };
+      $("tabWins").onclick=()=>{
+        rightTab="wins";
+        $("tabWins").classList.add("active");
+        $("tabHistory").classList.remove("active");
+        renderRightPanel();
+      };
+
       function renderRightPanel(){
-        const info=$("streamInfo");
+        $("streamInfo").textContent=`Spins: ${stream.spins||0} | Entfernt: ${stream.removes||0}`;
         const list=$("streamList");
-
-        const curName = stream.currentStreakName ? (alltime.displayNames[stream.currentStreakName] || stream.currentStreakName) : "—";
-        const curSt = stream.currentStreakCount || 0;
-        info.textContent = `Spins: ${stream.spins||0} | Entfernt: ${stream.removes||0} | Streak: ${curSt ? (curName+" "+curSt+"x") : "—"}`;
-
         list.innerHTML="";
         if(rightTab==="history"){
-          const arr=stream.history||[];
-          if(!arr.length){
+          if(!stream.history.length){
             const d=document.createElement("div");
             d.className="small";
-            d.textContent="Noch kein Verlauf im Stream.";
+            d.textContent="Noch kein Verlauf.";
             list.appendChild(d);
             return;
           }
-          for(const line of arr){
+          for(const line of stream.history.slice(0,30)){
             const div=document.createElement("div");
             div.className="listItem";
             div.innerHTML=`<div class="name"></div><div class="val"></div>`;
@@ -1374,106 +1526,58 @@ test3</textarea>
           if(!entries.length){
             const d=document.createElement("div");
             d.className="small";
-            d.textContent="Noch keine Wins im Stream.";
+            d.textContent="Noch keine Wins.";
             list.appendChild(d);
             return;
           }
-          for(const [k,v] of entries.slice(0,10)){
+          for(const [k,v] of entries.slice(0,30)){
             const div=document.createElement("div");
             div.className="listItem";
             div.innerHTML=`<div class="name"></div><div class="val"></div>`;
-            div.querySelector(".name").textContent=alltime.displayNames[k]||k;
+            div.querySelector(".name").textContent=k;
             div.querySelector(".val").textContent=String(v);
             list.appendChild(div);
           }
         }
       }
 
-      function renderStreakTop(){
-        const wrap=$("streakTopList");
-        wrap.innerHTML="";
-        const entries=objEntriesSortedDesc(alltime.bestStreak);
-        const top=entries.slice(0,5);
-
-        const cur = stream.currentStreakName ? (alltime.displayNames[stream.currentStreakName] || stream.currentStreakName) : "—";
-        const curSt = stream.currentStreakCount || 0;
-        $("currentStreakLabel").textContent = curSt ? `Aktuell: ${cur} ${curSt}x` : "Aktuell: —";
-
-        if(!top.length){
-          const d=document.createElement("div");
-          d.className="small";
-          d.textContent="Noch keine Streak-Rekorde.";
-          wrap.appendChild(d);
-          return;
-        }
-        for(const [k,v] of top){
-          const div=document.createElement("div");
-          div.className="listItem";
-          div.innerHTML=`<div class="name"></div><div class="val"></div>`;
-          div.querySelector(".name").textContent=alltime.displayNames[k]||k;
-          div.querySelector(".val").textContent=v+"x";
-          wrap.appendChild(div);
-        }
-      }
-
       function removeLastWinner(){
         if(!lastWinner) return;
+
         if($("mode").value!=="remove"){
           $("removeWinner").disabled=true;
           showToast("Modus: Nudel lassen");
           return;
         }
+
         playSad();
+        bump("remove",1);
         const ok=removeByName(lastWinner.label);
         if(ok){
           stream.removes=(stream.removes||0)+1;
           saveStream();
-
-          trophies.progress.removes=(trophies.progress.removes||0)+1;
-          checkTierUnlock(TROPHIES[1]);
-          saveTrophies();
-
           addHistoryLine(`❌ entfernt: ${lastWinner.label}`);
           renderRightPanel();
-
           lastWinner=null;
           $("removeWinner").disabled=true;
-
-          if(items.length===2){
-            trophies.progress.finals=(trophies.progress.finals||0)+1;
-            checkTierUnlock(TROPHIES[2]);
-            saveTrophies();
-          }
-          if(items.length===1){
-            trophies.progress.runs=(trophies.progress.runs||0)+1;
-            checkTierUnlock(TROPHIES[3]);
-            saveTrophies();
-          }
         }
       }
 
       function shuffle(){
-        items=parseItems(input.value);
+        items=parseItems($("items").value);
         for(let i=items.length-1;i>0;i--){
-          const j=randInt(0,i);
+          const j=Math.floor(Math.random()*(i+1));
           [items[i],items[j]]=[items[j],items[i]];
         }
-        input.value=items.join("\n");
-        localStorage.setItem(LS_ITEMS, input.value);
-
-        trophies.progress.shuffles=(trophies.progress.shuffles||0)+1;
-        checkTierUnlock(TROPHIES[5]);
-        saveTrophies();
-
-        addHistoryLine("🔀 Shuffle");
-        renderRightPanel();
-
+        $("items").value=items.join("\n");
+        localStorage.setItem(LS_ITEMS, $("items").value);
         lastWinner=null;
         $("removeWinner").disabled=true;
+        addHistoryLine("🔀 Shuffle");
+        renderRightPanel();
         syncCoinVisibility();
         renderNameChips();
         drawWheel();
-        showToast("Gemischt");
       }
 
       function resetWheel(){
@@ -1484,12 +1588,11 @@ test3</textarea>
         showToast("Reset");
       }
 
-      // Spin: NO delete here, only overlay
       function spin(){
         if(spinning) return;
 
-        items=parseItems(input.value);
-        localStorage.setItem(LS_ITEMS, input.value);
+        items=parseItems($("items").value);
+        localStorage.setItem(LS_ITEMS, $("items").value);
 
         if(items.length<2){
           showToast("Mindestens 2 Teilnehmer");
@@ -1503,12 +1606,9 @@ test3</textarea>
         $("spin").disabled=true;
         $("removeWinner").disabled=true;
 
-        trophies.progress.spins=(trophies.progress.spins||0)+1;
-        checkTierUnlock(TROPHIES[0]);
-        saveTrophies();
-
         stream.spins=(stream.spins||0)+1;
         saveStream();
+        bump("spin",1);
 
         playSpinLoop();
 
@@ -1518,8 +1618,8 @@ test3</textarea>
         const n=items.length;
         const slice=TAU/n;
 
-        const targetIndex=randInt(0,n-1);
-        const inside=(rand01()*0.6+0.2)*slice;
+        const targetIndex=Math.floor(Math.random()*n);
+        const inside=(Math.random()*0.6+0.2)*slice;
 
         const pointer=-Math.PI/2;
         const targetAngle=pointer-(targetIndex*slice+inside);
@@ -1544,70 +1644,43 @@ test3</textarea>
 
             lastWinner=currentWinner();
 
-            const prevStreakName=stream.currentStreakName;
-            const prevStreakCount=stream.currentStreakCount||0;
+            const fakeChance=0.02;
+            if(Math.random()<fakeChance && items.length>=3){
+              bump("fake",1);
+              playLk();
+              openWinnerOverlay("FAKE WINNER 😈","Plot Twist…");
+              setTimeout(()=>{
+                closeWinnerOverlay();
+                lastWinner=currentWinner();
+                updateStreak(lastWinner.label);
+                incWin(lastWinner.label);
+                addHistoryLine(`🎯 ${lastWinner.label}`);
+                renderRightPanel();
+                renderStreakTop();
+                startConfetti(1400,1.2);
+                openWinnerOverlay(lastWinner.label,"");
+                spinning=false;
+                $("spin").disabled=false;
+                updateRemoveButton();
+              },1300);
+              return;
+            }
 
-            incStreamWin(lastWinner.label);
-            updateStreamStreak(lastWinner.label);
-
+            updateStreak(lastWinner.label);
+            incWin(lastWinner.label);
             addHistoryLine(`🎯 ${lastWinner.label}`);
             renderRightPanel();
             renderStreakTop();
 
-            const streakEnded = prevStreakName && prevStreakName !== nameKey(lastWinner.label) && prevStreakCount>=3;
-            startConfetti(1400, streakEnded?3.0:1.3);
-
-            openWinnerOverlay(lastWinner.label, streakEnded?"Streak beendet":"");
+            startConfetti(1400,1.2);
+            openWinnerOverlay(lastWinner.label,"");
 
             spinning=false;
             $("spin").disabled=false;
             updateRemoveButton();
           }
         }
-
         requestAnimationFrame(frame);
-      }
-
-      // Double chance
-      function openDoubleChance(){
-        const now=parseItems(input.value);
-        const uniq=[];
-        const seen=new Set();
-        for(const n of now){
-          const k=nameKey(n);
-          if(!seen.has(k)){ seen.add(k); uniq.push(n); }
-        }
-        const sel=$("chanceSelect");
-        sel.innerHTML="";
-        for(const n of uniq){
-          const o=document.createElement("option");
-          o.value=n; o.textContent=n;
-          sel.appendChild(o);
-        }
-        openOverlay($("chanceOverlay"));
-      }
-      function confirmDoubleChance(){
-        const name=normalizeName($("chanceSelect").value);
-        if(!name) return;
-        const now=parseItems(input.value);
-        now.push(name);
-        input.value=now.join("\n");
-        localStorage.setItem(LS_ITEMS, input.value);
-        items=now;
-
-        trophies.progress.doubleChance=(trophies.progress.doubleChance||0)+1;
-        checkTierUnlock(TROPHIES[4]);
-        saveTrophies();
-
-        addHistoryLine(`🎲 doppelt: ${name}`);
-        renderRightPanel();
-
-        syncCoinVisibility();
-        renderNameChips();
-        drawWheel();
-
-        closeOverlay($("chanceOverlay"));
-        showToast("Doppelte Chance gesetzt");
       }
 
       // Coinflip
@@ -1615,42 +1688,48 @@ test3</textarea>
       const coinEl=$("coin");
       const coinNameA=$("coinNameA");
       const coinNameB=$("coinNameB");
-      const coinInfo=$("coinInfo");
       const coinResult=$("coinResult");
-      let coinBusy=false, coinRAF=null;
+      let coinBusy=false;
+      let coinRAF=null;
 
       function stopCoinAnim(){
-        if(coinRAF){ cancelAnimationFrame(coinRAF); coinRAF=null; }
+        if(coinRAF){
+          cancelAnimationFrame(coinRAF);
+          coinRAF=null;
+        }
       }
+
       function openCoinflip(){
-        const now=parseItems(input.value);
+        const now=parseItems($("items").value);
         if(now.length!==2){ showToast("Coinflip nur bei 2 Teilnehmern"); return; }
         coinNameA.textContent=now[0];
         coinNameB.textContent=now[1];
-        coinInfo.textContent=`Kopf = ${now[0]} | Zahl = ${now[1]}`;
+        $("coinInfo").textContent=`Kopf = ${now[0]} | Zahl = ${now[1]}`;
         coinResult.textContent="";
         coinEl.style.transform="rotateY(0deg)";
         coinBusy=false;
         stopCoinAnim();
         openOverlay(coinOverlay);
       }
+
       function coinFlip(){
         if(coinBusy) return;
-        const now=parseItems(input.value);
+        const now=parseItems($("items").value);
         if(now.length!==2){ showToast("Coinflip nur bei 2 Teilnehmern"); return; }
+
         const a=now[0], b=now[1];
-        const heads=rand01()<0.5;
-        const duration=6000+Math.floor(rand01()*1500);
+        const heads = Math.random() < 0.5;
+        const duration = 6500 + Math.floor(Math.random()*1500);
 
         coinBusy=true;
         coinResult.textContent="…";
 
-        const finalDeg=heads?0:180;
-        const extraTurns=8+randInt(0,6);
-        const endTarget=extraTurns*360+finalDeg;
+        const finalDeg = heads ? 0 : 180;
+        const extraTurns = 8 + Math.floor(Math.random()*7);
+        const endTarget = extraTurns*360 + finalDeg;
 
-        const start=performance.now();
-        const easeOut=t=>1-Math.pow(1-t,3);
+        const start = performance.now();
+        const easeOut = t=>1-Math.pow(1-t,3);
 
         stopCoinAnim();
         function frame(nowT){
@@ -1660,7 +1739,7 @@ test3</textarea>
           if(t<1) coinRAF=requestAnimationFrame(frame);
           else{
             coinEl.style.transform=`rotateY(${finalDeg}deg)`;
-            const winner=heads?a:b;
+            const winner = heads ? a : b;
             coinResult.textContent=`Ergebnis: ${winner}`;
             addHistoryLine(`🪙 Coinflip: ${winner}`);
             renderRightPanel();
@@ -1670,40 +1749,36 @@ test3</textarea>
         }
         coinRAF=requestAnimationFrame(frame);
       }
+
       function closeCoin(){
         coinBusy=false;
         stopCoinAnim();
         closeOverlay(coinOverlay);
       }
 
-      // Guess
-      const guessOverlay=$("guessOverlay");
-      const guessGrid=$("guessGrid");
-      const guessStatus=$("guessStatus");
-      let guessSecret=0, guessActive=false;
-
+      // Guess 1-20
+      let guessSecret=0;
+      let guessActive=false;
       function startGuess(){
         guessSecret=randInt(1,20);
         guessActive=true;
-        guessStatus.textContent="Wähle eine Zahl";
-        guessGrid.innerHTML="";
+        $("guessStatus").textContent="Wähle eine Zahl";
+        const grid=$("guessGrid");
+        grid.innerHTML="";
         for(let i=1;i<=20;i++){
           const b=document.createElement("button");
           b.textContent=String(i);
-          b.addEventListener("click", ()=>{
+          b.onclick=()=>{
             if(!guessActive) return;
             guessActive=false;
-            guessStatus.textContent=(i===guessSecret)?`Richtig – ${guessSecret}`:`Falsch – ${guessSecret}`;
-            Array.from(guessGrid.querySelectorAll("button")).forEach(x=>x.disabled=true);
-          });
-          guessGrid.appendChild(b);
+            $("guessStatus").textContent=(i===guessSecret)?`Richtig – ${guessSecret}`:`Falsch – ${guessSecret}`;
+            Array.from(grid.querySelectorAll("button")).forEach(x=>x.disabled=true);
+          };
+          grid.appendChild(b);
         }
       }
 
       // TicTacToe
-      const tttOverlay=$("tttOverlay");
-      const tttGrid=$("tttGrid");
-      const tttStatus=$("tttStatus");
       let ttt=Array(9).fill("");
       let tttOver=false;
 
@@ -1713,6 +1788,7 @@ test3</textarea>
         if(board.every(x=>x)) return "draw";
         return null;
       }
+
       function tttMin(board,isMax){
         const w=tttWinner(board);
         if(w==="O") return {score:10};
@@ -1740,53 +1816,60 @@ test3</textarea>
           return best;
         }
       }
+
       function tttAiMove(){
         if(tttOver) return;
         const empty=ttt.map((v,i)=>v?null:i).filter(v=>v!==null);
         if(!empty.length) return;
         let idx;
-        if(rand01()<0.16) idx=empty[randInt(0,empty.length-1)];
+        if(Math.random()<0.16) idx=empty[randInt(0,empty.length-1)];
         else idx=tttMin(ttt.slice(),true).idx;
         if(idx>=0 && !ttt[idx]) ttt[idx]="O";
       }
+
       function tttRender(){
-        tttGrid.innerHTML="";
+        const grid=$("tttGrid");
+        grid.innerHTML="";
         for(let i=0;i<9;i++){
           const b=document.createElement("button");
           b.textContent=ttt[i];
           b.disabled=tttOver || !!ttt[i];
-          b.addEventListener("click", ()=>{
+          b.onclick=()=>{
             if(tttOver || ttt[i]) return;
             ttt[i]="X";
             let w=tttWinner(ttt);
             if(w){
               tttOver=true;
-              tttStatus.textContent=(w==="draw")?"Unentschieden":(w==="X"?"Du hast gewonnen":"KI gewinnt");
-              tttRender(); return;
+              $("tttStatus").textContent=(w==="draw")?"Unentschieden":(w==="X"?"Du hast gewonnen":"KI gewinnt");
+              if(w==="X") bump("tttwin",1);
+              tttRender();
+              return;
             }
             tttAiMove();
             w=tttWinner(ttt);
             if(w){
               tttOver=true;
-              tttStatus.textContent=(w==="draw")?"Unentschieden":(w==="X"?"Du hast gewonnen":"KI gewinnt");
-            }else tttStatus.textContent="";
+              $("tttStatus").textContent=(w==="draw")?"Unentschieden":(w==="X"?"Du hast gewonnen":"KI gewinnt");
+              if(w==="X") bump("tttwin",1);
+            }else{
+              $("tttStatus").textContent="";
+            }
             tttRender();
-          });
-          tttGrid.appendChild(b);
+          };
+          grid.appendChild(b);
         }
       }
+
       function tttReset(){
         ttt=Array(9).fill("");
         tttOver=false;
-        tttStatus.textContent="";
+        $("tttStatus").textContent="";
         tttRender();
       }
 
       // Snake
-      const snakeOverlay=$("snakeOverlay");
       const snakeCanvas=$("snakeCanvas");
       const sctx=snakeCanvas.getContext("2d");
-      const snakeStatus=$("snakeStatus");
       const cells=20;
       const cellSize=snakeCanvas.width/cells;
 
@@ -1796,8 +1879,10 @@ test3</textarea>
       let score=0;
       let snakeTimer=null;
       let snakeOver=true;
+      let bestSnake = safeJsonParse(localStorage.getItem("snake_best_v3"), 0) || 0;
 
       function randCell(){ return {x:randInt(0,cells-1), y:randInt(0,cells-1)}; }
+
       function snakeDraw(){
         sctx.clearRect(0,0,snakeCanvas.width,snakeCanvas.height);
         sctx.fillStyle=wheelColors[2]||"#FF2BD6";
@@ -1807,28 +1892,37 @@ test3</textarea>
           sctx.fillRect(snake[i].x*cellSize,snake[i].y*cellSize,cellSize-1,cellSize-1);
         }
       }
+
       function snakeStop(){
         if(snakeTimer){ clearInterval(snakeTimer); snakeTimer=null; }
       }
+
       function snakeGameOver(){
         snakeOver=true;
         snakeStop();
-        snakeStatus.textContent=`Game Over. Score: ${score} (Restart)`;
+        if(score>bestSnake){
+          bestSnake=score;
+          try{ localStorage.setItem("snake_best_v3", JSON.stringify(bestSnake)); }catch{}
+        }
+        $("snakeStatus").textContent=`Game Over. Score: ${score} | Best: ${bestSnake}`;
       }
+
       function snakeReset(){
         snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];
         dir={x:1,y:0};
         food=randCell();
         score=0;
         snakeOver=false;
-        snakeStatus.textContent="Score: 0";
+        $("snakeStatus").textContent=`Score: 0 | Best: ${bestSnake}`;
         snakeDraw();
       }
+
       function setDir(nx,ny){
         if(!snake || snakeOver) return;
         if(nx===-dir.x && ny===-dir.y) return;
         dir={x:nx,y:ny};
       }
+
       function snakeStep(){
         if(snakeOver) return;
         const head=snake[0];
@@ -1838,7 +1932,8 @@ test3</textarea>
         snake.unshift(next);
         if(next.x===food.x && next.y===food.y){
           score++;
-          snakeStatus.textContent=`Score: ${score}`;
+          $("snakeStatus").textContent=`Score: ${score} | Best: ${bestSnake}`;
+          bump("snake",1);
           food=randCell();
         }else{
           snake.pop();
@@ -1846,7 +1941,245 @@ test3</textarea>
         snakeDraw();
       }
 
-      // Settings UI
+      // ---------- Design (ersetzt OBS) ----------
+      const THEME_KEY="wheel_theme_v3";
+      const PRESETS={
+        default:{ bgBase:"#080612", glow1:"#6A5CFF", glow2:"#00C3FF", text:"#FFFFFF", btn1:"#6A5CFF", btn2:"#00C3FF", nb:"#6A5CFF", nbo:"#6A5CFF",
+          wheel:["#00C3FF","#6A5CFF","#FF2BD6","#4D9FFF","#8A5CFF"] },
+        neon:{ bgBase:"#08040A", glow1:"#FF2BD6", glow2:"#00C3FF", text:"#FFFFFF", btn1:"#FF2BD6", btn2:"#00C3FF", nb:"#FF2BD6", nbo:"#00C3FF",
+          wheel:["#FF2BD6","#00C3FF","#FFFFFF","#6A5CFF","#FF7BDC"] },
+        emerald:{ bgBase:"#06110D", glow1:"#20E3B2", glow2:"#00C3FF", text:"#EAFFF7", btn1:"#20E3B2", btn2:"#00C3FF", nb:"#20E3B2", nbo:"#00C3FF",
+          wheel:["#20E3B2","#00C3FF","#6A5CFF","#A8FF78","#3DD6D0"] },
+        sunset:{ bgBase:"#14060A", glow1:"#FF7A18", glow2:"#AF002D", text:"#FFF2E8", btn1:"#FF7A18", btn2:"#AF002D", nb:"#FF7A18", nbo:"#AF002D",
+          wheel:["#FF7A18","#AF002D","#F9D423","#00C3FF","#6A5CFF"] },
+        mono:{ bgBase:"#07080B", glow1:"#3A3F55", glow2:"#00C3FF", text:"#FFFFFF", btn1:"#3A3F55", btn2:"#00C3FF", nb:"#3A3F55", nbo:"#00C3FF",
+          wheel:["#00C3FF","#3A3F55","#FFFFFF","#6A5CFF","#4D9FFF"] }
+      };
+
+      function normalizeHex(v){
+        if(!v) return null;
+        let s=String(v).trim();
+        if(!s) return null;
+        if(!s.startsWith("#")) s="#"+s;
+        s=s.toUpperCase();
+        return /^#[0-9A-F]{6}$/.test(s) ? s : null;
+      }
+      function hexToRgb(hex){
+        const h=String(hex||"").replace("#","").trim();
+        return { r:parseInt(h.slice(0,2),16), g:parseInt(h.slice(2,4),16), b:parseInt(h.slice(4,6),16) };
+      }
+      function rgba(hex,a){
+        const {r,g,b}=hexToRgb(hex);
+        return `rgba(${r},${g},${b},${a})`;
+      }
+      function applyTheme(t){
+        document.documentElement.style.setProperty("--bgBase", t.bgBase);
+        document.documentElement.style.setProperty("--glow1", t.glow1);
+        document.documentElement.style.setProperty("--glow2", t.glow2);
+        document.documentElement.style.setProperty("--text", t.text);
+        document.documentElement.style.setProperty("--btn1", t.btn1);
+        document.documentElement.style.setProperty("--btn2", t.btn2);
+        document.documentElement.style.setProperty("--nameBox", rgba(t.nb, 0.30));
+        document.documentElement.style.setProperty("--nameBoxBorder", rgba(t.nbo, 0.55));
+
+        document.body.style.background=
+          `radial-gradient(1100px 680px at 50% 18%, ${rgba(t.glow1,0.18)}, transparent 58%),
+           radial-gradient(900px 600px at 18% 70%, ${rgba(t.glow2,0.14)}, transparent 58%),
+           ${t.bgBase}`;
+
+        const arr=(t.wheel && t.wheel.length)?t.wheel:PRESETS.default.wheel;
+        wheelColors.splice(0, wheelColors.length, ...arr);
+        drawWheel();
+      }
+
+      let theme=safeJsonParse(localStorage.getItem(THEME_KEY), null) || PRESETS.default;
+      theme={
+        bgBase: normalizeHex(theme.bgBase) || PRESETS.default.bgBase,
+        glow1:  normalizeHex(theme.glow1)  || PRESETS.default.glow1,
+        glow2:  normalizeHex(theme.glow2)  || PRESETS.default.glow2,
+        text:   normalizeHex(theme.text)   || PRESETS.default.text,
+        btn1:   normalizeHex(theme.btn1)   || PRESETS.default.btn1,
+        btn2:   normalizeHex(theme.btn2)   || PRESETS.default.btn2,
+        nb:     normalizeHex(theme.nb)     || PRESETS.default.nb,
+        nbo:    normalizeHex(theme.nbo)    || PRESETS.default.nbo,
+        wheel:  Array.isArray(theme.wheel) ? theme.wheel.map(normalizeHex).filter(Boolean) : PRESETS.default.wheel.slice()
+      };
+      if(theme.wheel.length<2) theme.wheel=PRESETS.default.wheel.slice();
+      applyTheme(theme);
+
+      let palSize=Math.max(2, Math.min(12, theme.wheel.length));
+      let palActive=0;
+
+      function saveTheme(){
+        try{ localStorage.setItem(THEME_KEY, JSON.stringify(theme)); }catch{}
+      }
+
+      function renderPalette(){
+        const grid=$("paletteGrid");
+        if(!grid) return;
+        grid.innerHTML="";
+        const arr=theme.wheel.slice();
+        while(arr.length<palSize) arr.push(PRESETS.default.wheel[arr.length % PRESETS.default.wheel.length]);
+        if(arr.length>palSize) arr.length=palSize;
+        theme.wheel=arr;
+        for(let i=0;i<palSize;i++){
+          const sw=document.createElement("div");
+          sw.className="swatch"+(i===palActive?" active":"");
+          sw.style.background=arr[i];
+          sw.innerHTML=`<span>${i+1}</span>`;
+          sw.onclick=()=>{
+            palActive=i;
+            renderPalette();
+            $("palPick").value=arr[i];
+            $("palHex").value=arr[i];
+          };
+          grid.appendChild(sw);
+        }
+        $("palPick").value=arr[palActive];
+        $("palHex").value=arr[palActive];
+      }
+
+      function setPalColor(i, val){
+        const v=normalizeHex(val);
+        if(!v) return;
+        const arr=theme.wheel.slice();
+        while(arr.length<palSize) arr.push(PRESETS.default.wheel[arr.length % PRESETS.default.wheel.length]);
+        arr[i]=v;
+        theme.wheel=arr.slice(0,palSize);
+        saveTheme();
+        applyTheme(theme);
+        renderPalette();
+      }
+
+      function setUI(){
+        $("presetSelect").value="default";
+        $("bgPick").value=theme.bgBase; $("bgHex").value=theme.bgBase;
+        $("txtPick").value=theme.text;  $("txtHex").value=theme.text;
+        $("g1Pick").value=theme.glow1;  $("g1Hex").value=theme.glow1;
+        $("g2Pick").value=theme.glow2;  $("g2Hex").value=theme.glow2;
+        $("b1Pick").value=theme.btn1;   $("b1Hex").value=theme.btn1;
+        $("b2Pick").value=theme.btn2;   $("b2Hex").value=theme.btn2;
+        $("nbPick").value=theme.nb;     $("nbHex").value=theme.nb;
+        $("nboPick").value=theme.nbo;   $("nboHex").value=theme.nbo;
+        palSize=Math.max(2, Math.min(12, theme.wheel.length));
+        palActive=0;
+        renderPalette();
+      }
+
+      function bindPair(pickId, hexId, setter){
+        $(pickId).oninput=()=>{ const v=normalizeHex($(pickId).value); if(!v) return; $(hexId).value=v; setter(v); };
+        $(hexId).oninput=()=>{ const v=normalizeHex($(hexId).value); if(!v) return; $(pickId).value=v; setter(v); };
+      }
+
+      bindPair("bgPick","bgHex",(v)=>{ theme.bgBase=v; saveTheme(); applyTheme(theme); });
+      bindPair("txtPick","txtHex",(v)=>{ theme.text=v; saveTheme(); applyTheme(theme); });
+      bindPair("g1Pick","g1Hex",(v)=>{ theme.glow1=v; saveTheme(); applyTheme(theme); });
+      bindPair("g2Pick","g2Hex",(v)=>{ theme.glow2=v; saveTheme(); applyTheme(theme); });
+      bindPair("b1Pick","b1Hex",(v)=>{ theme.btn1=v; saveTheme(); applyTheme(theme); });
+      bindPair("b2Pick","b2Hex",(v)=>{ theme.btn2=v; saveTheme(); applyTheme(theme); });
+      bindPair("nbPick","nbHex",(v)=>{ theme.nb=v; saveTheme(); applyTheme(theme); });
+      bindPair("nboPick","nboHex",(v)=>{ theme.nbo=v; saveTheme(); applyTheme(theme); });
+
+      $("palPick").oninput=()=>setPalColor(palActive, $("palPick").value);
+      $("palHex").oninput=()=>setPalColor(palActive, $("palHex").value);
+
+      $("palDelete").onclick=()=>{
+        const fallback=PRESETS.default.wheel[palActive % PRESETS.default.wheel.length];
+        setPalColor(palActive, fallback);
+      };
+      $("pal5").onclick=()=>{ palSize=5; renderPalette(); saveTheme(); applyTheme(theme); };
+      $("pal8").onclick=()=>{ palSize=8; renderPalette(); saveTheme(); applyTheme(theme); };
+      $("pal12").onclick=()=>{ palSize=12; renderPalette(); saveTheme(); applyTheme(theme); };
+
+      $("palBulkApply").onclick=()=>{
+        const raw=$("palBulk").value||"";
+        const tokens=raw.replace(/\r/g," ").replace(/\n/g," ").split(/[\s,;]+/).filter(Boolean);
+        const list=tokens.map(normalizeHex).filter(Boolean);
+        if(list.length<2){ showToast("Mindestens 2 gültige Hex-Codes"); return; }
+        theme.wheel=list.slice(0,12);
+        palSize=Math.max(2, Math.min(12, theme.wheel.length));
+        palActive=0;
+        saveTheme();
+        applyTheme(theme);
+        renderPalette();
+        showToast("Palette übernommen");
+      };
+
+      $("presetApply").onclick=()=>{
+        const key=$("presetSelect").value;
+        const p=PRESETS[key]||PRESETS.default;
+        theme={...p, wheel:p.wheel.slice()};
+        palSize=Math.max(2, Math.min(12, theme.wheel.length));
+        palActive=0;
+        saveTheme();
+        applyTheme(theme);
+        renderPalette();
+        showToast("Preset angewendet");
+      };
+
+      $("designReset").onclick=()=>{
+        const p=PRESETS.default;
+        theme={...p, wheel:p.wheel.slice()};
+        palSize=Math.max(2, Math.min(12, theme.wheel.length));
+        palActive=0;
+        saveTheme();
+        applyTheme(theme);
+        renderPalette();
+        showToast("Design zurückgesetzt");
+      };
+
+      $("designBtn").onclick=()=>{ setUI(); openOverlay($("designOverlay")); };
+      $("designX").onclick=()=>closeOverlay($("designOverlay"));
+      $("designClose").onclick=()=>closeOverlay($("designOverlay"));
+      $("designOverlay").onclick=(e)=>{ if(e.target===$("designOverlay")) closeOverlay($("designOverlay")); };
+
+      $("items").addEventListener("input", ()=>{
+        localStorage.setItem(LS_ITEMS, $("items").value);
+        items=parseItems($("items").value);
+        lastWinner=null;
+        $("removeWinner").disabled=true;
+        syncCoinVisibility();
+        renderNameChips();
+        drawWheel();
+      });
+
+      $("spin").onclick=spin;
+      $("removeWinner").onclick=removeLastWinner;
+      $("shuffle").onclick=shuffle;
+      $("resetWheel").onclick=resetWheel;
+
+      $("winnerX").onclick=closeWinnerOverlay;
+      $("winnerOverlay").onclick=(e)=>{ if(e.target===winnerOverlay) closeWinnerOverlay(); };
+      $("winnerKeep").onclick=()=>{ closeWinnerOverlay(); showToast("Nudel bleibt"); };
+      $("winnerRemove").onclick=()=>{ if($("mode").value==="remove") removeLastWinner(); closeWinnerOverlay(); };
+
+      $("settingsBtn").onclick=()=>{ syncSettingsUI(); openOverlay($("settingsOverlay")); };
+      $("settingsX").onclick=()=>closeOverlay($("settingsOverlay"));
+      $("settingsClose").onclick=()=>closeOverlay($("settingsOverlay"));
+      $("settingsOverlay").onclick=(e)=>{ if(e.target===$("settingsOverlay")) closeOverlay($("settingsOverlay")); };
+
+      $("spinVol").oninput=()=>{
+        settings.spinVol=clamp(Number($("spinVol").value)/100,0,1);
+        settings.muted=false; $("muteAll").checked=false;
+        $("spinVolLabel").textContent=`${$("spinVol").value}%`;
+        applyVolumes(); saveSettings();
+      };
+      $("sadVol").oninput=()=>{
+        settings.sadVol=clamp(Number($("sadVol").value)/100,0,1);
+        settings.muted=false; $("muteAll").checked=false;
+        $("sadVolLabel").textContent=`${$("sadVol").value}%`;
+        applyVolumes(); saveSettings();
+      };
+      $("spinDur").oninput=()=>{
+        settings.spinDur=clamp(Number($("spinDur").value),1,60);
+        $("spinDurLabel").textContent=`${$("spinDur").value}s`;
+        saveSettings();
+      };
+      $("muteAll").onchange=()=>{
+        settings.muted=!!$("muteAll").checked;
+        applyVolumes(); saveSettings();
+      };
+
       function syncSettingsUI(){
         $("spinVol").value=String(Math.round(settings.spinVol*100));
         $("sadVol").value=String(Math.round(settings.sadVol*100));
@@ -1857,23 +2190,6 @@ test3</textarea>
         $("spinDurLabel").textContent=`${$("spinDur").value}s`;
       }
 
-      // Overlay handlers
-      const closeAll=()=>{
-        ["settingsOverlay","trophiesOverlay","linksOverlay","winnerOverlay","coinOverlay","guessOverlay","tttOverlay","snakeOverlay","chanceOverlay"]
-          .forEach(id=>closeOverlay($(id)));
-        snakeStop();
-        stopCoinAnim();
-        stopSpinLoop();
-      };
-
-      $("winnerX").onclick=closeWinnerOverlay;
-      $("winnerOverlay").onclick=(e)=>{ if(e.target===$("winnerOverlay")) closeWinnerOverlay(); };
-
-      $("settingsBtn").onclick=()=>{ syncSettingsUI(); openOverlay($("settingsOverlay")); };
-      $("settingsX").onclick=()=>closeOverlay($("settingsOverlay"));
-      $("settingsClose").onclick=()=>closeOverlay($("settingsOverlay"));
-      $("settingsOverlay").onclick=(e)=>{ if(e.target===$("settingsOverlay")) closeOverlay($("settingsOverlay")); };
-
       $("trophiesBtn").onclick=()=>{ renderTrophies(); openOverlay($("trophiesOverlay")); };
       $("trophiesX").onclick=()=>closeOverlay($("trophiesOverlay"));
       $("trophiesClose").onclick=()=>closeOverlay($("trophiesOverlay"));
@@ -1883,15 +2199,48 @@ test3</textarea>
       $("linksX").onclick=()=>closeOverlay($("linksOverlay"));
       $("linksClose").onclick=()=>closeOverlay($("linksOverlay"));
       $("linksOverlay").onclick=(e)=>{ if(e.target===$("linksOverlay")) closeOverlay($("linksOverlay")); };
-      $("openTikTok").onclick=()=>window.open(LINKS.tiktok,"_blank","noopener,noreferrer");
-      $("openInsta").onclick=()=>window.open(LINKS.insta,"_blank","noopener,noreferrer");
-      $("openTwitch").onclick=()=>window.open(LINKS.twitch,"_blank","noopener,noreferrer");
 
-      $("chanceBtn").onclick=openDoubleChance;
+      $("openTikTok").onclick=()=>window.open(LINKS.tiktok,"_blank");
+      $("openInsta").onclick=()=>window.open(LINKS.insta,"_blank");
+      $("openTwitch").onclick=()=>window.open(LINKS.twitch,"_blank");
+
+      $("chanceBtn").onclick=()=>{
+        const now=parseItems($("items").value);
+        const uniq=[];
+        const seen=new Set();
+        for(const n of now){
+          const k=nameKey(n);
+          if(!seen.has(k)){ seen.add(k); uniq.push(n); }
+        }
+        const sel=$("chanceSelect");
+        sel.innerHTML="";
+        for(const n of uniq){
+          const o=document.createElement("option");
+          o.value=n; o.textContent=n;
+          sel.appendChild(o);
+        }
+        openOverlay($("chanceOverlay"));
+      };
       $("chanceX").onclick=()=>closeOverlay($("chanceOverlay"));
       $("chanceClose").onclick=()=>closeOverlay($("chanceOverlay"));
       $("chanceOverlay").onclick=(e)=>{ if(e.target===$("chanceOverlay")) closeOverlay($("chanceOverlay")); };
-      $("chanceConfirm").onclick=confirmDoubleChance;
+
+      $("chanceConfirm").onclick=()=>{
+        const name=normalizeName($("chanceSelect").value);
+        if(!name) return;
+        const now=parseItems($("items").value);
+        now.push(name);
+        $("items").value=now.join("\n");
+        localStorage.setItem(LS_ITEMS, $("items").value);
+        items=now;
+        addHistoryLine(`🎲 doppelt: ${name}`);
+        renderRightPanel();
+        syncCoinVisibility();
+        renderNameChips();
+        drawWheel();
+        closeOverlay($("chanceOverlay"));
+        showToast("Doppelte Chance gesetzt");
+      };
 
       $("miniCoin").onclick=openCoinflip;
       $("coinX").onclick=closeCoin;
@@ -1899,22 +2248,22 @@ test3</textarea>
       $("coinOverlay").onclick=(e)=>{ if(e.target===$("coinOverlay")) closeCoin(); };
       $("coinStart").onclick=coinFlip;
 
-      $("miniGuess").onclick=()=>{ startGuess(); openOverlay(guessOverlay); };
-      $("guessX").onclick=()=>closeOverlay(guessOverlay);
-      $("guessClose").onclick=()=>closeOverlay(guessOverlay);
-      guessOverlay.onclick=(e)=>{ if(e.target===guessOverlay) closeOverlay(guessOverlay); };
+      $("miniGuess").onclick=()=>{ startGuess(); openOverlay($("guessOverlay")); };
+      $("guessX").onclick=()=>closeOverlay($("guessOverlay"));
+      $("guessClose").onclick=()=>closeOverlay($("guessOverlay"));
+      $("guessOverlay").onclick=(e)=>{ if(e.target===$("guessOverlay")) closeOverlay($("guessOverlay")); };
       $("guessNew").onclick=startGuess;
 
-      $("miniTtt").onclick=()=>{ tttReset(); openOverlay(tttOverlay); };
-      $("tttX").onclick=()=>closeOverlay(tttOverlay);
-      $("tttClose").onclick=()=>closeOverlay(tttOverlay);
-      tttOverlay.onclick=(e)=>{ if(e.target===tttOverlay) closeOverlay(tttOverlay); };
+      $("miniTtt").onclick=()=>{ tttReset(); openOverlay($("tttOverlay")); };
+      $("tttX").onclick=()=>closeOverlay($("tttOverlay"));
+      $("tttClose").onclick=()=>closeOverlay($("tttOverlay"));
+      $("tttOverlay").onclick=(e)=>{ if(e.target===$("tttOverlay")) closeOverlay($("tttOverlay")); };
       $("tttReset").onclick=tttReset;
 
-      $("miniSnake").onclick=()=>{ snakeReset(); openOverlay(snakeOverlay); };
-      $("snakeX").onclick=()=>{ snakeStop(); closeOverlay(snakeOverlay); };
-      $("snakeClose").onclick=()=>{ snakeStop(); closeOverlay(snakeOverlay); };
-      snakeOverlay.onclick=(e)=>{ if(e.target===snakeOverlay){ snakeStop(); closeOverlay(snakeOverlay); } };
+      $("miniSnake").onclick=()=>{ snakeReset(); openOverlay($("snakeOverlay")); };
+      $("snakeX").onclick=()=>{ snakeStop(); closeOverlay($("snakeOverlay")); };
+      $("snakeClose").onclick=()=>{ snakeStop(); closeOverlay($("snakeOverlay")); };
+      $("snakeOverlay").onclick=(e)=>{ if(e.target===$("snakeOverlay")){ snakeStop(); closeOverlay($("snakeOverlay")); } };
       $("snakeStart").onclick=()=>{
         if(!snake || snakeOver) snakeReset();
         if(snakeTimer) return;
@@ -1932,76 +2281,7 @@ test3</textarea>
       $("snLeft").onclick=()=>setDir(-1,0);
       $("snRight").onclick=()=>setDir(1,0);
 
-      $("tabHistory").onclick=()=>{
-        rightTab="history";
-        $("tabHistory").classList.add("active");
-        $("tabWins").classList.remove("active");
-        renderRightPanel();
-      };
-      $("tabWins").onclick=()=>{
-        rightTab="wins";
-        $("tabWins").classList.add("active");
-        $("tabHistory").classList.remove("active");
-        renderRightPanel();
-      };
-
       $("streamResetBtn").onclick=resetStream;
-
-      $("spin").onclick=spin;
-      $("removeWinner").onclick=removeLastWinner;
-      $("shuffle").onclick=shuffle;
-      $("resetWheel").onclick=resetWheel;
-
-      $("winnerKeep").onclick=()=>{ closeWinnerOverlay(); showToast("Nudel bleibt"); };
-      $("winnerRemove").onclick=()=>{
-        if($("mode").value!=="remove"){ closeWinnerOverlay(); showToast("Modus: Nudel lassen"); return; }
-        removeLastWinner();
-        closeWinnerOverlay();
-      };
-
-      $("spinVol").oninput=()=>{
-        settings.spinVol=clamp(Number($("spinVol").value)/100,0,1);
-        settings.muted=false;
-        $("muteAll").checked=false;
-        $("spinVolLabel").textContent=`${$("spinVol").value}%`;
-        applyVolumes(); saveSettings();
-      };
-      $("sadVol").oninput=()=>{
-        settings.sadVol=clamp(Number($("sadVol").value)/100,0,1);
-        settings.muted=false;
-        $("muteAll").checked=false;
-        $("sadVolLabel").textContent=`${$("sadVol").value}%`;
-        applyVolumes(); saveSettings();
-      };
-      $("spinDur").oninput=()=>{
-        settings.spinDur=clamp(Number($("spinDur").value),1,60);
-        $("spinDurLabel").textContent=`${$("spinDur").value}s`;
-        saveSettings();
-      };
-      $("muteAll").onchange=()=>{
-        settings.muted=!!$("muteAll").checked;
-        applyVolumes(); saveSettings();
-      };
-
-      $("obsBtn").onclick=()=>{
-        const on=!document.body.classList.contains("obs-mode");
-        if(on) document.body.classList.add("obs-mode");
-        else document.body.classList.remove("obs-mode");
-        localStorage.setItem(OBS_KEY, on?"1":"0");
-        showToast(on?"OBS Transparent: AN":"OBS Transparent: AUS");
-      };
-      const obsSaved=localStorage.getItem(OBS_KEY)==="1";
-      if(obsSaved) document.body.classList.add("obs-mode");
-
-      $("items").addEventListener("input", ()=>{
-        localStorage.setItem(LS_ITEMS, input.value);
-        items=parseItems(input.value);
-        lastWinner=null;
-        $("removeWinner").disabled=true;
-        syncCoinVisibility();
-        renderNameChips();
-        drawWheel();
-      });
 
       document.addEventListener("keydown",(e)=>{
         if(e.key==="Escape") closeAll();
@@ -2021,7 +2301,7 @@ test3</textarea>
           else $("winnerKeep").click();
         }
 
-        if(snakeOverlay.style.display==="grid"){
+        if($("snakeOverlay").style.display==="grid"){
           if(e.key==="ArrowUp"||e.key==="w") setDir(0,-1);
           if(e.key==="ArrowDown"||e.key==="s") setDir(0,1);
           if(e.key==="ArrowLeft"||e.key==="a") setDir(-1,0);
@@ -2029,18 +2309,16 @@ test3</textarea>
         }
       });
 
-      // Init
-      items=parseItems(input.value);
+      applyVolumes();
+      syncSettingsUI();
+
+      items=parseItems($("items").value);
       syncCoinVisibility();
       renderNameChips();
       drawWheel();
       renderRightPanel();
       renderStreakTop();
-      syncSettingsUI();
-      applyVolumes();
-      saveSettings();
       renderTrophies();
-      saveTrophies();
     })();
   </script>
 </body>
